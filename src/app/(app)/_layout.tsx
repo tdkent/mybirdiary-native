@@ -6,7 +6,8 @@ export default function AppLayout() {
       title: "New Sighting"
     }} />
     <Tabs.Screen name="sightings" options={{
-      title: "My Sightings"
+      title: "Sightings",
+     headerShown:false
     }} />
   </Tabs>
 }
