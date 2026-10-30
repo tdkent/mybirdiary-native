@@ -1,2 +1,18 @@
 @import "tailwindcss";
 @import "uniwind";
+
+@layer theme {
+	:root {
+		@variant dark {
+			--color-background: oklch(0.1371 0.036 258.5258);
+			--color-foreground: oklch(0.9838 0.0035 247.8583);
+			--color-border: oklch(0.28 0.0369 259.974);
+		}
+
+		@variant light {
+			--color-background: oklch(1 0 0);
+			--color-foreground: oklch(0.1371 0.036 258.5258);
+			--color-border: oklch(0.929 0.0126 255.5317);
+		}
+	}
+}
