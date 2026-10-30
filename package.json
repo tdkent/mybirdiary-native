@@ -34,6 +34,7 @@
     "@biomejs/biome": "2.6.4",
     "@types/react": "~19.3.0",
     "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "typescript": "~6.0.3"
   },
   "scripts": {
@@ -45,7 +46,8 @@
     "lint": "biome lint --verbose ./src",
     "lint:fix": "biome lint --write ./src",
     "start": "expo start",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "prepare": "husky"
   },
   "private": true
 }
