@@ -1,5 +1,8 @@
 import { Stack } from "expo-router";
+import { Uniwind } from "uniwind";
 import "../global.css";
+
+Uniwind.setTheme("system");
 
 export default function RootLayout() {
 	return (
