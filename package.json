@@ -33,15 +33,17 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
     "@types/react": "~19.3.0",
+    "husky": "^9.1.7",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "android": "expo start --android",
-    "check": "npx biome check ./src",
-    "format": "npx biome format --write ./src",
+    "check": "biome check --verbose ./src",
+    "check:fix": "biome check --write --no-errors-on-unmatched ./src",
+    "format": "biome format --write ./src",
     "ios": "expo start --ios",
-    "lint": "expo lint",
-    "reset-project": "node ./scripts/reset-project.js",
+    "lint": "biome lint --verbose ./src",
+    "lint:fix": "biome lint --write ./src",
     "start": "expo start",
     "web": "expo start --web"
   },
