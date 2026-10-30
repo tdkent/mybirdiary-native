@@ -2,6 +2,22 @@
   "name": "mybirdiary-native",
   "version": "1.0.0",
   "main": "expo-router/entry",
+  "private": true,
+  "scripts": {
+    "android": "expo start --android",
+    "check": "biome check --verbose ./src",
+    "check:fix": "biome check --write --no-errors-on-unmatched ./src",
+    "format": "biome format --write ./src",
+    "ios": "expo start --ios",
+    "lint": "biome lint --verbose ./src",
+    "lint:fix": "biome lint --write ./src",
+    "start": "expo start",
+    "web": "expo start --web",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*": "biome check --write --no-errors-on-unmatched --verbose ./src"
+  },
   "dependencies": {
     "@expo/ui": "~58.0.25",
     "@expo/vector-icons": "^15.1.1",
@@ -33,17 +49,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
     "@types/react": "~19.3.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
     "typescript": "~6.0.3"
-  },
-  "scripts": {
-    "android": "expo start --android",
-    "check": "npx biome check ./src",
-    "format": "npx biome format --write ./src",
-    "ios": "expo start --ios",
-    "lint": "expo lint",
-    "reset-project": "node ./scripts/reset-project.js",
-    "start": "expo start",
-    "web": "expo start --web"
-  },
-  "private": true
+  }
 }
