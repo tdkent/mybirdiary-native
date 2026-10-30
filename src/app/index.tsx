@@ -1,10 +1,10 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function Index() {
 	return (
-		<View style={styles.container}>
-			<Text>Home</Text>
+		<View className="flex-1 items-center justify-center">
+			<Text className="text-4xl font-semibold">Home</Text>
 			<Text>If user is not logged in, show auth links.</Text>
 			<Text>If logged in, redirect to Dashboard area.</Text>
 
@@ -16,11 +16,3 @@ export default function Index() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});

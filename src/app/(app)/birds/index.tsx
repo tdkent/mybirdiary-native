@@ -1,9 +1,9 @@
 import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function BirdsScreen() {
 	return (
-		<View style={styles.container}>
+		<View className="flex-1 items-center justify-center">
 			<Text>Birdpedia</Text>
 			<Text>Display paginated, sortable list of available bird species.</Text>
 			<Text>Each list item links to bird details page.</Text>
@@ -21,11 +21,3 @@ export default function BirdsScreen() {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-	},
-});
