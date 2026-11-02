@@ -12,8 +12,13 @@
     "lint": "biome lint --verbose ./src",
     "lint:fix": "biome lint --write ./src",
     "start": "expo start",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
     "web": "expo start --web",
     "prepare": "husky"
+  },
+  "jest": {
+    "preset": "jest-expo"
   },
   "lint-staged": {
     "*": "biome check --write --no-errors-on-unmatched --verbose ./src"
