@@ -1,6 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 
-const AuthContext = createContext({});
+interface Auth {
+	hasSession: boolean;
+	login: () => void;
+	logout: () => void;
+}
+
+export const AuthContext = createContext<Auth>({
+	hasSession: false,
+	login: () => {},
+	logout: () => {},
+});
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [hasSession, setHasSession] = useState(true);
