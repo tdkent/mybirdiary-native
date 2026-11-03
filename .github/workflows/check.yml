@@ -5,7 +5,7 @@
 # JOBS:
 # - Run Biome check
 
-name: "Lint application"
+name: Check
 
 on:
   pull_request:
@@ -23,8 +23,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    runs-on: "ubuntu-latest"
+  check:
+    runs-on: ubuntu-latest
 
     permissions:
       contents: read
