@@ -1,7 +1,8 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Button, Text, View } from "react-native";
 
 export default function SightingsScreen() {
+	const router = useRouter();
 	return (
 		<View className="flex-1 items-center justify-center">
 			<Text>Sightings</Text>
@@ -9,14 +10,15 @@ export default function SightingsScreen() {
 			<Text>Each list item links to sighting details page.</Text>
 
 			<View>
-				<Link
-					href={{
-						pathname: "/sightings/[id]",
-						params: { id: 1234 },
-					}}
-				>
-					<Text>Go to Sighting Details #1234</Text>
-				</Link>
+				<Button
+					onPress={() =>
+						router.navigate({
+							pathname: "/sightings/[id]",
+							params: { id: 123 },
+						})
+					}
+					title="Sighting ID 123"
+				/>
 			</View>
 		</View>
 	);
