@@ -16,7 +16,7 @@ export default function RootLayout() {
 	useEffect(() => {
 		async function checkAuth() {
 			try {
-				await delay(3000);
+				await delay(0);
 			} catch (e) {
 				console.warn(e);
 			} finally {

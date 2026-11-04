@@ -1,4 +1,6 @@
 import { createContext, useEffect, useState } from "react";
+import { AppwriteException } from "react-native-appwrite";
+import { account } from "@/lib/appwrite";
 
 interface Auth {
 	hasSession: boolean;
@@ -23,7 +25,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	function logout() {}
 
 	useEffect(() => {
-		setHasSession(true);
+		async function checkAuthStatus() {
+			try {
+				const user = await account.get();
+				console.log("user", user);
+			} catch (error) {
+				if (error instanceof AppwriteException) {
+					if (error.code === 401) {
+						console.error("The user is not authenticated");
+					} else {
+						console.error("Unexpected Appwrite exception occurred:", error);
+					}
+				} else {
+					console.error("An unexpected error occurred", error);
+				}
+				return null;
+			}
+		}
+
+		checkAuthStatus();
 	}, []);
 
 	return (
