@@ -1,35 +1,49 @@
+import { account } from "@/lib/appwrite";
 import { createContext, useEffect, useState } from "react";
 
 interface Auth {
-	hasSession: boolean;
+	isLoggedIn: boolean;
 	isLoading: boolean;
 	login: () => void;
 	logout: () => void;
 }
 
 export const AuthContext = createContext<Auth>({
-	hasSession: false,
+	isLoggedIn: false,
 	isLoading: false,
 	login: () => {},
 	logout: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [hasSession, setHasSession] = useState(true);
-	const [isLoading] = useState(false);
+	const [isLoggedIn] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	function login() {}
 
 	function logout() {}
 
+	/* Check user's auth status on first mount. */
 	useEffect(() => {
-		setHasSession(true);
+		async function checkAuthStatus() {
+			setIsLoading(true);
+			try {
+				await account.get();
+			} catch (error) {
+				console.error(error);
+				return null;
+			} finally {
+				setIsLoading(false);
+			}
+		}
+
+		checkAuthStatus();
 	}, []);
 
 	return (
 		<AuthContext.Provider
 			value={{
-				hasSession,
+				isLoggedIn,
 				isLoading,
 				login,
 				logout,
