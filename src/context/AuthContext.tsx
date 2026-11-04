@@ -1,6 +1,5 @@
-import { createContext, useEffect, useState } from "react";
-import { AppwriteException } from "react-native-appwrite";
 import { account } from "@/lib/appwrite";
+import { createContext, useEffect, useState } from "react";
 
 interface Auth {
 	isLoggedIn: boolean;
@@ -17,28 +16,24 @@ export const AuthContext = createContext<Auth>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [isLoading] = useState(false);
+	const [isLoggedIn] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	function login() {}
 
 	function logout() {}
 
+	/* Check user's auth status on first mount. */
 	useEffect(() => {
 		async function checkAuthStatus() {
+			setIsLoading(true);
 			try {
-				const user = await account.get();
+				await account.get();
 			} catch (error) {
-				if (error instanceof AppwriteException) {
-					if (error.code === 401) {
-						console.error("The user is not authenticated");
-					} else {
-						console.error("Unexpected Appwrite exception occurred:", error);
-					}
-				} else {
-					console.error("An unexpected error occurred", error);
-				}
+				console.error(error);
 				return null;
+			} finally {
+				setIsLoading(false);
 			}
 		}
 
