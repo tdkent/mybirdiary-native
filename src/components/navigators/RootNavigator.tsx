@@ -13,11 +13,20 @@ export default function RootNavigator() {
 					}}
 				/>
 			</Stack.Protected>
+
+			<Stack.Protected guard={!isLoggedIn}>
+				<Stack.Screen
+					name="(auth)"
+					options={{
+						headerShown: false,
+					}}
+				/>
+			</Stack.Protected>
+
 			<Stack.Protected guard={isLoggedIn}>
 				<Stack.Screen
 					name="(app)"
 					options={{
-						title: "new-sighting",
 						headerShown: false,
 					}}
 				/>
