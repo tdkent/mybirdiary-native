@@ -6,6 +6,7 @@ interface Auth {
 	isLoading: boolean;
 	login: () => void;
 	logout: () => void;
+	register: () => void;
 }
 
 export const AuthContext = createContext<Auth>({
@@ -13,11 +14,14 @@ export const AuthContext = createContext<Auth>({
 	isLoading: false,
 	login: () => {},
 	logout: () => {},
+	register: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	function register() {}
 
 	function login() {}
 
@@ -47,6 +51,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				isLoading,
 				login,
 				logout,
+				register,
 			}}
 		>
 			{children}
