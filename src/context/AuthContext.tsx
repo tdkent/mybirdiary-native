@@ -39,12 +39,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	async function login({ email, password }: UserAuth) {
 		try {
-			const result = await account.createEmailPasswordSession({
+			await account.createEmailPasswordSession({
 				email,
 				password,
 			});
 
-			console.log(result);
+			setIsLoggedIn(true);
 		} catch (e) {
 			console.error(e);
 		}
