@@ -31,6 +31,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				password,
 			});
 
+			await account.createEmailPasswordSession({
+				email,
+				password,
+			});
+
 			setIsLoggedIn(true);
 		} catch (e) {
 			console.error(e);
