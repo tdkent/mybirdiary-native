@@ -6,7 +6,7 @@ import { ID } from "react-native-appwrite";
 interface Auth {
 	isLoggedIn: boolean;
 	isLoading: boolean;
-	login: () => void;
+	login: (values: UserAuth) => void;
 	logout: () => void;
 	register: (values: UserAuth) => void;
 }
@@ -23,12 +23,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
-	async function register(values: UserAuth) {
+	async function register({ email, password }: UserAuth) {
 		try {
 			await account.create({
 				userId: ID.unique(),
-				email: values.email,
-				password: values.password,
+				email,
+				password,
 			});
 
 			setIsLoggedIn(true);
@@ -37,7 +37,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
-	function login() {}
+	async function login({ email, password }: UserAuth) {
+		try {
+			const result = await account.createEmailPasswordSession({
+				email,
+				password,
+			});
+
+			console.log(result);
+		} catch (e) {
+			console.error(e);
+		}
+	}
 
 	function logout() {}
 
