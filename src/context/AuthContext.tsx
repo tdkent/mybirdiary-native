@@ -1,11 +1,14 @@
 import { account } from "@/lib/appwrite";
+import type { UserAuth } from "@/types/auth";
 import { createContext, useEffect, useState } from "react";
+import { ID } from "react-native-appwrite";
 
 interface Auth {
 	isLoggedIn: boolean;
 	isLoading: boolean;
 	login: () => void;
 	logout: () => void;
+	register: (values: UserAuth) => void;
 }
 
 export const AuthContext = createContext<Auth>({
@@ -13,11 +16,26 @@ export const AuthContext = createContext<Auth>({
 	isLoading: false,
 	login: () => {},
 	logout: () => {},
+	register: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [isLoggedIn] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+
+	async function register(values: UserAuth) {
+		try {
+			await account.create({
+				userId: ID.unique(),
+				email: values.email,
+				password: values.password,
+			});
+
+			setIsLoggedIn(true);
+		} catch (e) {
+			console.error(e);
+		}
+	}
 
 	function login() {}
 
@@ -47,6 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				isLoading,
 				login,
 				logout,
+				register,
 			}}
 		>
 			{children}
