@@ -13,13 +13,15 @@ import {
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
 export default function AuthForm() {
-	const { register } = useAuth();
+	const { login, register } = useAuth();
 	const pathname = usePathname();
 
 	function handleAuthAction(values: UserAuth) {
 		if (pathname === "/register") {
 			register(values);
-		}
+		} else if (pathname === "/login") {
+			login(values);
+		} else return;
 	}
 
 	return (
