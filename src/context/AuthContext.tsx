@@ -63,6 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsLoading(true);
 			try {
 				await account.get();
+				setIsLoggedIn(true);
 			} catch (error) {
 				console.error(error);
 				return null;
