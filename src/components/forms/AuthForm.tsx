@@ -14,7 +14,7 @@ import {
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
 export default function AuthForm() {
-	const { login, register } = useAuth();
+	const { error, login, register } = useAuth();
 	const pathname = usePathname();
 
 	function handleAuthAction(values: UserAuth) {
@@ -27,6 +27,7 @@ export default function AuthForm() {
 
 	return (
 		<View>
+			{error && <Text className="text-red-500">{error}</Text>}
 			<Formik
 				initialValues={{ email: "", password: "" }}
 				onSubmit={(values) => handleAuthAction(values)}

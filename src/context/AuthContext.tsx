@@ -27,6 +27,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	async function register({ email, password }: UserAuth) {
+		setError(null);
 		try {
 			await account.create({
 				userId: ID.unique(),
@@ -52,6 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	}
 
 	async function login({ email, password }: UserAuth) {
+		setError(null);
 		try {
 			await account.createEmailPasswordSession({
 				email,
