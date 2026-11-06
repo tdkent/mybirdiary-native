@@ -55,7 +55,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
-	function logout() {}
+	async function logout() {
+		try {
+			await account.deleteSession({ sessionId: "current" });
+			setIsLoggedIn(false);
+		} catch (e) {
+			console.error(e);
+		}
+	}
 
 	/* Check user's auth status on first mount. */
 	useEffect(() => {

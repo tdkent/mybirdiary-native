@@ -12,9 +12,6 @@ export default function RootNavigator() {
 						title: "Home Page",
 					}}
 				/>
-			</Stack.Protected>
-
-			<Stack.Protected guard={!isLoggedIn}>
 				<Stack.Screen
 					name="(auth)"
 					options={{
@@ -23,7 +20,7 @@ export default function RootNavigator() {
 				/>
 			</Stack.Protected>
 
-			<Stack.Protected guard={isLoggedIn}>
+			<Stack.Protected guard={isLoggedIn} redirectTo="/login">
 				<Stack.Screen
 					name="(app)"
 					options={{

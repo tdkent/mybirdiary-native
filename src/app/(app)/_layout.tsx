@@ -13,6 +13,7 @@ export default function AppLayout() {
 					tabBarIcon: () => <Ionicons size={28} name="binoculars" />,
 				}}
 			/>
+
 			<Tabs.Screen
 				name="sightings"
 				options={{
@@ -21,12 +22,23 @@ export default function AppLayout() {
 					headerShown: false,
 				}}
 			/>
+
 			<Tabs.Screen
 				name="birds"
 				options={{
 					tabBarIcon: () => <MaterialCommunityIcons size={28} name="bird" />,
 					title: "Birds",
 					headerShown: false,
+				}}
+			/>
+
+			<Tabs.Screen
+				name="account"
+				options={{
+					tabBarIcon: () => (
+						<MaterialCommunityIcons size={28} name="account-circle" />
+					),
+					title: "Account",
 				}}
 			/>
 		</Tabs>
