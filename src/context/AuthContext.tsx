@@ -1,7 +1,8 @@
 import { account } from "@/lib/appwrite";
+import { getAppwriteException } from "@/services/errors/appwrite.error";
 import type { UserAuth } from "@/types/auth";
 import { createContext, useEffect, useState } from "react";
-import { AppwriteException, ID } from "react-native-appwrite";
+import { ID } from "react-native-appwrite";
 
 interface Auth {
 	error: string | null;
@@ -42,13 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			if (e instanceof AppwriteException) {
-				if (e.type === "general_argument_invalid") {
-					setError("Email or password are invalid.");
-				}
-			} else {
-				console.error(e);
-			}
+			setError(getAppwriteException(e));
 		}
 	}
 
