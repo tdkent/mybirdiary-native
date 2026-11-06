@@ -32,7 +32,14 @@ export default function AuthForm() {
 				onSubmit={(values) => handleAuthAction(values)}
 				validationSchema={AuthSchema}
 			>
-				{({ handleChange, handleBlur, handleSubmit, values }) => (
+				{({
+					errors,
+					handleChange,
+					handleBlur,
+					handleSubmit,
+					touched,
+					values,
+				}) => (
 					<View className="my-10">
 						<View>
 							<Text>Email</Text>
@@ -43,6 +50,7 @@ export default function AuthForm() {
 								value={values.email}
 								className="p-4 border w-80"
 							/>
+							{touched.email && errors.email && <Text>{errors.email}</Text>}
 						</View>
 
 						<View>
@@ -54,6 +62,9 @@ export default function AuthForm() {
 								value={values.password}
 								className="p-4 border w-80"
 							/>
+							{touched.password && errors.password && (
+								<Text>{errors.password}</Text>
+							)}
 						</View>
 
 						<Button
