@@ -2,13 +2,25 @@ import Index from "@/app";
 import NewSightingScreen from "@/app/(app)/new-sighting";
 import SightingsScreen from "@/app/(app)/sightings";
 import SightingDetailsScreen from "@/app/(app)/sightings/[id]";
+import LoginScreen from "@/app/(auth)/login";
+import RegisterScreen from "@/app/(auth)/register";
 import { render, userEvent } from "@testing-library/react-native";
 import { renderRouter, screen } from "expo-router/testing-library";
 
 describe("Home screen:", () => {
-	test("Text renders", async () => {
+	test("renders correctly", async () => {
 		const { getByText } = await render(<Index />);
 		getByText(/welcome to my birdiary/i);
+	});
+});
+
+describe("Auth screens:", () => {
+	test("render correctly", async () => {
+		const { getByText: loginScreenText } = await render(<LoginScreen />);
+		loginScreenText(/sign in/i);
+
+		const { getByText: registerScreenText } = await render(<RegisterScreen />);
+		registerScreenText(/create a new account/i);
 	});
 });
 
