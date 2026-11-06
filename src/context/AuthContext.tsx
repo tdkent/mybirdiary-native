@@ -1,9 +1,11 @@
 import { account } from "@/lib/appwrite";
+import { getAppwriteException } from "@/services/errors/appwrite.error";
 import type { UserAuth } from "@/types/auth";
 import { createContext, useEffect, useState } from "react";
 import { ID } from "react-native-appwrite";
 
 interface Auth {
+	error: string | null;
 	isLoggedIn: boolean;
 	isLoading: boolean;
 	login: (values: UserAuth) => void;
@@ -12,6 +14,7 @@ interface Auth {
 }
 
 export const AuthContext = createContext<Auth>({
+	error: null,
 	isLoggedIn: false,
 	isLoading: false,
 	login: () => {},
@@ -20,10 +23,12 @@ export const AuthContext = createContext<Auth>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
+	const [error, setError] = useState<string | null>(null);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	async function register({ email, password }: UserAuth) {
+		setError(null);
 		try {
 			await account.create({
 				userId: ID.unique(),
@@ -38,11 +43,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			console.error(e);
+			setError(getAppwriteException(e));
 		}
 	}
 
 	async function login({ email, password }: UserAuth) {
+		setError(null);
 		try {
 			await account.createEmailPasswordSession({
 				email,
@@ -51,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			console.error(e);
+			setError(getAppwriteException(e));
 		}
 	}
 
@@ -85,6 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<AuthContext.Provider
 			value={{
+				error,
 				isLoggedIn,
 				isLoading,
 				login,
