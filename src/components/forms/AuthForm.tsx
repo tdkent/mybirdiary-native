@@ -14,7 +14,7 @@ import {
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
 export default function AuthForm() {
-	const { error, login, register } = useAuth();
+	const { error, isLoading, login, register } = useAuth();
 	const pathname = usePathname();
 
 	function handleAuthAction(values: UserAuth) {
@@ -45,11 +45,12 @@ export default function AuthForm() {
 						<View>
 							<Text>Email</Text>
 							<TextInput
+								className="p-4 border w-80"
+								editable={!isLoading}
 								keyboardType="email-address"
 								onChangeText={handleChange("email")}
 								onBlur={handleBlur("email")}
 								value={values.email}
-								className="p-4 border w-80"
 							/>
 							{touched.email && errors.email && <Text>{errors.email}</Text>}
 						</View>
@@ -57,11 +58,12 @@ export default function AuthForm() {
 						<View>
 							<Text>Password</Text>
 							<TextInput
+								className="p-4 border w-80"
+								editable={!isLoading}
 								onChangeText={handleChange("password")}
 								onBlur={handleBlur("password")}
 								secureTextEntry
 								value={values.password}
-								className="p-4 border w-80"
 							/>
 							{touched.password && errors.password && (
 								<Text>{errors.password}</Text>
@@ -69,8 +71,9 @@ export default function AuthForm() {
 						</View>
 
 						<Button
+							disabled={isLoading}
 							onPress={handleSubmit as (e?: GestureResponderEvent) => void}
-							title="Submit"
+							title={isLoading ? `Submitting...` : `Submit`}
 						/>
 					</View>
 				)}
