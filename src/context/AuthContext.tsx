@@ -6,8 +6,9 @@ import { ID } from "react-native-appwrite";
 
 interface Auth {
 	error: string | null;
-	isLoggedIn: boolean;
+	isAuthChecked: boolean;
 	isLoading: boolean;
+	isLoggedIn: boolean;
 	login: (values: UserAuth) => void;
 	logout: () => void;
 	register: (values: UserAuth) => void;
@@ -15,8 +16,9 @@ interface Auth {
 
 export const AuthContext = createContext<Auth>({
 	error: null,
-	isLoggedIn: false,
+	isAuthChecked: false,
 	isLoading: false,
+	isLoggedIn: false,
 	login: () => {},
 	logout: () => {},
 	register: () => {},
@@ -24,11 +26,13 @@ export const AuthContext = createContext<Auth>({
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [error, setError] = useState<string | null>(null);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [isAuthChecked, setIsAuthChecked] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	async function register({ email, password }: UserAuth) {
 		setError(null);
+		setIsLoading(true);
 		try {
 			await account.create({
 				userId: ID.unique(),
@@ -44,11 +48,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsLoggedIn(true);
 		} catch (e) {
 			setError(getAppwriteException(e));
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
 	async function login({ email, password }: UserAuth) {
 		setError(null);
+		setIsLoading(true);
 		try {
 			await account.createEmailPasswordSession({
 				email,
@@ -58,30 +65,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsLoggedIn(true);
 		} catch (e) {
 			setError(getAppwriteException(e));
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
 	async function logout() {
+		setIsLoading(true);
 		try {
 			await account.deleteSession({ sessionId: "current" });
 			setIsLoggedIn(false);
 		} catch (e) {
 			console.error(e);
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
 	/* Check user's auth status on first mount. */
 	useEffect(() => {
 		async function checkAuthStatus() {
-			setIsLoading(true);
+			setIsAuthChecked(true);
 			try {
 				await account.get();
 				setIsLoggedIn(true);
-			} catch (error) {
-				console.error(error);
+			} catch {
 				return null;
 			} finally {
-				setIsLoading(false);
+				setIsAuthChecked(false);
 			}
 		}
 
@@ -92,8 +103,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		<AuthContext.Provider
 			value={{
 				error,
-				isLoggedIn,
+				isAuthChecked,
 				isLoading,
+				isLoggedIn,
 				login,
 				logout,
 				register,
