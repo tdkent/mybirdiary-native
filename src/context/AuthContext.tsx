@@ -57,7 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			console.error(e);
+			setError(getAppwriteException(e));
 		}
 	}
 
