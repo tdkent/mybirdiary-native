@@ -12,6 +12,9 @@ export function getAppwriteException(e: unknown) {
 
 		if (e.type === "user_invalid_credentials") {
 			return "Email or password are incorrect. Please try again.";
+		} else {
+			console.error(e);
+			return "A server error occurred.";
 		}
 	}
 
