@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { AuthSchema } from "@/services/validation/auth.schema";
 import type { UserAuth } from "@/types/auth";
 import { usePathname } from "expo-router";
 import { Formik } from "formik";
@@ -29,6 +30,7 @@ export default function AuthForm() {
 			<Formik
 				initialValues={{ email: "", password: "" }}
 				onSubmit={(values) => handleAuthAction(values)}
+				validationSchema={AuthSchema}
 			>
 				{({ handleChange, handleBlur, handleSubmit, values }) => (
 					<View className="my-10">
