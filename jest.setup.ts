@@ -11,4 +11,13 @@ jest.mock("react-native-appwrite", () => ({
 		deleteSession: jest.fn(),
 		get: jest.fn(),
 	})),
+
+	AppwriteException: class AppwriteException extends Error {
+		type: string;
+
+		constructor(message: string, type: string) {
+			super(message);
+			this.type = type;
+		}
+	},
 }));
