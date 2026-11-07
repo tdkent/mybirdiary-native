@@ -1,5 +1,18 @@
 import LoginScreen from "@/app/(auth)/login";
+import { AuthProvider } from "@/context/AuthContext";
+import { account } from "@/lib/appwrite";
 import { fireEvent, render } from "@testing-library/react-native";
+
+// Mock Appwrite
+jest.mock("@/lib/appwrite", () => ({
+	account: {
+		createEmailPasswordSession: jest.fn(),
+	},
+}));
+
+const mockCreateEmailPasswordSession = jest.mocked(
+	account.createEmailPasswordSession,
+);
 
 describe("LoginScreen", () => {
 	beforeEach(() => {
@@ -58,5 +71,27 @@ describe("LoginScreen", () => {
 		expect(await findByTestId("password-validation-alert")).toHaveTextContent(
 			/password must be at least 8 characters/i,
 		);
+	});
+
+	test("calls the correct appwrite auth method", async () => {
+		mockCreateEmailPasswordSession.mockRejectedValueOnce(
+			new Error("Invalid credentials"),
+		);
+
+		const { getByLabelText, getByRole } = await render(
+			<AuthProvider>
+				<LoginScreen />
+			</AuthProvider>,
+		);
+
+		const emailInput = getByLabelText("email");
+		const passwordInput = getByLabelText("password");
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(emailInput, "test@fake.me");
+		await fireEvent.changeText(passwordInput, "incorrect-password");
+		await fireEvent.press(button);
+
+		expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
 	});
 });
