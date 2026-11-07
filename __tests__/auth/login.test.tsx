@@ -7,9 +7,25 @@ describe("LoginScreen", () => {
 	});
 
 	test("renders default form inputs", async () => {
-		const { getByLabelText } = await render(<LoginScreen />);
+		const { getByLabelText, getByRole } = await render(<LoginScreen />);
 		getByLabelText("email");
 		getByLabelText("password");
+		getByRole("button", { name: /submit/i });
+	});
+
+	test("renders Input Required error if inputs left blank", async () => {
+		const { findByTestId, getByRole } = await render(<LoginScreen />);
+
+		const button = getByRole("button", { name: /submit/i });
+		await fireEvent.press(button);
+
+		expect(await findByTestId("email-validation-alert")).toHaveTextContent(
+			/email is required/i,
+		);
+
+		expect(await findByTestId("password-validation-alert")).toHaveTextContent(
+			/password is required/i,
+		);
 	});
 
 	test("renders validation error text", async () => {
