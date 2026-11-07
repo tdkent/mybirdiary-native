@@ -45,6 +45,7 @@ export default function AuthForm() {
 						<View>
 							<Text>Email</Text>
 							<TextInput
+								accessibilityLabel="email"
 								className="p-4 border w-80"
 								editable={!isLoading}
 								keyboardType="email-address"
@@ -52,12 +53,15 @@ export default function AuthForm() {
 								onBlur={handleBlur("email")}
 								value={values.email}
 							/>
-							{touched.email && errors.email && <Text>{errors.email}</Text>}
+							{touched.email && errors.email && (
+								<Text testID="email-validation-alert">{errors.email}</Text>
+							)}
 						</View>
 
 						<View>
 							<Text>Password</Text>
 							<TextInput
+								accessibilityLabel="password"
 								className="p-4 border w-80"
 								editable={!isLoading}
 								onChangeText={handleChange("password")}
@@ -66,7 +70,9 @@ export default function AuthForm() {
 								value={values.password}
 							/>
 							{touched.password && errors.password && (
-								<Text>{errors.password}</Text>
+								<Text testID="password-validation-alert">
+									{errors.password}
+								</Text>
 							)}
 						</View>
 
