@@ -6,7 +6,7 @@ export default function RegisterScreen() {
 	return (
 		<View className="flex-1 items-center justify-center">
 			<Text className="text-4xl font-semibold">Create a new account</Text>
-			<AuthForm />
+			<AuthForm action="register" />
 
 			<Text>
 				Already a member? <Link href="/login">Sign in</Link>

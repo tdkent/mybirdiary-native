@@ -1,7 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
 import type { UserAuth } from "@/types/auth";
-import { usePathname } from "expo-router";
 import { Formik } from "formik";
 import {
 	Button,
@@ -11,23 +10,30 @@ import {
 	View,
 } from "react-native";
 
+interface Props {
+	action: "login" | "register";
+}
+
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
-export default function AuthForm() {
+export default function AuthForm({ action }: Props) {
 	const { error, isLoading, login, register } = useAuth();
-	const pathname = usePathname();
 
 	function handleAuthAction(values: UserAuth) {
-		if (pathname === "/register") {
+		if (action === "register") {
 			register(values);
-		} else if (pathname === "/login") {
+		} else if (action === "login") {
 			login(values);
 		} else return;
 	}
 
 	return (
 		<View>
-			{error && <Text className="text-red-500">{error}</Text>}
+			{error && (
+				<Text className="text-red-500" testID="auth-error">
+					{error}
+				</Text>
+			)}
 			<Formik
 				initialValues={{ email: "", password: "" }}
 				onSubmit={(values) => handleAuthAction(values)}
