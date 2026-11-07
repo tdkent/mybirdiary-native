@@ -1,7 +1,8 @@
-import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { Button, Text, View } from "react-native";
 
 export default function BirdsScreen() {
+	const router = useRouter();
 	return (
 		<View className="flex-1 items-center justify-center">
 			<Text>Birdpedia</Text>
@@ -9,14 +10,15 @@ export default function BirdsScreen() {
 			<Text>Each list item links to bird details page.</Text>
 
 			<View>
-				<Link
-					href={{
-						pathname: "/birds/[id]",
-						params: { id: 1234 },
-					}}
-				>
-					<Text>Go to Bird Details #1234</Text>
-				</Link>
+				<Button
+					onPress={() =>
+						router.navigate({
+							pathname: "/birds/[id]",
+							params: { id: 456 },
+						})
+					}
+					title="Bird ID 456"
+				/>
 			</View>
 		</View>
 	);

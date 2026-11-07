@@ -18,7 +18,8 @@
     "prepare": "husky"
   },
   "jest": {
-    "preset": "jest-expo"
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
   },
   "lint-staged": {
     "*": "biome check --write --no-errors-on-unmatched --verbose ./src"
