@@ -14,11 +14,9 @@ export function getAppwriteException(e: unknown) {
 				return ERROR_MESSAGES.INCORRECT_CREDENTIALS;
 
 			default:
-				console.error(e);
 				return ERROR_MESSAGES.UNEXPECTED_APPWRITE;
 		}
 	}
 
-	console.error(e);
 	return ERROR_MESSAGES.UNKNOWN_ERROR;
 }
