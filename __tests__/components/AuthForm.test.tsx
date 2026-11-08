@@ -5,6 +5,7 @@
  */
 
 import AuthForm from "@/components/forms/AuthForm";
+import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/AuthContext";
 import { fireEvent, render } from "@testing-library/react-native";
 
@@ -40,11 +41,11 @@ describe("AuthForm", () => {
 		await fireEvent.press(button);
 
 		expect(await findByTestId("email-validation-alert")).toHaveTextContent(
-			/email is required/i,
+			ERROR_MESSAGES.REQUIRED_EMAIL,
 		);
 
 		expect(await findByTestId("password-validation-alert")).toHaveTextContent(
-			/password is required/i,
+			ERROR_MESSAGES.REQUIRED_PASSWORD,
 		);
 	});
 
@@ -60,7 +61,7 @@ describe("AuthForm", () => {
 		await fireEvent.press(button);
 
 		expect(await findByTestId("email-validation-alert")).toHaveTextContent(
-			/invalid email/i,
+			ERROR_MESSAGES.INVALID_EMAIL,
 		);
 	});
 
@@ -70,13 +71,13 @@ describe("AuthForm", () => {
 		);
 
 		const passwordInput = getByLabelText("password");
-		await fireEvent.changeText(passwordInput, "pass");
+		await fireEvent.changeText(passwordInput, "1234");
 
 		const button = getByRole("button", { name: /submit/i });
 		await fireEvent.press(button);
 
 		expect(await findByTestId("password-validation-alert")).toHaveTextContent(
-			/password must be at least 8 characters/i,
+			ERROR_MESSAGES.PASSWORD_LENGTH_SHORT,
 		);
 	});
 

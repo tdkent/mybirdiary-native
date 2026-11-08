@@ -1,22 +1,24 @@
+import { ERROR_MESSAGES } from "@/constants/messages";
 import { AppwriteException } from "react-native-appwrite";
 
 export function getAppwriteException(e: unknown) {
 	if (e instanceof AppwriteException) {
-		if (e.type === "general_argument_invalid") {
-			return "Email or password are invalid.";
-		}
+		switch (e.type) {
+			case "general_argument_invalid":
+				return ERROR_MESSAGES.INVALID_CREDENTIALS;
 
-		if (e.type === "user_already_exists") {
-			return "Email already registered. Sign in?";
-		}
+			case "user_already_exists":
+				return ERROR_MESSAGES.REGISTERED_EMAIL;
 
-		if (e.type === "user_invalid_credentials") {
-			return "Email or password are incorrect. Please try again.";
-		} else {
-			console.error(e);
-			return "A server error occurred.";
+			case "user_invalid_credentials":
+				return ERROR_MESSAGES.INCORRECT_CREDENTIALS;
+
+			default:
+				console.error(e);
+				return ERROR_MESSAGES.UNEXPECTED_APPWRITE;
 		}
 	}
 
-	return "An unknown exception occurred.";
+	console.error(e);
+	return ERROR_MESSAGES.UNKNOWN_ERROR;
 }
