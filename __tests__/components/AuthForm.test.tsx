@@ -1,33 +1,37 @@
+/**
+ * Test form behavior and validation
+ * Verify the form behaves correctly during user interaction
+ */
+
 import LoginScreen from "@/app/(auth)/login";
+import AuthForm from "@/components/forms/AuthForm";
 import { AuthProvider } from "@/context/AuthContext";
 import { account } from "@/lib/appwrite";
 import { fireEvent, render } from "@testing-library/react-native";
-
-// Mock Appwrite
-jest.mock("@/lib/appwrite", () => ({
-	account: {
-		createEmailPasswordSession: jest.fn(),
-	},
-}));
 
 const mockCreateEmailPasswordSession = jest.mocked(
 	account.createEmailPasswordSession,
 );
 
-describe("LoginScreen", () => {
+describe("AuthForm", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
 
-	test("renders default form inputs", async () => {
-		const { getByLabelText, getByRole } = await render(<LoginScreen />);
+	test("renders email and password inputs and submit button", async () => {
+		const { getByLabelText, getByRole } = await render(
+			<AuthForm action="login" />,
+		);
+
 		getByLabelText("email");
 		getByLabelText("password");
 		getByRole("button", { name: /submit/i });
 	});
 
-	test("renders Input Required error if inputs left blank", async () => {
-		const { findByTestId, getByRole } = await render(<LoginScreen />);
+	test("displays validation error for empty inputs", async () => {
+		const { findByTestId, getByRole } = await render(
+			<AuthForm action="login" />,
+		);
 
 		const button = getByRole("button", { name: /submit/i });
 		await fireEvent.press(button);
@@ -41,9 +45,9 @@ describe("LoginScreen", () => {
 		);
 	});
 
-	test("renders Invalid Email validation error", async () => {
+	test("rejects invalid email input", async () => {
 		const { findByTestId, getByRole, getByLabelText } = await render(
-			<LoginScreen />,
+			<AuthForm action="login" />,
 		);
 
 		const emailInput = getByLabelText("email");
@@ -57,9 +61,9 @@ describe("LoginScreen", () => {
 		);
 	});
 
-	test("renders Invalid Password validation error", async () => {
+	test("rejects invalid password input", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await render(
-			<LoginScreen />,
+			<AuthForm action="login" />,
 		);
 
 		const passwordInput = getByLabelText("password");
