@@ -17,6 +17,7 @@ const mockCreateEmailPasswordSession = jest.mocked(
 	account.createEmailPasswordSession,
 );
 const mockDeleteSession = jest.mocked(account.deleteSession);
+const mockGetUser = jest.mocked(account.get);
 
 describe("AuthContext", () => {
 	describe("login", () => {
@@ -184,6 +185,45 @@ describe("AuthContext", () => {
 			const logoutBtn = getByRole("button", { name: /logout/i });
 			await fireEvent.press(logoutBtn);
 			expect(await findByText(/user is signed out/i)).toBeTruthy();
+		});
+	});
+
+	describe("session restoration", () => {
+		test("restores an existing session", async () => {
+			// Sign in mock user
+			const mockUser = {
+				userId: "xxx",
+				email: "test@fake.me",
+				password: "password123",
+			};
+
+			mockGetUser.mockReturnValueOnce(mockUser as never);
+
+			// Remount AuthProvider to refresh state
+			const { findByText } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+
+			// Check user remains authenticated
+			expect(await findByText(/user is logged in/i)).toBeTruthy();
+			expect(mockGetUser).toHaveBeenCalledTimes(1);
+		});
+
+		test("handles an unauthenticated user", async () => {
+			mockGetUser.mockRejectedValueOnce(new Error("User is not signed in"));
+
+			// Remount AuthProvider to refresh state
+			const { findByText } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+
+			// Check user remains unauthenticated
+			expect(await findByText(/user is signed out/i)).toBeTruthy();
+			expect(mockGetUser).toHaveBeenCalledTimes(1);
 		});
 	});
 });
