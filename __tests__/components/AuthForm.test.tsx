@@ -1,10 +1,24 @@
 /**
  * Test form behavior and validation
  * Verify the form behaves correctly during user interaction
+ * Auth context functions are mocked to test calls
  */
 
 import AuthForm from "@/components/forms/AuthForm";
+import { AuthProvider } from "@/context/AuthContext";
 import { fireEvent, render } from "@testing-library/react-native";
+
+// Mock auth context
+
+const mockLogin = jest.fn();
+const mockRegister = jest.fn();
+
+jest.mock("@/hooks/useAuth", () => ({
+	useAuth: () => ({
+		login: mockLogin,
+		register: mockRegister,
+	}),
+}));
 
 describe("AuthForm", () => {
 	beforeEach(() => {
@@ -70,7 +84,39 @@ describe("AuthForm", () => {
 		);
 	});
 
-	test("calls login with valid credentials", () => {});
+	test("calls login with valid credentials", async () => {
+		const { getByLabelText, getByRole } = await render(
+			<AuthProvider>
+				<AuthForm action="login" />
+			</AuthProvider>,
+		);
 
-	test("calls register with valid credentials", () => {});
+		const emailInput = getByLabelText("email");
+		const passwordInput = getByLabelText("password");
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(emailInput, "test@fake.me");
+		await fireEvent.changeText(passwordInput, "password123");
+		await fireEvent.press(button);
+
+		expect(mockLogin).toHaveBeenCalledTimes(1);
+	});
+
+	test("calls register with valid credentials", async () => {
+		const { getByLabelText, getByRole } = await render(
+			<AuthProvider>
+				<AuthForm action="register" />
+			</AuthProvider>,
+		);
+
+		const emailInput = getByLabelText("email");
+		const passwordInput = getByLabelText("password");
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(emailInput, "test@fake.me");
+		await fireEvent.changeText(passwordInput, "password123");
+		await fireEvent.press(button);
+
+		expect(mockRegister).toHaveBeenCalledTimes(1);
+	});
 });
