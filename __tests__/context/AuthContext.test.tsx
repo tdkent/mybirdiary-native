@@ -18,9 +18,7 @@ const mockCreateEmailPasswordSession = jest.mocked(
 describe("AuthContext", () => {
 	describe("login", () => {
 		test("calls appwrite with supplied credentials", async () => {
-			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new Error("Invalid credentials"),
-			);
+			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
 
 			const { getByRole } = await render(
 				<AuthProvider>
@@ -32,6 +30,10 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
+			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith({
+				email: "test@fake.me",
+				password: "password123",
+			});
 		});
 
 		test("handles incorrect credentials", async () => {
@@ -39,18 +41,40 @@ describe("AuthContext", () => {
 				new Error("Invalid credentials"),
 			);
 
-			const { findByTestId, getByRole } = await render(
+			const { findByTestId, findByText, getByRole, getByText } = await render(
 				<AuthProvider>
 					<AuthTest action="login" />
 				</AuthProvider>,
 			);
+
+			// Check if signed out by default
+			expect(getByText(/user is signed out/i)).toBeTruthy();
+
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
+			// Check for error text and still signed out
 			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(await findByText(/user is signed out/i)).toBeTruthy();
 		});
 
-		test("updates authentication state after successful login", () => {});
+		test("updates authentication state after successful login", async () => {
+			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
+
+			const { getByRole, getByText, findByText } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+
+			// Check if signed out by default
+			expect(getByText(/user is signed out/i)).toBeTruthy();
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByText(/user is logged in/i)).toBeTruthy();
+		});
 	});
 });
 
@@ -69,7 +93,6 @@ function AuthTest({ action }: AuthActions) {
 		<View>
 			{error && <Text testID="auth-error">{error}</Text>}
 			<Text>User is {isLoggedIn ? "logged in" : "signed out"}</Text>
-
 			<Button onPress={handleSubmit} title="submit" />
 			<Button onPress={logout} title="logout" />
 		</View>
