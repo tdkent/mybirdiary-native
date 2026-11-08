@@ -12,6 +12,10 @@ jest.mock("react-native-appwrite", () => ({
 		get: jest.fn(),
 	})),
 
+	ID: {
+		unique: jest.fn().mockReturnValue("xxx"),
+	},
+
 	AppwriteException: class AppwriteException extends Error {
 		type: string;
 
