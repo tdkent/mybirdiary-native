@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
-import type { UserAuth } from "@/types/auth";
+import type { AuthActions, UserAuth } from "@/types/auth";
 import { Formik } from "formik";
 import {
 	Button,
@@ -10,13 +10,9 @@ import {
 	View,
 } from "react-native";
 
-interface Props {
-	action: "login" | "register";
-}
-
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
-export default function AuthForm({ action }: Props) {
+export default function AuthForm({ action }: AuthActions) {
 	const { error, isLoading, login, register } = useAuth();
 
 	function handleAuthAction(values: UserAuth) {

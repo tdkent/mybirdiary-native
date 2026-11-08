@@ -4,35 +4,74 @@
  * Appwrite methods are mocked
  */
 
-import AuthForm from "@/components/forms/AuthForm";
 import { AuthProvider } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 import { account } from "@/lib/appwrite";
+import type { AuthActions } from "@/types/auth";
 import { fireEvent, render } from "@testing-library/react-native";
+import { Button, Text, View } from "react-native";
 
 const mockCreateEmailPasswordSession = jest.mocked(
 	account.createEmailPasswordSession,
 );
 
 describe("AuthContext", () => {
-	test("calls the correct appwrite auth method", async () => {
-		mockCreateEmailPasswordSession.mockRejectedValueOnce(
-			new Error("Invalid credentials"),
-		);
+	describe("login", () => {
+		test("calls appwrite with supplied credentials", async () => {
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new Error("Invalid credentials"),
+			);
 
-		const { getByLabelText, getByRole } = await render(
-			<AuthProvider>
-				<AuthForm action="login" />
-			</AuthProvider>,
-		);
+			const { getByRole } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
 
-		const emailInput = getByLabelText("email");
-		const passwordInput = getByLabelText("password");
-		const button = getByRole("button", { name: /submit/i });
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
 
-		await fireEvent.changeText(emailInput, "test@fake.me");
-		await fireEvent.changeText(passwordInput, "incorrect-password");
-		await fireEvent.press(button);
+			expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
+		});
 
-		expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
+		test("handles incorrect credentials", async () => {
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new Error("Invalid credentials"),
+			);
+
+			const { findByTestId, getByRole } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+		});
+
+		test("updates authentication state after successful login", () => {});
 	});
 });
+
+function AuthTest({ action }: AuthActions) {
+	const { error, isLoggedIn, login, logout, register } = useAuth();
+
+	async function handleSubmit() {
+		if (action === "login") {
+			login({ email: "test@fake.me", password: "password123" });
+		} else if (action === "register") {
+			register({ email: "test@fake.me", password: "password123" });
+		} else return;
+	}
+
+	return (
+		<View>
+			{error && <Text testID="auth-error">{error}</Text>}
+			<Text>User is {isLoggedIn ? "logged in" : "signed out"}</Text>
+
+			<Button onPress={handleSubmit} title="submit" />
+			<Button onPress={logout} title="logout" />
+		</View>
+	);
+}
