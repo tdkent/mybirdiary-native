@@ -1,6 +1,7 @@
 /**
- * Test form behavior and validation
- * Verify the form behaves correctly during user interaction
+ * Test authentication operations and state
+ * Test that context communicates with Appwrite
+ * Appwrite methods are mocked
  */
 
 import AuthForm from "@/components/forms/AuthForm";
@@ -12,11 +13,7 @@ const mockCreateEmailPasswordSession = jest.mocked(
 	account.createEmailPasswordSession,
 );
 
-describe("AuthForm", () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
+describe("AuthContext", () => {
 	test("calls the correct appwrite auth method", async () => {
 		mockCreateEmailPasswordSession.mockRejectedValueOnce(
 			new Error("Invalid credentials"),

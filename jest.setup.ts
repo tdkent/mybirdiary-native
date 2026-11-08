@@ -21,3 +21,7 @@ jest.mock("react-native-appwrite", () => ({
 		}
 	},
 }));
+
+beforeEach(() => {
+	jest.clearAllMocks();
+});

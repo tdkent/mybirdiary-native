@@ -8,8 +8,8 @@ import AuthForm from "@/components/forms/AuthForm";
 import { AuthProvider } from "@/context/AuthContext";
 import { fireEvent, render } from "@testing-library/react-native";
 
-// Mock auth context
-
+// Mock auth context (do not mock these globally
+// so that real functions can be called in other tests)
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
 
@@ -21,10 +21,6 @@ jest.mock("@/hooks/useAuth", () => ({
 }));
 
 describe("AuthForm", () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
 	test("renders email and password inputs and submit button", async () => {
 		const { getByLabelText, getByRole } = await render(
 			<AuthForm action="login" />,
