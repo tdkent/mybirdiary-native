@@ -16,6 +16,7 @@ const mockCreateUser = jest.mocked(account.create);
 const mockCreateEmailPasswordSession = jest.mocked(
 	account.createEmailPasswordSession,
 );
+const mockDeleteSession = jest.mocked(account.deleteSession);
 
 describe("AuthContext", () => {
 	describe("login", () => {
@@ -80,7 +81,7 @@ describe("AuthContext", () => {
 	});
 
 	describe("register", () => {
-		test("calls Appwrite with the supplied registration details", async () => {
+		test("calls appwrite with the supplied registration details", async () => {
 			mockCreateUser.mockReturnValueOnce({} as never);
 			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
 
@@ -139,13 +140,50 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			// Check if signed out by default
+			// User is signed out by default
 			expect(getByText(/user is signed out/i)).toBeTruthy();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
 			expect(await findByText(/user is logged in/i)).toBeTruthy();
+		});
+	});
+
+	describe("logout", () => {
+		test("calls appwrite in logout function", async () => {
+			mockDeleteSession.mockReturnValueOnce({} as never);
+
+			const { getByRole } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /logout/i });
+			await fireEvent.press(button);
+
+			expect(mockDeleteSession).toHaveBeenCalledTimes(1);
+		});
+
+		test("updates authentication state after logout", async () => {
+			mockDeleteSession.mockReturnValueOnce({} as never);
+
+			const { findByText, getByRole } = await render(
+				<AuthProvider>
+					<AuthTest action="login" />
+				</AuthProvider>,
+			);
+
+			// Sign in user and check auth status
+			const submitBtn = getByRole("button", { name: /submit/i });
+			await fireEvent.press(submitBtn);
+			expect(await findByText(/user is logged in/i)).toBeTruthy();
+
+			// Log user out and check auth status
+			const logoutBtn = getByRole("button", { name: /logout/i });
+			await fireEvent.press(logoutBtn);
+			expect(await findByText(/user is signed out/i)).toBeTruthy();
 		});
 	});
 });
