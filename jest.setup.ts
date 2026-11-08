@@ -11,4 +11,21 @@ jest.mock("react-native-appwrite", () => ({
 		deleteSession: jest.fn(),
 		get: jest.fn(),
 	})),
+
+	ID: {
+		unique: jest.fn().mockReturnValue("xxx"),
+	},
+
+	AppwriteException: class AppwriteException extends Error {
+		type: string;
+
+		constructor(message: string, type: string) {
+			super(message);
+			this.type = type;
+		}
+	},
 }));
+
+beforeEach(() => {
+	jest.clearAllMocks();
+});

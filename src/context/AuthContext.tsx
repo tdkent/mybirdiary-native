@@ -87,8 +87,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		async function checkAuthStatus() {
 			setIsAuthChecked(true);
 			try {
-				await account.get();
-				setIsLoggedIn(true);
+				const user = await account.get();
+				if (user) setIsLoggedIn(true);
 			} catch {
 				return null;
 			} finally {

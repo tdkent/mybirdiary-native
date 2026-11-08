@@ -7,7 +7,7 @@ export default function LoginScreen() {
 		<View className="flex-1 items-center justify-center">
 			<Text className="text-4xl font-semibold">Sign in</Text>
 
-			<AuthForm />
+			<AuthForm action="login" />
 
 			<Text>
 				Don't have an account? <Link href="/register">Sign up</Link>

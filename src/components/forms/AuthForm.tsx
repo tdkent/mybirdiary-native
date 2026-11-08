@@ -1,7 +1,6 @@
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
-import type { UserAuth } from "@/types/auth";
-import { usePathname } from "expo-router";
+import type { AuthActions, UserAuth } from "@/types/auth";
 import { Formik } from "formik";
 import {
 	Button,
@@ -13,21 +12,24 @@ import {
 
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
-export default function AuthForm() {
+export default function AuthForm({ action }: AuthActions) {
 	const { error, isLoading, login, register } = useAuth();
-	const pathname = usePathname();
 
 	function handleAuthAction(values: UserAuth) {
-		if (pathname === "/register") {
+		if (action === "register") {
 			register(values);
-		} else if (pathname === "/login") {
+		} else if (action === "login") {
 			login(values);
 		} else return;
 	}
 
 	return (
 		<View>
-			{error && <Text className="text-red-500">{error}</Text>}
+			{error && (
+				<Text className="text-red-500" testID="auth-error">
+					{error}
+				</Text>
+			)}
 			<Formik
 				initialValues={{ email: "", password: "" }}
 				onSubmit={(values) => handleAuthAction(values)}
@@ -45,6 +47,7 @@ export default function AuthForm() {
 						<View>
 							<Text>Email</Text>
 							<TextInput
+								accessibilityLabel="email"
 								className="p-4 border w-80"
 								editable={!isLoading}
 								keyboardType="email-address"
@@ -52,12 +55,15 @@ export default function AuthForm() {
 								onBlur={handleBlur("email")}
 								value={values.email}
 							/>
-							{touched.email && errors.email && <Text>{errors.email}</Text>}
+							{touched.email && errors.email && (
+								<Text testID="email-validation-alert">{errors.email}</Text>
+							)}
 						</View>
 
 						<View>
 							<Text>Password</Text>
 							<TextInput
+								accessibilityLabel="password"
 								className="p-4 border w-80"
 								editable={!isLoading}
 								onChangeText={handleChange("password")}
@@ -66,7 +72,9 @@ export default function AuthForm() {
 								value={values.password}
 							/>
 							{touched.password && errors.password && (
-								<Text>{errors.password}</Text>
+								<Text testID="password-validation-alert">
+									{errors.password}
+								</Text>
 							)}
 						</View>
 
