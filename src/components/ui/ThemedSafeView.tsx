@@ -1,5 +1,7 @@
-import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { withUniwind } from "uniwind";
+
+const ThemedSafeAreaView = withUniwind(SafeAreaView);
 
 interface Props {
 	children: React.ReactNode;
@@ -7,10 +9,8 @@ interface Props {
 
 export default function ThemedSafeView({ children }: Props) {
 	return (
-		<SafeAreaView>
-			<View className="h-full flex items-center justify-center">
-				{children}
-			</View>
-		</SafeAreaView>
+		<ThemedSafeAreaView className="flex-1 items-center justify-center bg-background">
+			{children}
+		</ThemedSafeAreaView>
 	);
 }
