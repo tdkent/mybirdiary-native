@@ -1,7 +1,13 @@
 import { account } from "@/lib/appwrite";
 import { getAppwriteException } from "@/services/errors/appwrite.error";
 import type { UserAuth } from "@/types/auth";
-import { createContext, useEffect, useState } from "react";
+import {
+	createContext,
+	type Dispatch,
+	type SetStateAction,
+	useEffect,
+	useState,
+} from "react";
 import { ID } from "react-native-appwrite";
 
 interface Auth {
@@ -12,6 +18,7 @@ interface Auth {
 	login: (values: UserAuth) => void;
 	logout: () => void;
 	register: (values: UserAuth) => void;
+	setError: Dispatch<SetStateAction<string | null>>;
 }
 
 export const AuthContext = createContext<Auth>({
@@ -22,6 +29,7 @@ export const AuthContext = createContext<Auth>({
 	login: () => {},
 	logout: () => {},
 	register: () => {},
+	setError: () => {},
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -109,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				login,
 				logout,
 				register,
+				setError,
 			}}
 		>
 			{children}

@@ -24,6 +24,7 @@ jest.mock("@/hooks/useAuth", () => ({
 	useAuth: () => ({
 		login: mockLogin,
 		register: mockRegister,
+		setError: jest.fn(),
 	}),
 }));
 
