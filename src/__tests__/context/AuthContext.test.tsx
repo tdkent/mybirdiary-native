@@ -4,6 +4,7 @@
  * Appwrite methods are mocked
  */
 
+import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
 import { account } from "@/lib/appwrite";
@@ -16,6 +17,7 @@ import {
 import type { AuthActions } from "@/types/auth";
 import { fireEvent, render } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
+import { AppwriteException } from "react-native-appwrite";
 
 // Mock appwrite methods
 const mockCreateUser = jest.mocked(account.create);
@@ -62,7 +64,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			// Check for error text and still signed out
+			// Check for error component and user still signed out
 			expect(await findByTestId("auth-error")).toBeOnTheScreen();
 			expect(await findByText(USER_SIGNED_OUT)).toBeTruthy();
 		});
@@ -83,6 +85,23 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(await findByText(USER_LOGGED_IN)).toBeTruthy();
+		});
+
+		test("handles appwrite server outage", async () => {
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new AppwriteException("fetch failed"),
+			);
+
+			const { getByRole, findByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByText(ERROR_MESSAGES.APPWRITE_OUTAGE)).toBeTruthy();
 		});
 	});
 
