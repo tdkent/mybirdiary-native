@@ -1,14 +1,17 @@
 import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import ThemedText from "@/components/ui/ThemedText";
 import { useRouter } from "expo-router";
-import { Button, Text, View } from "react-native";
+import { Button, View } from "react-native";
 
 export default function SightingsScreen() {
 	const router = useRouter();
 	return (
 		<ThemedSafeView>
-			<Text>My Sightings</Text>
-			<Text>Display paginated, sortable list of user's bird sightings.</Text>
-			<Text>Each list item links to sighting details page.</Text>
+			<ThemedText variant="heading">My Sightings</ThemedText>
+			<ThemedText>
+				Display paginated, sortable list of user's bird sightings.
+			</ThemedText>
+			<ThemedText>Each list item links to sighting details page.</ThemedText>
 
 			<View>
 				<Button

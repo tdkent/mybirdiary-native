@@ -1,7 +1,7 @@
 import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import ThemedText from "@/components/ui/ThemedText";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Text } from "react-native";
 
 export default function SightingDetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -13,8 +13,8 @@ export default function SightingDetailsScreen() {
 				}}
 			/>
 			<ThemedSafeView>
-				<Text>Sighting Details</Text>
-				<Text>Display details of sighting with id {id}</Text>
+				<ThemedText variant="heading">Sighting Details</ThemedText>
+				<ThemedText>Display details of sighting with id {id}</ThemedText>
 			</ThemedSafeView>
 		</React.Fragment>
 	);
