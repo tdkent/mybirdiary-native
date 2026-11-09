@@ -2,6 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
 import type { AuthActions, UserAuth } from "@/types/auth";
 import { Formik } from "formik";
+import { useEffect } from "react";
 import {
 	Button,
 	type GestureResponderEvent,
@@ -13,7 +14,12 @@ import {
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
 export default function AuthForm({ action }: AuthActions) {
-	const { error, isLoading, login, register } = useAuth();
+	const { error, isLoading, login, register, setError } = useAuth();
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: clear error state on first mount
+	useEffect(() => {
+		setError(null);
+	}, []);
 
 	function handleAuthAction(values: UserAuth) {
 		if (action === "register") {
