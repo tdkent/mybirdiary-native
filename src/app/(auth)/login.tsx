@@ -1,10 +1,11 @@
 import AuthForm from "@/components/forms/AuthForm";
+import ThemedSafeView from "@/components/ui/ThemedSafeView";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function LoginScreen() {
 	return (
-		<View className="flex-1 items-center justify-center">
+		<ThemedSafeView>
 			<Text className="text-4xl font-semibold">Sign in</Text>
 
 			<AuthForm action="login" />
@@ -12,6 +13,6 @@ export default function LoginScreen() {
 			<Text>
 				Don't have an account? <Link href="/register">Sign up</Link>
 			</Text>
-		</View>
+		</ThemedSafeView>
 	);
 }

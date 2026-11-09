@@ -7,7 +7,7 @@ interface Props {
 
 export default function ThemedSafeView({ children }: Props) {
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView>
 			<View className="h-full flex items-center justify-center">
 				{children}
 			</View>

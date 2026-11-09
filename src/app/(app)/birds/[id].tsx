@@ -1,6 +1,7 @@
+import ThemedSafeView from "@/components/ui/ThemedSafeView";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function BirdDetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -11,10 +12,10 @@ export default function BirdDetailsScreen() {
 					title: `Bird ${id}`,
 				}}
 			/>
-			<View className="flex-1 items-center justify-center">
+			<ThemedSafeView>
 				<Text>Bird Details</Text>
 				<Text>Display details of bird with id {id}</Text>
-			</View>
+			</ThemedSafeView>
 		</React.Fragment>
 	);
 }
