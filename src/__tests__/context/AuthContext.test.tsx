@@ -101,7 +101,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(ERROR_MESSAGES.APPWRITE_OUTAGE)).toBeTruthy();
+			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeTruthy();
 		});
 	});
 

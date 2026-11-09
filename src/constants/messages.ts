@@ -1,7 +1,7 @@
 export const ERROR_MESSAGES = {
-	APPWRITE_OUTAGE:
-		"We’re having trouble reaching the server right now. Please try again in a moment.",
 	APPWRITE_UNEXPECTED: "A server error occurred.",
+	FETCH_FAILED:
+		"Unable to reach the server. Please check your connection or try again in a moment.",
 	INCORRECT_CREDENTIALS: "Email or password are incorrect. Please try again.",
 	INVALID_CREDENTIALS: "Invalid email or password.",
 	INVALID_EMAIL: "Please enter a valid email.",

@@ -2,11 +2,12 @@ import { ERROR_MESSAGES } from "@/constants/messages";
 import { AppwriteException } from "react-native-appwrite";
 
 export function getAppwriteException(e: unknown) {
-	if (e instanceof AppwriteException) {
-		if (e.message.startsWith("fetch failed")) {
-			return ERROR_MESSAGES.APPWRITE_OUTAGE;
-		}
+	if (e instanceof Error || e instanceof AppwriteException) {
+		if (e.message.startsWith("fetch failed"))
+			return ERROR_MESSAGES.FETCH_FAILED;
+	}
 
+	if (e instanceof AppwriteException) {
 		switch (e.type) {
 			case "general_argument_invalid":
 				return ERROR_MESSAGES.INVALID_CREDENTIALS;
