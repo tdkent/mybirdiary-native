@@ -1,4 +1,7 @@
 export const ERROR_MESSAGES = {
+	APPWRITE_OUTAGE:
+		"We’re having trouble reaching the server right now. Please try again in a moment.",
+	APPWRITE_UNEXPECTED: "A server error occurred.",
 	INCORRECT_CREDENTIALS: "Email or password are incorrect. Please try again.",
 	INVALID_CREDENTIALS: "Invalid email or password.",
 	INVALID_EMAIL: "Please enter a valid email.",
@@ -7,6 +10,5 @@ export const ERROR_MESSAGES = {
 	REGISTERED_EMAIL: "Email already registered. Sign in?",
 	REQUIRED_EMAIL: "Email is required.",
 	REQUIRED_PASSWORD: "Password is required.",
-	UNEXPECTED_APPWRITE: "A server error occurred.",
 	UNKNOWN_ERROR: "An unknown exception occurred.",
 };

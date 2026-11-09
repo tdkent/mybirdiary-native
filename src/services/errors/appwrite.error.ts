@@ -3,6 +3,10 @@ import { AppwriteException } from "react-native-appwrite";
 
 export function getAppwriteException(e: unknown) {
 	if (e instanceof AppwriteException) {
+		if (e.message.startsWith("fetch failed")) {
+			return ERROR_MESSAGES.APPWRITE_OUTAGE;
+		}
+
 		switch (e.type) {
 			case "general_argument_invalid":
 				return ERROR_MESSAGES.INVALID_CREDENTIALS;
@@ -14,7 +18,7 @@ export function getAppwriteException(e: unknown) {
 				return ERROR_MESSAGES.INCORRECT_CREDENTIALS;
 
 			default:
-				return ERROR_MESSAGES.UNEXPECTED_APPWRITE;
+				return ERROR_MESSAGES.APPWRITE_UNEXPECTED;
 		}
 	}
 
