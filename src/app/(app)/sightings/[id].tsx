@@ -1,6 +1,7 @@
+import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import ThemedText from "@/components/ui/ThemedText";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
 
 export default function SightingDetailsScreen() {
 	const { id } = useLocalSearchParams();
@@ -11,10 +12,10 @@ export default function SightingDetailsScreen() {
 					title: `Sighting ${id}`,
 				}}
 			/>
-			<View className="flex-1 items-center justify-center">
-				<Text>Sighting Details</Text>
-				<Text>Display details of sighting with id {id}</Text>
-			</View>
+			<ThemedSafeView>
+				<ThemedText variant="heading">Sighting Details</ThemedText>
+				<ThemedText>Display details of sighting with id {id}</ThemedText>
+			</ThemedSafeView>
 		</React.Fragment>
 	);
 }

@@ -31,7 +31,10 @@
 			"tailwind": "recommended"
 		},
 		"rules": {
-			"preset": "recommended"
+			"preset": "recommended",
+			"correctness": {
+				"noReactNativeRawText": "off"
+			}
 		}
 	},
 	"tailwind": {

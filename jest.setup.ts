@@ -1,3 +1,4 @@
+// Mock appwrite
 jest.mock("react-native-appwrite", () => ({
 	Client: jest.fn().mockImplementation(() => ({
 		setEndpoint: jest.fn().mockReturnThis(),
@@ -24,6 +25,12 @@ jest.mock("react-native-appwrite", () => ({
 			this.type = type;
 		}
 	},
+}));
+
+// Mock uniwind
+jest.mock("uniwind", () => ({
+	useUniwind: jest.fn(),
+	withUniwind: (component: React.ComponentType<unknown>) => component,
 }));
 
 beforeEach(() => {

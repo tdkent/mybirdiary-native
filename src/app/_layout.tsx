@@ -1,5 +1,5 @@
 import RootNavigator from "@/components/navigators/RootNavigator";
-import SplashScreenController from "@/components/ui/splash-screen-controller";
+import SplashScreenController from "@/components/ui/Splash";
 import { AuthProvider } from "@/context/AuthContext";
 import { StatusBar } from "expo-status-bar";
 import { Uniwind } from "uniwind";

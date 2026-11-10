@@ -1,15 +1,11 @@
+import ThemedButton from "@/components/ui/ThemedButton";
+import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
 import type { AuthActions, UserAuth } from "@/types/auth";
 import { Formik } from "formik";
 import { useEffect } from "react";
-import {
-	Button,
-	type GestureResponderEvent,
-	Text,
-	TextInput,
-	View,
-} from "react-native";
+import { type GestureResponderEvent, Text, View } from "react-native";
 
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
@@ -50,44 +46,36 @@ export default function AuthForm({ action }: AuthActions) {
 					values,
 				}) => (
 					<View className="my-10">
-						<View>
-							<Text>Email</Text>
-							<TextInput
-								accessibilityLabel="email"
-								className="p-4 border w-80"
-								editable={!isLoading}
-								keyboardType="email-address"
-								onChangeText={handleChange("email")}
-								onBlur={handleBlur("email")}
-								value={values.email}
-							/>
-							{touched.email && errors.email && (
-								<Text testID="email-validation-alert">{errors.email}</Text>
-							)}
-						</View>
+						<ThemedTextInput
+							handleBlur={handleBlur("email")}
+							keyboardType="email-address"
+							label="email"
+							isLoading={isLoading}
+							isTouched={touched.email}
+							onBlur={handleBlur("email")}
+							onChangeText={handleChange("email")}
+							testId="email-validation-alert"
+							validationError={errors.email}
+							value={values.email}
+						/>
 
-						<View>
-							<Text>Password</Text>
-							<TextInput
-								accessibilityLabel="password"
-								className="p-4 border w-80"
-								editable={!isLoading}
-								onChangeText={handleChange("password")}
-								onBlur={handleBlur("password")}
-								secureTextEntry
-								value={values.password}
-							/>
-							{touched.password && errors.password && (
-								<Text testID="password-validation-alert">
-									{errors.password}
-								</Text>
-							)}
-						</View>
+						<ThemedTextInput
+							handleBlur={handleBlur("password")}
+							label="password"
+							isLoading={isLoading}
+							isTouched={touched.password}
+							onBlur={handleBlur("password")}
+							onChangeText={handleChange("password")}
+							secure
+							testId="password-validation-alert"
+							validationError={errors.password}
+							value={values.password}
+						/>
 
-						<Button
-							disabled={isLoading}
+						<ThemedButton
+							isLoading={isLoading}
+							label={isLoading ? `Submitting...` : `Submit`}
 							onPress={handleSubmit as (e?: GestureResponderEvent) => void}
-							title={isLoading ? `Submitting...` : `Submit`}
 						/>
 					</View>
 				)}

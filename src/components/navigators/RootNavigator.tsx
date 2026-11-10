@@ -9,7 +9,7 @@ export default function RootNavigator() {
 				<Stack.Screen
 					name="index"
 					options={{
-						title: "Home Page",
+						headerShown: false,
 					}}
 				/>
 				<Stack.Screen

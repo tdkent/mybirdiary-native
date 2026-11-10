@@ -1,16 +1,17 @@
 import AuthForm from "@/components/forms/AuthForm";
+import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import ThemedText from "@/components/ui/ThemedText";
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
 
 export default function RegisterScreen() {
 	return (
-		<View className="flex-1 items-center justify-center">
-			<Text className="text-4xl font-semibold">Create a new account</Text>
+		<ThemedSafeView>
+			<ThemedText variant="heading">Create a new account</ThemedText>
 			<AuthForm action="register" />
 
-			<Text>
+			<ThemedText>
 				Already a member? <Link href="/login">Sign in</Link>
-			</Text>
-		</View>
+			</ThemedText>
+		</ThemedSafeView>
 	);
 }
