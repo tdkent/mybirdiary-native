@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			await account.deleteSession({ sessionId: "current" });
 			setIsLoggedIn(false);
 		} catch (e) {
-			console.error(e);
+			setError(getAppwriteException(e));
 		} finally {
 			setIsLoading(false);
 		}

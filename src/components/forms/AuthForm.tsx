@@ -1,10 +1,11 @@
+import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth.schema";
 import type { AuthActions, UserAuth } from "@/types/auth";
 import { Formik } from "formik";
 import { useEffect } from "react";
-import { Button, type GestureResponderEvent, Text, View } from "react-native";
+import { type GestureResponderEvent, Text, View } from "react-native";
 
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
@@ -71,10 +72,10 @@ export default function AuthForm({ action }: AuthActions) {
 							value={values.password}
 						/>
 
-						<Button
-							disabled={isLoading}
+						<ThemedButton
+							isLoading={isLoading}
+							label={isLoading ? `Submitting...` : `Submit`}
 							onPress={handleSubmit as (e?: GestureResponderEvent) => void}
-							title={isLoading ? `Submitting...` : `Submit`}
 						/>
 					</View>
 				)}
