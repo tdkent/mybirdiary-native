@@ -1,5 +1,5 @@
-import { Account, Client } from "react-native-appwrite";
 import { config } from "@/config/config";
+import { Account, Client, TablesDB } from "react-native-appwrite";
 import "react-native-url-polyfill";
 
 export const client = new Client()
@@ -8,3 +8,4 @@ export const client = new Client()
 	.setProject(config.appwriteProject);
 
 export const account = new Account(client);
+export const tablesDB = new TablesDB(client);
