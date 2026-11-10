@@ -13,6 +13,10 @@ jest.mock("react-native-appwrite", () => ({
 		get: jest.fn(),
 	})),
 
+	TablesDB: jest.fn().mockImplementation(() => ({
+		listRows: jest.fn(),
+	})),
+
 	ID: {
 		unique: jest.fn().mockReturnValue("xxx"),
 	},
