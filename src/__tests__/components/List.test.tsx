@@ -1,37 +1,22 @@
 import BirdsScreen from "@/app/(app)/birds";
 import BirdDetailsScreen from "@/app/(app)/birds/[id]";
 import List from "@/components/screens/List";
+import { defaultReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
 
+// Mock useQuery
 jest.mock("@tanstack/react-query", () => ({
 	useQuery: jest.fn(),
 }));
-
 const mockUseQuery = jest.mocked(useQuery);
-
-beforeEach(() => {
-	mockUseQuery.mockReturnValue({
-		data: {
-			rows: [
-				{ $id: 1, commonName: "Blue Jay" },
-				{ $id: 2, commonName: "Northern Cardinal" },
-			],
-			count: 2,
-		},
-		error: null,
-		isError: false,
-		isPending: false,
-	} as ReturnType<typeof useQuery>);
-});
 
 describe("List", () => {
 	test("renders a loading component", async () => {
 		mockUseQuery.mockReturnValue({
+			...defaultReturnValue,
 			data: undefined,
-			error: null,
-			isError: false,
 			isPending: true,
 		} as ReturnType<typeof useQuery>);
 
@@ -46,10 +31,9 @@ describe("List", () => {
 		const errorMsg = "An error occurred";
 
 		mockUseQuery.mockReturnValue({
-			data: null,
+			...defaultReturnValue,
 			error: { message: errorMsg },
 			isError: true,
-			isPending: false,
 		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(
@@ -61,13 +45,11 @@ describe("List", () => {
 
 	test("displays alternate text if list contains no items", async () => {
 		mockUseQuery.mockReturnValue({
+			...defaultReturnValue,
 			data: {
 				rows: [],
 				count: 0,
 			},
-			error: null,
-			isError: false,
-			isPending: false,
 		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(
@@ -78,6 +60,10 @@ describe("List", () => {
 	});
 
 	test("displays list items", async () => {
+		mockUseQuery.mockReturnValue(
+			defaultReturnValue as ReturnType<typeof useQuery>,
+		);
+
 		const { getByText } = await render(
 			<List queryFn={() => {}} queryKey="birds" />,
 		);
@@ -87,14 +73,17 @@ describe("List", () => {
 	});
 
 	test("pressing an item navigates to correct bird details screen", async () => {
+		mockUseQuery.mockReturnValue(
+			defaultReturnValue as ReturnType<typeof useQuery>,
+		);
+
 		await renderRouter({
 			index: BirdsScreen,
 			"birds/[id]": BirdDetailsScreen,
 		});
 
-		const user = userEvent.setup();
-
 		const listItem = screen.getByText(/blue jay/i);
+		const user = userEvent.setup();
 		await user.press(listItem);
 
 		expect(screen).toHavePathname("/birds/1");
