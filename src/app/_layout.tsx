@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import { Uniwind } from "uniwind";
 import "../global.css";
+import "../lib/query-lifecycle";
 
 Uniwind.setTheme("system");
 
