@@ -1,6 +1,30 @@
 import type { ListQueryData, ListQueryReturnValue } from "@/test/types";
 
-// useQuery return values
+/**
+ * Authentication
+ */
+export const testEmail = "test@fake.me";
+export const testInvalidEmail = "invalid-email";
+
+export const testPassword = "password123";
+export const testInvalidPassword = "123";
+
+export const mockUserInputs = {
+	email: testEmail,
+	password: testPassword,
+};
+
+export const mockUser = {
+	...mockUserInputs,
+	userId: "xxx",
+};
+
+export const userAuthenticated = "Authenticated";
+export const userUnauthenticated = "Unauthenticated";
+
+/**
+ * useQuery return values
+ */
 export const mockListData: ListQueryData = {
 	rows: [
 		{ $id: "1", commonName: "Blue Jay" },
