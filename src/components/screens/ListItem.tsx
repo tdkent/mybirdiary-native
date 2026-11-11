@@ -1,4 +1,5 @@
 import type { Bird } from "@/types/models";
+import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 interface Props {
@@ -8,11 +9,18 @@ interface Props {
 
 export default function ListItem({ item, type }: Props) {
 	if (type === "birds") {
-		const { commonName } = item as Bird;
+		const { $id, commonName } = item as Bird;
 
 		return (
 			<View>
-				<Text>{commonName}</Text>
+				<Link
+					href={{
+						pathname: "/(app)/birds/[id]",
+						params: { id: $id },
+					}}
+				>
+					<Text>{commonName}</Text>
+				</Link>
 			</View>
 		);
 	}
