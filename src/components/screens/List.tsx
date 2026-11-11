@@ -1,6 +1,7 @@
+import ListItem from "@/components/screens/ListItem";
 import type { AppwriteListQuery } from "@/types/models";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 interface Props {
 	queryFn: () => void;
@@ -29,5 +30,15 @@ export default function List({ queryFn, queryKey }: Props) {
 		return <Text>No data to show.</Text>;
 	}
 
-	return <View></View>;
+	return (
+		<View>
+			<FlatList
+				data={rows}
+				initialNumToRender={10}
+				ItemSeparatorComponent={<Text>---------</Text>}
+				keyExtractor={(item) => item.$id}
+				renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
+			/>
+		</View>
+	);
 }
