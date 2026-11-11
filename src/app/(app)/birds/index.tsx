@@ -1,3 +1,4 @@
+import List from "@/components/screens/List";
 import ThemedSafeView from "@/components/ui/ThemedSafeView";
 import ThemedText from "@/components/ui/ThemedText";
 import { useRouter } from "expo-router";
@@ -8,10 +9,8 @@ export default function BirdsScreen() {
 	return (
 		<ThemedSafeView>
 			<ThemedText variant="heading">Birdpedia</ThemedText>
-			<ThemedText>
-				Display paginated, sortable list of available bird species.
-			</ThemedText>
-			<ThemedText>Each list item links to bird details page.</ThemedText>
+
+			<List />
 
 			<View>
 				<Button
