@@ -8,7 +8,13 @@ import "../global.css";
 
 Uniwind.setTheme("system");
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 1000 * 60 * 60 * 24, // 1d
+		},
+	},
+});
 
 export default function RootLayout() {
 	return (
