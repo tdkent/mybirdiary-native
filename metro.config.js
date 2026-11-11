@@ -1,3 +1,4 @@
+const { withRozenite } = require("@rozenite/metro");
 const { getDefaultConfig } = require("expo/metro-config");
 const { withUniwindConfig } = require("uniwind/metro");
 
@@ -10,4 +11,6 @@ const uniwindConfig = withUniwindConfig(config, {
 	dtsFile: "./src/uniwind-types.d.ts",
 });
 
-module.exports = uniwindConfig;
+module.exports = withRozenite(uniwindConfig, {
+	enabled: process.env.WITH_ROZENITE === "true",
+});

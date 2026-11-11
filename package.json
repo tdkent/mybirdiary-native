@@ -8,7 +8,7 @@
     "check": "biome check --verbose ./src",
     "check:fix": "biome check --write --no-errors-on-unmatched ./src",
     "format": "biome format --write ./src",
-    "ios": "expo start --ios",
+    "ios": "WITH_ROZENITE=true expo start --ios",
     "lint": "biome lint --verbose ./src",
     "lint:fix": "biome lint --write ./src",
     "start": "expo start",
@@ -56,6 +56,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
+    "@rozenite/metro": "^2.5.0",
+    "@rozenite/tanstack-query-plugin": "^2.5.0",
     "@testing-library/react-native": "^14.1.0",
     "@types/jest": "30.0.0",
     "@types/react": "~19.3.0",
