@@ -8,7 +8,7 @@
     "check": "biome check --verbose ./src",
     "check:fix": "biome check --write --no-errors-on-unmatched ./src",
     "format": "biome format --write ./src",
-    "ios": "expo start --ios",
+    "ios": "WITH_ROZENITE=true expo start --ios",
     "lint": "biome lint --verbose ./src",
     "lint:fix": "biome lint --write ./src",
     "start": "expo start",
@@ -23,6 +23,7 @@
   "dependencies": {
     "@expo/ui": "~58.0.25",
     "@expo/vector-icons": "^15.1.1",
+    "@tanstack/react-query": "^5.107.1",
     "expo": "~58.0.21",
     "expo-constants": "~58.0.14",
     "expo-device": "~58.0.5",
@@ -31,6 +32,7 @@
     "expo-glass-effect": "~58.0.5",
     "expo-image": "~58.0.18",
     "expo-linking": "~58.0.15",
+    "expo-network": "~58.0.4",
     "expo-router": "~58.0.28",
     "expo-splash-screen": "~58.0.12",
     "expo-status-bar": "~58.0.4",
@@ -55,6 +57,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
+    "@rozenite/metro": "^2.5.0",
+    "@rozenite/tanstack-query-plugin": "^2.5.0",
     "@testing-library/react-native": "^14.1.0",
     "@types/jest": "30.0.0",
     "@types/react": "~19.3.0",
