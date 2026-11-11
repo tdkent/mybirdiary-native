@@ -1,5 +1,6 @@
 import { config } from "@/config/config";
 import { tablesDB } from "@/lib/appwrite";
+import { getAppwriteException } from "@/services/errors/appwrite.error";
 import { Query } from "react-native-appwrite";
 
 /** Get all birds */
@@ -13,6 +14,6 @@ export async function getBirds() {
 
 		return result;
 	} catch (e) {
-		console.error(e);
+		throw new Error(getAppwriteException(e));
 	}
 }
