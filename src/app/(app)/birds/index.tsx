@@ -1,3 +1,4 @@
+import { getBirds } from "@/api/birds.api";
 import List from "@/components/screens/List";
 import ThemedSafeView from "@/components/ui/ThemedSafeView";
 import ThemedText from "@/components/ui/ThemedText";
@@ -10,7 +11,7 @@ export default function BirdsScreen() {
 		<ThemedSafeView>
 			<ThemedText variant="heading">Birdpedia</ThemedText>
 
-			<List />
+			<List queryFn={getBirds} queryKey="birds" />
 
 			<View>
 				<Button
