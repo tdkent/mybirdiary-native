@@ -1,3 +1,4 @@
+import type { AppwriteListQuery } from "@/types/models";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Text, View } from "react-native";
 
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export default function List({ queryFn, queryKey }: Props) {
-	const { error, isError, isPending } = useQuery({
+	const { data, error, isError, isPending } = useQuery({
 		queryKey: [queryKey],
 		queryFn,
 		placeholderData: keepPreviousData,
@@ -21,9 +22,12 @@ export default function List({ queryFn, queryKey }: Props) {
 		return <Text>{error.message}</Text>;
 	}
 
-	return (
-		<View>
-			<Text>List</Text>
-		</View>
-	);
+	const fetchedData = data as unknown as AppwriteListQuery;
+	const rows = fetchedData.rows;
+
+	if (!rows.length) {
+		return <Text>No data to show.</Text>;
+	}
+
+	return <View></View>;
 }
