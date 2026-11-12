@@ -8,7 +8,7 @@ interface Props {
 
 export default function DescriptionList({ descriptionList }: Props) {
 	return (
-		<View>
+		<View testID="description-list">
 			<FlatList
 				data={descriptionList}
 				keyExtractor={(item) => item.label}

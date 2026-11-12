@@ -1,5 +1,5 @@
 import Details from "@/components/screens/Details";
-import { defaultDetailsReturnValue, mockDetailsData } from "@/test/mockData";
+import { defaultDetailsReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 
@@ -51,20 +51,13 @@ describe("List", () => {
 		expect(getByText(/no data to show/i));
 	});
 
-	test("displays description list items", async () => {
-		mockUseQuery.mockReturnValue(
-			defaultDetailsReturnValue as ReturnType<typeof useQuery>,
-		);
+	test("displays description list component if valid data is returned", async () => {
+		mockUseQuery.mockReturnValue({
+			...defaultDetailsReturnValue,
+		} as ReturnType<typeof useQuery>);
 
-		const { getByText } = await render(<Details table="birds" />);
+		const { getByTestId } = await render(<Details table="birds" />);
 
-		expect(getByText(/common name/i));
-		expect(getByText(mockDetailsData.commonName));
-
-		expect(getByText(/scientific name/i));
-		expect(getByText(mockDetailsData.scientificName));
-
-		expect(getByText(/description/i));
-		expect(getByText(mockDetailsData.description));
+		expect(getByTestId(/description-list/i));
 	});
 });

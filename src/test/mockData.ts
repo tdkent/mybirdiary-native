@@ -4,6 +4,7 @@ import type {
 	ListQueryData,
 	ListQueryReturnValue,
 } from "@/test/types";
+import type { DescriptionListItem } from "@/types/screen.types";
 
 /**
  * Authentication
@@ -58,3 +59,18 @@ export const defaultDetailsReturnValue: DetailsQueryReturnValue = {
 	isError: false,
 	isPending: false,
 };
+
+export const mockDescriptionList: DescriptionListItem[] = [
+	{
+		label: "Common Name",
+		details: "Blue Jay",
+	},
+	{
+		label: "Scientific Name",
+		details: "Cyanocitta cristata",
+	},
+	{
+		label: "Description",
+		details: "A loud blue corvid",
+	},
+];
