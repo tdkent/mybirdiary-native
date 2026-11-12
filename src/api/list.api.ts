@@ -1,14 +1,16 @@
 import { config } from "@/config/config";
+import { TABLE_IDS } from "@/constants/api.constants";
 import { tablesDB } from "@/lib/appwrite";
 import { getAppwriteException } from "@/services/errors/appwrite.error";
+import type { Table } from "@/types/api.types";
 import { Query } from "react-native-appwrite";
 
-/** Get all birds */
-export async function getBirds() {
+/** Get list items with pagination and sorting. */
+export async function getListData(queryKey: Table) {
 	try {
 		const result = await tablesDB.listRows({
 			databaseId: config.databaseId,
-			tableId: config.birdsTableId,
+			tableId: TABLE_IDS[queryKey],
 			queries: [Query.select(["*"])],
 		});
 

@@ -1,17 +1,17 @@
+import { getListData } from "@/api/list.api";
 import ListItem from "@/components/screens/ListItem";
 import type { AppwriteListQuery } from "@/types/models";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FlatList, Text, View } from "react-native";
 
 interface Props {
-	queryFn: () => void;
 	queryKey: "birds";
 }
 
-export default function List({ queryFn, queryKey }: Props) {
+export default function List({ queryKey }: Props) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [queryKey],
-		queryFn,
+		queryFn: () => getListData(queryKey),
 		placeholderData: keepPreviousData,
 	});
 
