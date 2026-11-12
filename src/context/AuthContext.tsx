@@ -1,5 +1,5 @@
 import { account } from "@/lib/appwrite";
-import { getAppwriteException } from "@/services/errors/appwrite.error";
+import { getErrorMessage } from "@/services/errors/error-messages";
 import type { UserAuth } from "@/types/auth";
 import {
 	createContext,
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			setError(getAppwriteException(e));
+			setError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
@@ -72,7 +72,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 		} catch (e) {
-			setError(getAppwriteException(e));
+			setError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
@@ -84,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			await account.deleteSession({ sessionId: "current" });
 			setIsLoggedIn(false);
 		} catch (e) {
-			setError(getAppwriteException(e));
+			setError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}

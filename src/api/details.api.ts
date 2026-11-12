@@ -1,7 +1,7 @@
 import { config } from "@/config/config";
 import { TABLE_IDS } from "@/constants/api.constants";
 import { tablesDB } from "@/lib/appwrite";
-import { getAppwriteException } from "@/services/errors/appwrite.error";
+import { getErrorMessage } from "@/services/errors/error-messages";
 import type { Table } from "@/types/api.types";
 import { Query } from "react-native-appwrite";
 
@@ -22,6 +22,6 @@ export async function getDetailsData({ rowId, table }: Inputs) {
 
 		return row;
 	} catch (e) {
-		throw new Error(getAppwriteException(e));
+		throw new Error(getErrorMessage(e));
 	}
 }

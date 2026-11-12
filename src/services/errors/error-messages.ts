@@ -1,7 +1,8 @@
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AppwriteException } from "react-native-appwrite";
 
-export function getAppwriteException(e: unknown) {
+/** Create error message from error object input. */
+export function getErrorMessage(e: unknown) {
 	if (e instanceof Error || e instanceof AppwriteException) {
 		if (e.message.startsWith("fetch failed"))
 			return ERROR_MESSAGES.FETCH_FAILED;
