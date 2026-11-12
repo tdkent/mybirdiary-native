@@ -1,20 +1,5 @@
-import { Stack } from "expo-router";
+import BirdsNavigator from "@/components/navigators/BirdsNavigator";
 
 export default function BirdsLayout() {
-	return (
-		<Stack>
-			<Stack.Screen
-				name="index"
-				options={{
-					title: "Birdpedia",
-				}}
-			/>
-			<Stack.Screen
-				name="[id]"
-				options={{
-					headerBackButtonDisplayMode: "minimal",
-				}}
-			/>
-		</Stack>
-	);
+	return <BirdsNavigator />;
 }
