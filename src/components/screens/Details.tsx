@@ -1,5 +1,7 @@
 import { getDetailsData } from "@/api/details.api";
+import DescriptionList from "@/components/screens/DescriptionList";
 import type { Table } from "@/types/api.types";
+import { getTitleAndDescriptionList } from "@/utils/getTitleAndDescriptionList";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -30,15 +32,17 @@ export default function Details({ table }: Props) {
 		return <Text>No data to show.</Text>;
 	}
 
+	const { title, descriptionList } = getTitleAndDescriptionList({
+		table,
+		data,
+	});
+
 	return (
 		<React.Fragment>
-			<Stack.Screen
-				options={{
-					title: rowId,
-				}}
-			/>
+			<Stack.Screen options={{ title }} />
+
 			<View>
-				<Text>Details</Text>
+				<DescriptionList descriptionList={descriptionList} />
 			</View>
 		</React.Fragment>
 	);
