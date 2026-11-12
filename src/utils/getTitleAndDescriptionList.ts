@@ -9,8 +9,9 @@ interface TitleDescriptionListInputs {
 }
 
 interface TitleDescriptionListOutput {
-	title: string;
 	descriptionList: DescriptionListItem[];
+	headingText: string;
+	title: string;
 }
 
 /** Get title string and array of row values. */
@@ -22,6 +23,8 @@ export function getTitleAndDescriptionList({
 		case "birds": {
 			const { commonName, scientificName, description } =
 				data as unknown as Bird;
+
+			const headingText = `Bird Details: ${commonName}`;
 
 			const descriptionList: DescriptionListItem[] = [
 				{
@@ -38,7 +41,7 @@ export function getTitleAndDescriptionList({
 				},
 			];
 
-			return { title: commonName, descriptionList };
+			return { descriptionList, headingText, title: commonName };
 		}
 
 		default: {
