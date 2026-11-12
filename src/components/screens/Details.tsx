@@ -1,5 +1,6 @@
 import { getDetailsData } from "@/api/details.api";
 import DescriptionList from "@/components/screens/DescriptionList";
+import ThemedText from "@/components/ui/ThemedText";
 import type { Table } from "@/types/api.types";
 import { getTitleAndDescriptionList } from "@/utils/getTitleAndDescriptionList";
 import { useQuery } from "@tanstack/react-query";
@@ -32,7 +33,7 @@ export default function Details({ table }: Props) {
 		return <Text>No data to show.</Text>;
 	}
 
-	const { title, descriptionList } = getTitleAndDescriptionList({
+	const { title, descriptionList, headingText } = getTitleAndDescriptionList({
 		table,
 		data,
 	});
@@ -40,6 +41,8 @@ export default function Details({ table }: Props) {
 	return (
 		<React.Fragment>
 			<Stack.Screen options={{ title }} />
+
+			<ThemedText variant="heading">{headingText}</ThemedText>
 
 			<View>
 				<DescriptionList descriptionList={descriptionList} />
