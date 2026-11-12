@@ -1,9 +1,45 @@
+import { getDetailsData } from "@/api/details.api";
+import type { Table } from "@/types/api.types";
+import { useQuery } from "@tanstack/react-query";
+import { Stack, useLocalSearchParams } from "expo-router";
+import React from "react";
 import { Text, View } from "react-native";
 
-export default function Details() {
+interface Props {
+	table: Table;
+}
+
+export default function Details({ table }: Props) {
+	const { id } = useLocalSearchParams();
+	const rowId = id as string;
+
+	const { data, error, isError, isPending } = useQuery({
+		queryKey: [table, id],
+		queryFn: () => getDetailsData({ rowId, table }),
+	});
+
+	if (isPending) {
+		return <Text>Loading...</Text>;
+	}
+
+	if (isError) {
+		return <Text>{error.message}</Text>;
+	}
+
+	if (!data) {
+		return <Text>No data to show.</Text>;
+	}
+
 	return (
-		<View>
-			<Text>Details</Text>
-		</View>
+		<React.Fragment>
+			<Stack.Screen
+				options={{
+					title: rowId,
+				}}
+			/>
+			<View>
+				<Text>Details</Text>
+			</View>
+		</React.Fragment>
 	);
 }
