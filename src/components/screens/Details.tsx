@@ -1,8 +1,8 @@
-import { getDetailsData } from "@/api/details.api";
 import DescriptionList from "@/components/screens/DescriptionList";
 import ThemedText from "@/components/ui/ThemedText";
-import type { Table } from "@/types/api.types";
-import { getTitleAndDescriptionList } from "@/utils/getTitleAndDescriptionList";
+import { getDetailsScreenText } from "@/features/getDetailsScreenText";
+import { getDetailsData } from "@/services/api/details";
+import type { Table } from "@/types/db";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -12,6 +12,7 @@ interface Props {
 	table: Table;
 }
 
+/** Renders details screen heading, image and description list. */
 export default function Details({ table }: Props) {
 	const { id } = useLocalSearchParams();
 	const rowId = id as string;
@@ -33,7 +34,7 @@ export default function Details({ table }: Props) {
 		return <Text>No data to show.</Text>;
 	}
 
-	const { title, descriptionList, headingText } = getTitleAndDescriptionList({
+	const { title, descriptionList, headingText } = getDetailsScreenText({
 		table,
 		data,
 	});

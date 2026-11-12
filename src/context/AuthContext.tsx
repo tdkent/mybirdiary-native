@@ -1,6 +1,6 @@
 import { account } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/error-messages";
-import type { UserAuth } from "@/types/auth";
+import type { UserAuth } from "@/types/forms";
 import {
 	createContext,
 	type Dispatch,

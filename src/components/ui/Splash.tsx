@@ -3,6 +3,7 @@ import { SplashScreen } from "expo-router";
 
 SplashScreen.preventAutoHideAsync();
 
+/** Controls how the Splash screen renders. */
 export default function SplashScreenController() {
 	const { isAuthChecked } = useAuth();
 

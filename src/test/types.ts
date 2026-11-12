@@ -1,4 +1,4 @@
-import type { AppwriteListQuery, Bird } from "@/types/models";
+import type { AppwriteListQuery, Bird } from "@/types/db";
 
 // Appwrite list data types
 export type ListQueryData = Pick<AppwriteListQuery, "total"> & {

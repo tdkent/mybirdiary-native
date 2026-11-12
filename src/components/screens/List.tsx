@@ -1,6 +1,6 @@
-import { getListData } from "@/api/list.api";
 import ListItem from "@/components/screens/ListItem";
-import type { AppwriteListQuery } from "@/types/models";
+import { getListData } from "@/services/api/list";
+import type { AppwriteListQuery } from "@/types/db";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FlatList, Text, View } from "react-native";
 
@@ -8,6 +8,7 @@ interface Props {
 	queryKey: "birds";
 }
 
+/** Renders list screen FlatList component. */
 export default function List({ queryKey }: Props) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [queryKey],

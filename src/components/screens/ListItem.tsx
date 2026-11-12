@@ -1,4 +1,4 @@
-import type { Bird } from "@/types/models";
+import type { Bird } from "@/types/db";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
@@ -7,6 +7,7 @@ interface Props {
 	type: "birds";
 }
 
+/** Single FlatList item on list screen. */
 export default function ListItem({ item, type }: Props) {
 	if (type === "birds") {
 		const { $id, commonName } = item as Bird;
