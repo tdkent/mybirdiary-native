@@ -1,21 +1,18 @@
 import BirdsScreen from "@/app/(app)/birds";
 import BirdDetailsScreen from "@/app/(app)/birds/[id]";
 import List from "@/components/screens/List";
-import { defaultReturnValue } from "@/test/mockData";
+import { defaultListReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
 
 // Mock useQuery
-jest.mock("@tanstack/react-query", () => ({
-	useQuery: jest.fn(),
-}));
 const mockUseQuery = jest.mocked(useQuery);
 
 describe("List", () => {
 	test("renders a loading component", async () => {
 		mockUseQuery.mockReturnValue({
-			...defaultReturnValue,
+			...defaultListReturnValue,
 			data: undefined,
 			isPending: true,
 		} as ReturnType<typeof useQuery>);
@@ -29,7 +26,7 @@ describe("List", () => {
 		const errorMsg = "An error occurred";
 
 		mockUseQuery.mockReturnValue({
-			...defaultReturnValue,
+			...defaultListReturnValue,
 			error: { message: errorMsg },
 			isError: true,
 		} as ReturnType<typeof useQuery>);
@@ -41,7 +38,7 @@ describe("List", () => {
 
 	test("displays alternate text if list contains no items", async () => {
 		mockUseQuery.mockReturnValue({
-			...defaultReturnValue,
+			...defaultListReturnValue,
 			data: {
 				rows: [],
 				count: 0,
@@ -55,7 +52,7 @@ describe("List", () => {
 
 	test("displays list items", async () => {
 		mockUseQuery.mockReturnValue(
-			defaultReturnValue as ReturnType<typeof useQuery>,
+			defaultListReturnValue as ReturnType<typeof useQuery>,
 		);
 
 		const { getByText } = await render(<List queryKey="birds" />);
@@ -66,7 +63,7 @@ describe("List", () => {
 
 	test("pressing an item navigates to correct bird details screen", async () => {
 		mockUseQuery.mockReturnValue(
-			defaultReturnValue as ReturnType<typeof useQuery>,
+			defaultListReturnValue as ReturnType<typeof useQuery>,
 		);
 
 		await renderRouter({

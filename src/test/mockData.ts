@@ -1,4 +1,10 @@
-import type { ListQueryData, ListQueryReturnValue } from "@/test/types";
+import type {
+	DetailsQueryData,
+	DetailsQueryReturnValue,
+	ListQueryData,
+	ListQueryReturnValue,
+} from "@/test/types";
+import type { DescriptionListItem } from "@/types/screen.types";
 
 /**
  * Authentication
@@ -33,9 +39,38 @@ export const mockListData: ListQueryData = {
 	total: 2,
 };
 
-export const defaultReturnValue: ListQueryReturnValue = {
+export const defaultListReturnValue: ListQueryReturnValue = {
 	data: mockListData,
 	error: null,
 	isError: false,
 	isPending: false,
 };
+
+export const mockDetailsData: DetailsQueryData = {
+	$id: "1",
+	commonName: "Green Heron",
+	scientificName: "Butorides virescens",
+	description: "A small heron",
+};
+
+export const defaultDetailsReturnValue: DetailsQueryReturnValue = {
+	data: mockDetailsData,
+	error: null,
+	isError: false,
+	isPending: false,
+};
+
+export const mockDescriptionList: DescriptionListItem[] = [
+	{
+		label: "Common Name",
+		details: "Blue Jay",
+	},
+	{
+		label: "Scientific Name",
+		details: "Cyanocitta cristata",
+	},
+	{
+		label: "Description",
+		details: "A loud blue corvid",
+	},
+];
