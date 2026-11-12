@@ -7,9 +7,6 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
 
 // Mock useQuery
-jest.mock("@tanstack/react-query", () => ({
-	useQuery: jest.fn(),
-}));
 const mockUseQuery = jest.mocked(useQuery);
 
 describe("List", () => {

@@ -37,6 +37,11 @@ jest.mock("uniwind", () => ({
 	withUniwind: (component: React.ComponentType<unknown>) => component,
 }));
 
+// Mock Tanstack Query
+jest.mock("@tanstack/react-query", () => ({
+	useQuery: jest.fn(),
+}));
+
 beforeEach(() => {
 	jest.clearAllMocks();
 });
