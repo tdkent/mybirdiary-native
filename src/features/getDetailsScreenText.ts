@@ -44,14 +44,14 @@ export function getDetailsScreenText({
 		}
 
 		case "sightings": {
-			const { birdId, date, description } = data as unknown as Sighting;
+			const { bird, date, description } = data as unknown as Sighting;
 
-			const headingText = `Sighting Details: ${birdId}`;
+			const headingText = `Sighting Details: ${bird.commonName}`;
 
 			const descriptionList: DescriptionListItem[] = [
 				{
 					label: "Species",
-					details: birdId,
+					details: bird.commonName,
 				},
 				{
 					label: "Date",
@@ -63,7 +63,11 @@ export function getDetailsScreenText({
 				},
 			];
 
-			return { descriptionList, headingText, title: `Sighting: ${birdId}` };
+			return {
+				descriptionList,
+				headingText,
+				title: `Sighting: ${bird.commonName}`,
+			};
 		}
 
 		default: {

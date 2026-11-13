@@ -20,9 +20,11 @@ export function getErrorMessage(e: unknown) {
 				return ERROR_MESSAGES.INCORRECT_CREDENTIALS;
 
 			default:
+				console.error(e);
 				return ERROR_MESSAGES.APPWRITE_UNEXPECTED;
 		}
 	}
 
+	console.error(e);
 	return ERROR_MESSAGES.UNKNOWN_ERROR;
 }

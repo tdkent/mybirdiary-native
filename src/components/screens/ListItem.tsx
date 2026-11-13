@@ -28,7 +28,7 @@ export default function ListItem({ item, type }: Props) {
 		}
 
 		case "sightings": {
-			const { $id, birdId } = item as Sighting;
+			const { $id, bird } = item as Sighting;
 
 			return (
 				<View>
@@ -38,7 +38,7 @@ export default function ListItem({ item, type }: Props) {
 							params: { id: $id },
 						}}
 					>
-						<Text>{birdId}</Text>
+						<Text>{bird.commonName}</Text>
 					</Link>
 				</View>
 			);

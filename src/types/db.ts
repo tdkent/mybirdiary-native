@@ -15,7 +15,7 @@ export type Bird = Models.Row & {
 
 /** Sighting db model */
 export type Sighting = Models.Row & {
-	birdId: string;
+	bird: Bird;
 	date: Date;
 	description: string;
 };
