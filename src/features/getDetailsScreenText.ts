@@ -1,4 +1,4 @@
-import type { Bird, Table } from "@/types/db";
+import type { Bird, Sighting, Table } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
 import type { Models } from "react-native-appwrite";
 
@@ -41,6 +41,29 @@ export function getDetailsScreenText({
 			];
 
 			return { descriptionList, headingText, title: commonName };
+		}
+
+		case "sightings": {
+			const { birdId, date, description } = data as unknown as Sighting;
+
+			const headingText = `Sighting Details: ${birdId}`;
+
+			const descriptionList: DescriptionListItem[] = [
+				{
+					label: "Species",
+					details: birdId,
+				},
+				{
+					label: "Date",
+					details: new Date(date).toISOString(),
+				},
+				{
+					label: "Description",
+					details: description,
+				},
+			];
+
+			return { descriptionList, headingText, title: `Sighting: ${birdId}` };
 		}
 
 		default: {
