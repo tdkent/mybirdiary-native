@@ -9,6 +9,8 @@ export default function Index() {
 	}
 
 	return (
-		<Redirect href={isLoggedIn ? "/(app)/new-sighting" : "/(auth)/login"} />
+		<Redirect
+			href={isLoggedIn ? "/(app)/(tabs)/new-sighting" : "/(auth)/login"}
+		/>
 	);
 }

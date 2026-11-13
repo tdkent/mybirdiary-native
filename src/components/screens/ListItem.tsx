@@ -17,7 +17,7 @@ export default function ListItem({ item, type }: Props) {
 				<View>
 					<Link
 						href={{
-							pathname: "/(app)/birds/[id]",
+							pathname: "/(app)/(tabs)/birds/[id]",
 							params: { id: $id },
 						}}
 					>
@@ -34,7 +34,7 @@ export default function ListItem({ item, type }: Props) {
 				<View>
 					<Link
 						href={{
-							pathname: "/(app)/sightings/[id]",
+							pathname: "/(app)/(tabs)/sightings/[id]",
 							params: { id: $id },
 						}}
 					>
