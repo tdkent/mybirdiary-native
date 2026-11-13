@@ -1,3 +1,4 @@
+/** Auth form input types. */
 export interface UserAuth {
 	email: string;
 	password: string;

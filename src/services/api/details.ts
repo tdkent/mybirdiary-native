@@ -1,8 +1,7 @@
-import { config } from "@/config/config";
-import { TABLE_IDS } from "@/constants/api.constants";
+import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
 import { tablesDB } from "@/lib/appwrite";
-import { getAppwriteException } from "@/services/errors/appwrite.error";
-import type { Table } from "@/types/api.types";
+import { getErrorMessage } from "@/services/errors/error-messages";
+import type { Table } from "@/types/db";
 import { Query } from "react-native-appwrite";
 
 interface Inputs {
@@ -14,14 +13,14 @@ interface Inputs {
 export async function getDetailsData({ rowId, table }: Inputs) {
 	try {
 		const row = await tablesDB.getRow({
-			databaseId: config.databaseId,
-			tableId: TABLE_IDS[table],
+			databaseId: CONFIG.DATABASE_ID,
+			tableId: APPWRITE_TABLE_IDS[table],
 			rowId,
 			queries: [Query.select(["*"])],
 		});
 
 		return row;
 	} catch (e) {
-		throw new Error(getAppwriteException(e));
+		throw new Error(getErrorMessage(e));
 	}
 }

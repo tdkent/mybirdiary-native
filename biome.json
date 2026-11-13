@@ -33,7 +33,8 @@
 		"rules": {
 			"preset": "recommended",
 			"correctness": {
-				"noReactNativeRawText": "off"
+				"noReactNativeRawText": "off",
+				"useExhaustiveDependencies": "info"
 			}
 		}
 	},

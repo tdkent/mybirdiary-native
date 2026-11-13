@@ -4,7 +4,7 @@ import type {
 	ListQueryData,
 	ListQueryReturnValue,
 } from "@/test/types";
-import type { DescriptionListItem } from "@/types/screen.types";
+import type { DescriptionListItem } from "@/types/ui";
 
 /**
  * Authentication

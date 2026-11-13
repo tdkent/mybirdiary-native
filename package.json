@@ -15,7 +15,8 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "web": "expo start --web",
-    "prepare": "husky"
+    "prepare": "husky",
+    "typecheck": "npx tsc --noEmit"
   },
   "lint-staged": {
     "*": "biome check --write --no-errors-on-unmatched --verbose ./src"

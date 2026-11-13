@@ -1,20 +1,5 @@
-import { Stack } from "expo-router";
+import SightingsNavigator from "@/components/navigators/SightingsNavigator";
 
 export default function SightingsLayout() {
-	return (
-		<Stack>
-			<Stack.Screen
-				name="index"
-				options={{
-					title: "My Sightings",
-				}}
-			/>
-			<Stack.Screen
-				name="[id]"
-				options={{
-					headerBackButtonDisplayMode: "minimal",
-				}}
-			/>
-		</Stack>
-	);
+	return <SightingsNavigator />;
 }

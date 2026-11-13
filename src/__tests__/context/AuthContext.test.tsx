@@ -14,7 +14,7 @@ import {
 	userAuthenticated,
 	userUnauthenticated,
 } from "@/test/mockData";
-import type { AuthActions } from "@/types/auth";
+import type { AuthActions } from "@/types/forms";
 import { fireEvent, render } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
 import { AppwriteException } from "react-native-appwrite";

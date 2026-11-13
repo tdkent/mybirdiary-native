@@ -1,6 +1,5 @@
-import type { Table } from "@/types/api.types";
-import type { Bird } from "@/types/models";
-import type { DescriptionListItem } from "@/types/screen.types";
+import type { Bird, Table } from "@/types/db";
+import type { DescriptionListItem } from "@/types/ui";
 import type { Models } from "react-native-appwrite";
 
 interface TitleDescriptionListInputs {
@@ -14,8 +13,8 @@ interface TitleDescriptionListOutput {
 	title: string;
 }
 
-/** Get title string and array of row values. */
-export function getTitleAndDescriptionList({
+/** Get text content for Details component of details screen. */
+export function getDetailsScreenText({
 	table,
 	data,
 }: TitleDescriptionListInputs): TitleDescriptionListOutput {
