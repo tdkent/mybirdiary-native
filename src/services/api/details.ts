@@ -5,18 +5,19 @@ import type { DbTables } from "@/types/db";
 import { Query } from "react-native-appwrite";
 
 interface Inputs {
+	queries: string[];
 	rowId: string;
 	table: DbTables;
 }
 
 /** Get a single row. */
-export async function getDetailsData({ rowId, table }: Inputs) {
+export async function getDetailsData({ queries, rowId, table }: Inputs) {
 	try {
 		const row = await tablesDB.getRow({
 			databaseId: CONFIG.DATABASE_ID,
 			tableId: APPWRITE_TABLE_IDS[table],
 			rowId,
-			queries: [Query.select(["*"])],
+			queries: [Query.select(queries)],
 		});
 
 		return row;

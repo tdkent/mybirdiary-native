@@ -6,13 +6,14 @@ import { FlatList, Text, View } from "react-native";
 
 interface Props {
 	queryKey: DbTables;
+	queries: string[];
 }
 
 /** Renders list screen FlatList component. */
-export default function List({ queryKey }: Props) {
+export default function List({ queryKey, queries }: Props) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [queryKey],
-		queryFn: () => getListData(queryKey),
+		queryFn: () => getListData({ queryKey, queries }),
 		placeholderData: keepPreviousData,
 	});
 

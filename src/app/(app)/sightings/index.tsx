@@ -6,7 +6,7 @@ export default function SightingsScreen() {
 	return (
 		<ThemedSafeView>
 			<ThemedText variant="heading">My Sightings</ThemedText>
-			<List queryKey="sightings" />
+			<List queryKey="sightings" queries={["*", "bird.*"]} />
 		</ThemedSafeView>
 	);
 }

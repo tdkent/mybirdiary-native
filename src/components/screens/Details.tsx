@@ -9,16 +9,17 @@ import React from "react";
 import { Text, View } from "react-native";
 
 interface Props {
+	queries: string[];
 	table: DbTables;
 }
 
 /** Renders details screen heading, image and description list. */
-export default function Details({ table }: Props) {
+export default function Details({ queries, table }: Props) {
 	const { id } = useLocalSearchParams();
 
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [table, id],
-		queryFn: () => getDetailsData({ rowId: id as string, table }),
+		queryFn: () => getDetailsData({ queries, rowId: id as string, table }),
 	});
 
 	if (isPending) {

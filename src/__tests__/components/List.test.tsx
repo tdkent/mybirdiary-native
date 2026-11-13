@@ -17,7 +17,9 @@ describe("List", () => {
 			isPending: true,
 		} as ReturnType<typeof useQuery>);
 
-		const { getByText } = await render(<List queryKey="birds" />);
+		const { getByText } = await render(
+			<List queryKey="birds" queries={[""]} />,
+		);
 
 		expect(getByText(/loading.../i));
 	});
@@ -31,7 +33,9 @@ describe("List", () => {
 			isError: true,
 		} as ReturnType<typeof useQuery>);
 
-		const { getByText } = await render(<List queryKey="birds" />);
+		const { getByText } = await render(
+			<List queryKey="birds" queries={[""]} />,
+		);
 
 		expect(getByText(errorMsg));
 	});
@@ -45,7 +49,9 @@ describe("List", () => {
 			},
 		} as ReturnType<typeof useQuery>);
 
-		const { getByText } = await render(<List queryKey="birds" />);
+		const { getByText } = await render(
+			<List queryKey="birds" queries={[""]} />,
+		);
 
 		expect(getByText(/no data to show/i));
 	});
@@ -55,7 +61,9 @@ describe("List", () => {
 			defaultListReturnValue as ReturnType<typeof useQuery>,
 		);
 
-		const { getByText } = await render(<List queryKey="birds" />);
+		const { getByText } = await render(
+			<List queryKey="birds" queries={[""]} />,
+		);
 
 		expect(getByText(/blue jay/i));
 		expect(getByText(/northern cardinal/i));

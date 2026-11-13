@@ -4,7 +4,7 @@ import ThemedSafeView from "@/components/ui/ThemedSafeView";
 export default function SightingDetailsScreen() {
 	return (
 		<ThemedSafeView>
-			<Details table="sightings" />
+			<Details queries={["*", "bird.*"]} table="sightings" />
 		</ThemedSafeView>
 	);
 }

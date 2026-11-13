@@ -6,7 +6,7 @@ export default function BirdsScreen() {
 	return (
 		<ThemedSafeView>
 			<ThemedText variant="heading">Birdpedia</ThemedText>
-			<List queryKey="birds" />
+			<List queryKey="birds" queries={["*"]} />
 		</ThemedSafeView>
 	);
 }
