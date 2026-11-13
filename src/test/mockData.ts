@@ -6,9 +6,7 @@ import type {
 } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
-/**
- * Authentication
- */
+/** Authentication */
 export const testEmail = "test@fake.me";
 export const testInvalidEmail = "invalid-email";
 
@@ -28,9 +26,7 @@ export const mockUser = {
 export const userAuthenticated = "Authenticated";
 export const userUnauthenticated = "Unauthenticated";
 
-/**
- * useQuery return values
- */
+/** List component */
 export const mockListData: ListQueryData = {
 	rows: [
 		{ $id: "1", commonName: "Blue Jay" },
@@ -46,6 +42,7 @@ export const defaultListReturnValue: ListQueryReturnValue = {
 	isPending: false,
 };
 
+/** Details component */
 export const mockDetailsData: DetailsQueryData = {
 	$id: "1",
 	commonName: "Green Heron",

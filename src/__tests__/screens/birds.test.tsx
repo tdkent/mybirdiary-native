@@ -8,8 +8,8 @@ describe("BirdsScreen", () => {
 	test("displays the expected screen heading", async () => {
 		mockUserQuery.mockReturnValue({
 			data: {
-				rows: [{ $id: 1, commonName: "Blue Jay" }],
-				count: 1,
+				rows: [],
+				count: 0,
 			},
 			error: null,
 			isError: false,

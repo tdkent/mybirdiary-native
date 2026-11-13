@@ -15,9 +15,14 @@ const mockUseQuery = jest.mocked(useQuery);
 
 describe("SightingDetailsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue({ ...defaultDetailsReturnValue } as ReturnType<
-			typeof useQuery
-		>);
+		mockUseQuery.mockReturnValue({
+			...defaultDetailsReturnValue,
+			data: {
+				bird: {
+					commonName: "Blue Jay",
+				},
+			},
+		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(<SightingDetailsScreen />);
 

@@ -44,7 +44,7 @@ export function getDetailsScreenText({
 		}
 
 		case "sightings": {
-			const { bird, date, description } = data as unknown as Sighting;
+			const { bird, description } = data as unknown as Sighting;
 
 			const headingText = `Sighting Details: ${bird.commonName}`;
 
@@ -52,10 +52,6 @@ export function getDetailsScreenText({
 				{
 					label: "Species",
 					details: bird.commonName,
-				},
-				{
-					label: "Date",
-					details: new Date(date).toISOString(),
 				},
 				{
 					label: "Description",

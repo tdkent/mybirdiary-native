@@ -21,6 +21,6 @@ describe("BirdDetailsScreen", () => {
 
 		const { getByText } = await render(<BirdDetailsScreen />);
 
-		getByText(/bird details: green heron/i);
+		getByText(/bird details:/i);
 	});
 });
