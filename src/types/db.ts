@@ -12,3 +12,10 @@ export type Bird = Models.Row & {
 	description: string;
 	scientificName: string;
 };
+
+/** Sighting db model */
+export type Sighting = Models.Row & {
+	birdId: string;
+	date: Date;
+	description: string;
+};
