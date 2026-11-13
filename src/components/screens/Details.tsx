@@ -2,24 +2,24 @@ import DescriptionList from "@/components/screens/DescriptionList";
 import ThemedText from "@/components/ui/ThemedText";
 import { getDetailsScreenText } from "@/features/getDetailsScreenText";
 import { getDetailsData } from "@/services/api/details";
-import type { Table } from "@/types/db";
+import type { DbTables } from "@/types/db";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
 interface Props {
-	table: Table;
+	queries: string[];
+	table: DbTables;
 }
 
 /** Renders details screen heading, image and description list. */
-export default function Details({ table }: Props) {
+export default function Details({ queries, table }: Props) {
 	const { id } = useLocalSearchParams();
-	const rowId = id as string;
 
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [table, id],
-		queryFn: () => getDetailsData({ rowId, table }),
+		queryFn: () => getDetailsData({ queries, rowId: id as string, table }),
 	});
 
 	if (isPending) {

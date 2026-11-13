@@ -1,7 +1,7 @@
 import type { Models } from "react-native-appwrite";
 
 /** Db table names. */
-export type Table = "birds" | "sightings";
+export type DbTables = "birds" | "sightings";
 
 /** Default Appwrite list query type. */
 export type AppwriteListQuery = Models.RowList<Models.DefaultRow>;
@@ -11,4 +11,11 @@ export type Bird = Models.Row & {
 	commonName: string;
 	description: string;
 	scientificName: string;
+};
+
+/** Sighting db model */
+export type Sighting = Models.Row & {
+	bird: Bird;
+	date: Date;
+	description: string;
 };

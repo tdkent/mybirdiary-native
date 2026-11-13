@@ -1,9 +1,9 @@
-import type { Bird, Table } from "@/types/db";
+import type { Bird, DbTables, Sighting } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
 import type { Models } from "react-native-appwrite";
 
 interface TitleDescriptionListInputs {
-	table: Table;
+	table: DbTables;
 	data: Models.DefaultRow;
 }
 
@@ -41,6 +41,29 @@ export function getDetailsScreenText({
 			];
 
 			return { descriptionList, headingText, title: commonName };
+		}
+
+		case "sightings": {
+			const { bird, description } = data as unknown as Sighting;
+
+			const headingText = `Sighting Details: ${bird.commonName}`;
+
+			const descriptionList: DescriptionListItem[] = [
+				{
+					label: "Species",
+					details: bird.commonName,
+				},
+				{
+					label: "Description",
+					details: description,
+				},
+			];
+
+			return {
+				descriptionList,
+				headingText,
+				title: `Sighting: ${bird.commonName}`,
+			};
 		}
 
 		default: {
