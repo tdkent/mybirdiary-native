@@ -3,30 +3,16 @@ import { Stack } from "expo-router";
 
 export default function RootNavigator() {
 	const { isLoggedIn } = useAuth();
+
 	return (
-		<Stack>
+		<Stack screenOptions={{ headerShown: false }}>
+			<Stack.Screen name="index" />
 			<Stack.Protected guard={!isLoggedIn}>
-				<Stack.Screen
-					name="index"
-					options={{
-						headerShown: false,
-					}}
-				/>
-				<Stack.Screen
-					name="(auth)"
-					options={{
-						headerShown: false,
-					}}
-				/>
+				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 
 			<Stack.Protected guard={isLoggedIn} redirectTo="/login">
-				<Stack.Screen
-					name="(app)"
-					options={{
-						headerShown: false,
-					}}
-				/>
+				<Stack.Screen name="(app)" />
 			</Stack.Protected>
 		</Stack>
 	);
