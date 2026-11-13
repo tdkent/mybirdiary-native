@@ -93,14 +93,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	/* Check user's auth status on first mount. */
 	useEffect(() => {
 		async function checkAuthStatus() {
-			setIsAuthChecked(true);
+			setIsAuthChecked(false);
 			try {
 				const user = await account.get();
 				if (user) setIsLoggedIn(true);
 			} catch {
 				return null;
 			} finally {
-				setIsAuthChecked(false);
+				setIsAuthChecked(true);
 			}
 		}
 
