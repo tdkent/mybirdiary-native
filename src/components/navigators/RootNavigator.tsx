@@ -8,7 +8,7 @@ export default function RootNavigator() {
 		<Stack screenOptions={{ headerShown: false }}>
 			<Stack.Screen name="index" />
 
-			<Stack.Protected guard={!isLoggedIn}>
+			<Stack.Protected guard={!isLoggedIn} redirectTo="/new-sighting">
 				<Stack.Screen name="(auth)" />
 			</Stack.Protected>
 
