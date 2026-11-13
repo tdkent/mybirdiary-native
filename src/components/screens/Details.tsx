@@ -15,11 +15,10 @@ interface Props {
 /** Renders details screen heading, image and description list. */
 export default function Details({ table }: Props) {
 	const { id } = useLocalSearchParams();
-	const rowId = id as string;
 
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: [table, id],
-		queryFn: () => getDetailsData({ rowId, table }),
+		queryFn: () => getDetailsData({ rowId: id as string, table }),
 	});
 
 	if (isPending) {
