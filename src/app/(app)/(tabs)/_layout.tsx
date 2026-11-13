@@ -5,7 +5,14 @@ import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
 	return (
-		<Tabs>
+		<Tabs
+			screenOptions={{
+				headerShown: false,
+				tabBarHideOnKeyboard: true,
+				tabBarActiveTintColor: "#2563eb",
+				tabBarInactiveTintColor: "#64748b",
+			}}
+		>
 			<Tabs.Screen
 				name="new-sighting"
 				options={{
@@ -19,7 +26,6 @@ export default function TabsLayout() {
 				options={{
 					tabBarIcon: () => <FontAwesome size={28} name="book" />,
 					title: "Sightings",
-					headerShown: false,
 				}}
 			/>
 
@@ -28,7 +34,6 @@ export default function TabsLayout() {
 				options={{
 					tabBarIcon: () => <MaterialCommunityIcons size={28} name="bird" />,
 					title: "Birds",
-					headerShown: false,
 				}}
 			/>
 

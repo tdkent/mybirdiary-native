@@ -4,7 +4,7 @@ import { getDetailsScreenText } from "@/features/getDetailsScreenText";
 import { getDetailsData } from "@/services/api/details";
 import type { DbTables } from "@/types/db";
 import { useQuery } from "@tanstack/react-query";
-import { Stack, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
@@ -34,15 +34,13 @@ export default function Details({ queries, table }: Props) {
 		return <Text>No data to show.</Text>;
 	}
 
-	const { title, descriptionList, headingText } = getDetailsScreenText({
+	const { descriptionList, headingText } = getDetailsScreenText({
 		table,
 		data,
 	});
 
 	return (
 		<React.Fragment>
-			<Stack.Screen options={{ title }} />
-
 			<ThemedText variant="heading">{headingText}</ThemedText>
 
 			<View>
