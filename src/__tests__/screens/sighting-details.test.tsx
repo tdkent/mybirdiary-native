@@ -1,4 +1,4 @@
-import SightingDetailsScreen from "@/app/(app)/sightings/[id]";
+import SightingDetailsScreen from "@/app/(app)/(tabs)/sightings/[id]";
 import { defaultDetailsReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
