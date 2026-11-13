@@ -2,14 +2,14 @@ import DescriptionList from "@/components/screens/DescriptionList";
 import ThemedText from "@/components/ui/ThemedText";
 import { getDetailsScreenText } from "@/features/getDetailsScreenText";
 import { getDetailsData } from "@/services/api/details";
-import type { Table } from "@/types/db";
+import type { DbTables } from "@/types/db";
 import { useQuery } from "@tanstack/react-query";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
 interface Props {
-	table: Table;
+	table: DbTables;
 }
 
 /** Renders details screen heading, image and description list. */

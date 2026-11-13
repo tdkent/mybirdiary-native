@@ -1,10 +1,10 @@
-import type { Bird } from "@/types/db";
+import type { Bird, DbTables } from "@/types/db";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
 
 interface Props {
 	item: Bird | object;
-	type: "birds";
+	type: DbTables;
 }
 
 /** Single FlatList item on list screen. */

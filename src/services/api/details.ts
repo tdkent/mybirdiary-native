@@ -1,12 +1,12 @@
 import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
 import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/error-messages";
-import type { Table } from "@/types/db";
+import type { DbTables } from "@/types/db";
 import { Query } from "react-native-appwrite";
 
 interface Inputs {
 	rowId: string;
-	table: Table;
+	table: DbTables;
 }
 
 /** Get a single row. */
