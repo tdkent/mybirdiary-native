@@ -1,15 +1,17 @@
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { SightingSchema } from "@/services/validation/sighting";
+import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { Formik } from "formik";
-import { type GestureResponderEvent, View } from "react-native";
+import { type GestureResponderEvent, Text, View } from "react-native";
 
 export default function SightingForm() {
 	const isLoading = false;
+
 	return (
 		<View>
 			<Formik
-				initialValues={{ commonName: "", description: "" }}
+				initialValues={{ commonName: "", date: new Date(), description: "" }}
 				onSubmit={(values) => console.log(values)}
 				validationSchema={SightingSchema}
 			>
@@ -18,6 +20,7 @@ export default function SightingForm() {
 					handleChange,
 					handleBlur,
 					handleSubmit,
+					setFieldValue,
 					touched,
 					values,
 				}) => (
@@ -33,6 +36,20 @@ export default function SightingForm() {
 							validationError={errors.commonName}
 							value={values.commonName}
 						/>
+
+						<View>
+							<Text>Date</Text>
+							<DateTimePicker
+								display="default"
+								mode="date"
+								onValueChange={(_, selectedDate) => {
+									if (selectedDate) {
+										setFieldValue("date", selectedDate);
+									}
+								}}
+								value={values.date}
+							/>
+						</View>
 
 						<ThemedTextInput
 							handleBlur={handleBlur("description")}
