@@ -5,13 +5,18 @@ import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { Formik } from "formik";
 import { type GestureResponderEvent, Text, View } from "react-native";
 
+export const today = new Date();
+export const tenYearsAgo = new Date(
+	today.getTime() - 1000 * 60 * 60 * 24 * 365 * 10,
+);
+
 export default function SightingForm() {
 	const isLoading = false;
 
 	return (
 		<View>
 			<Formik
-				initialValues={{ commonName: "", date: new Date(), description: "" }}
+				initialValues={{ commonName: "", date: today, description: "" }}
 				onSubmit={(values) => console.log(values)}
 				validationSchema={SightingSchema}
 			>
@@ -41,6 +46,8 @@ export default function SightingForm() {
 							<Text>Date</Text>
 							<DateTimePicker
 								display="default"
+								maximumDate={today}
+								minimumDate={tenYearsAgo}
 								mode="date"
 								onValueChange={(_, selectedDate) => {
 									if (selectedDate) {

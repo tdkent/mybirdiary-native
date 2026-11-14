@@ -8,6 +8,7 @@ export const ERROR_MESSAGES = {
 	PASSWORD_LENGTH_SHORT: "Password must be at least 8 characters.",
 	PASSWORD_LENGTH_LONG: "Password must be less than 128 characters.",
 	REGISTERED_EMAIL: "Email already registered. Sign in?",
+	REQUIRED_DATE: "Date is required.",
 	REQUIRED_EMAIL: "Email is required.",
 	REQUIRED_PASSWORD: "Password is required.",
 	SIGHTING_NAME_REQUIRED: "Name is required.",
