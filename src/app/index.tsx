@@ -1,24 +1,16 @@
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
-import ThemedText from "@/components/ui/ThemedText";
-import { useRouter } from "expo-router";
-import { Button, View } from "react-native";
+import { useAuth } from "@/hooks/useAuth";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-	const router = useRouter();
+	const { isAuthChecked, isLoggedIn } = useAuth();
+
+	if (!isAuthChecked) {
+		return null;
+	}
 
 	return (
-		<ThemedSafeView>
-			<ThemedText variant="heading">Welcome to My Birdiary</ThemedText>
-			<ThemedText>
-				Enter your email to sign in or create a new account
-			</ThemedText>
-
-			<View className="my-10">
-				<Button
-					onPress={() => router.navigate("/login")}
-					title="Log in or register"
-				/>
-			</View>
-		</ThemedSafeView>
+		<Redirect
+			href={isLoggedIn ? "/(app)/(tabs)/new-sighting" : "/(auth)/login"}
+		/>
 	);
 }

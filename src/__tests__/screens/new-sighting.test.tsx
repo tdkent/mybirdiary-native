@@ -1,4 +1,4 @@
-import NewSightingScreen from "@/app/(app)/new-sighting";
+import NewSightingScreen from "@/app/(app)/(tabs)/new-sighting";
 import { render } from "@testing-library/react-native";
 
 describe("NewSightingScreen", () => {

@@ -1,4 +1,4 @@
-import BirdDetailsScreen from "@/app/(app)/birds/[id]";
+import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
 import { defaultDetailsReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";

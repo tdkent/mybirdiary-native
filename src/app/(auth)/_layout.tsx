@@ -1,5 +1,13 @@
-import AuthNavigator from "@/components/navigators/AuthNavigator";
+import { Stack } from "expo-router";
 
 export default function AuthLayout() {
-	return <AuthNavigator />;
+	return (
+		<Stack
+			screenOptions={{
+				animation: "fade",
+				animationDuration: 300,
+				headerShown: false,
+			}}
+		/>
+	);
 }

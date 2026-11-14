@@ -1,4 +1,4 @@
-import AccountScreen from "@/app/(app)/account";
+import AccountScreen from "@/app/(app)/(tabs)/account";
 import { render } from "@testing-library/react-native";
 
 describe("AccountScreen", () => {

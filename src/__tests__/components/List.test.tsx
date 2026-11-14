@@ -1,5 +1,5 @@
-import BirdsScreen from "@/app/(app)/birds";
-import BirdDetailsScreen from "@/app/(app)/birds/[id]";
+import BirdsScreen from "@/app/(app)/(tabs)/birds";
+import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
 import List from "@/components/screens/List";
 import { defaultListReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";

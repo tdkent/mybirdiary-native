@@ -1,8 +1,9 @@
+import { DEFAULT_HEADER_OPTIONS } from "@/constants/navigation";
 import { Stack } from "expo-router";
 
-export default function SightingsNavigator() {
+export default function SightingsLayout() {
 	return (
-		<Stack>
+		<Stack screenOptions={DEFAULT_HEADER_OPTIONS}>
 			<Stack.Screen
 				name="index"
 				options={{
@@ -12,7 +13,7 @@ export default function SightingsNavigator() {
 			<Stack.Screen
 				name="[id]"
 				options={{
-					headerBackButtonDisplayMode: "minimal",
+					title: "Sighting Details",
 				}}
 			/>
 		</Stack>
