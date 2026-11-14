@@ -1,13 +1,9 @@
+import { DEFAULT_HEADER_OPTIONS } from "@/constants/navigation";
 import { Stack } from "expo-router";
 
 export default function SightingsLayout() {
 	return (
-		<Stack
-			screenOptions={{
-				headerBackButtonDisplayMode: "minimal",
-				headerTintColor: '"#2563eb"',
-			}}
-		>
+		<Stack screenOptions={DEFAULT_HEADER_OPTIONS}>
 			<Stack.Screen
 				name="index"
 				options={{
