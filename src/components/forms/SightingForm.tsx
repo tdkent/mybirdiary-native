@@ -1,6 +1,7 @@
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { SightingSchema } from "@/services/validation/sighting";
+import type { SightingFormInputs } from "@/types/forms";
 import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { Formik } from "formik";
 import { type GestureResponderEvent, Text, View } from "react-native";
@@ -13,11 +14,15 @@ export const tenYearsAgo = new Date(
 export default function SightingForm() {
 	const isLoading = false;
 
+	function handleSubmit(values: SightingFormInputs) {
+		console.log(values);
+	}
+
 	return (
 		<View>
 			<Formik
 				initialValues={{ commonName: "", date: today, description: "" }}
-				onSubmit={(values) => console.log(values)}
+				onSubmit={handleSubmit}
 				validationSchema={SightingSchema}
 			>
 				{({

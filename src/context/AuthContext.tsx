@@ -1,6 +1,6 @@
 import { account } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/error-messages";
-import type { UserAuth } from "@/types/forms";
+import type { UserAuthInputs } from "@/types/forms";
 import {
 	createContext,
 	type Dispatch,
@@ -15,9 +15,9 @@ export interface Auth {
 	isAuthChecked: boolean;
 	isLoading: boolean;
 	isLoggedIn: boolean;
-	login: (values: UserAuth) => void;
+	login: (values: UserAuthInputs) => void;
 	logout: () => void;
-	register: (values: UserAuth) => void;
+	register: (values: UserAuthInputs) => void;
 	setError: Dispatch<SetStateAction<string | null>>;
 }
 
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	async function register({ email, password }: UserAuth) {
+	async function register({ email, password }: UserAuthInputs) {
 		setError(null);
 		setIsLoading(true);
 		try {
@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
-	async function login({ email, password }: UserAuth) {
+	async function login({ email, password }: UserAuthInputs) {
 		setError(null);
 		setIsLoading(true);
 		try {

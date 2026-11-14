@@ -2,7 +2,7 @@ import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth";
-import type { AuthActions, UserAuth } from "@/types/forms";
+import type { AuthActions, UserAuthInputs } from "@/types/forms";
 import { Formik } from "formik";
 import { useEffect } from "react";
 import { type GestureResponderEvent, Text, View } from "react-native";
@@ -17,7 +17,7 @@ export default function AuthForm({ action }: AuthActions) {
 		setError(null);
 	}, []);
 
-	function handleAuthAction(values: UserAuth) {
+	function handleAuthAction(values: UserAuthInputs) {
 		if (action === "register") {
 			register(values);
 		} else if (action === "login") {
