@@ -1,6 +1,6 @@
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
-import { AuthSchema } from "@/services/validation/auth";
+import { SightingSchema } from "@/services/validation/sighting";
 import { Formik } from "formik";
 import { type GestureResponderEvent, View } from "react-native";
 
@@ -11,7 +11,7 @@ export default function SightingForm() {
 			<Formik
 				initialValues={{ commonName: "", description: "" }}
 				onSubmit={(values) => console.log(values)}
-				validationSchema={AuthSchema}
+				validationSchema={SightingSchema}
 			>
 				{({
 					errors,

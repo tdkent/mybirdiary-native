@@ -10,5 +10,7 @@ export const ERROR_MESSAGES = {
 	REGISTERED_EMAIL: "Email already registered. Sign in?",
 	REQUIRED_EMAIL: "Email is required.",
 	REQUIRED_PASSWORD: "Password is required.",
+	SIGHTING_NAME_REQUIRED: "Name is required.",
+	SIGHTING_DESCRIPTION_LENGTH: "Description must be less than 150 characters.",
 	UNKNOWN_ERROR: "An unknown exception occurred.",
 };
