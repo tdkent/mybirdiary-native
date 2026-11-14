@@ -11,20 +11,27 @@ export default function TabsLayout() {
 				tabBarHideOnKeyboard: true,
 				tabBarActiveTintColor: "#2563eb",
 				tabBarInactiveTintColor: "#64748b",
+				tabBarIconStyle: {
+					marginTop: 2,
+				},
 			}}
 		>
 			<Tabs.Screen
 				name="new-sighting"
 				options={{
 					title: "New Sighting",
-					tabBarIcon: () => <Ionicons size={28} name="binoculars" />,
+					tabBarIcon: ({ color, size }) => (
+						<Ionicons color={String(color)} size={size} name="binoculars" />
+					),
 				}}
 			/>
 
 			<Tabs.Screen
 				name="sightings"
 				options={{
-					tabBarIcon: () => <FontAwesome size={28} name="book" />,
+					tabBarIcon: ({ color, size }) => (
+						<FontAwesome color={String(color)} size={size} name="book" />
+					),
 					title: "Sightings",
 				}}
 			/>
@@ -32,7 +39,13 @@ export default function TabsLayout() {
 			<Tabs.Screen
 				name="birds"
 				options={{
-					tabBarIcon: () => <MaterialCommunityIcons size={28} name="bird" />,
+					tabBarIcon: ({ color, size }) => (
+						<MaterialCommunityIcons
+							color={String(color)}
+							size={size}
+							name="bird"
+						/>
+					),
 					title: "Birds",
 				}}
 			/>
@@ -40,8 +53,12 @@ export default function TabsLayout() {
 			<Tabs.Screen
 				name="account"
 				options={{
-					tabBarIcon: () => (
-						<MaterialCommunityIcons size={28} name="account-circle" />
+					tabBarIcon: ({ color, size }) => (
+						<MaterialCommunityIcons
+							color={String(color)}
+							size={size}
+							name="account-circle"
+						/>
 					),
 					title: "Account",
 				}}
