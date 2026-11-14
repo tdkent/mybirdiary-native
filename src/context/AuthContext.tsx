@@ -10,7 +10,7 @@ import {
 } from "react";
 import { ID } from "react-native-appwrite";
 
-interface Auth {
+export interface Auth {
 	error: string | null;
 	isAuthChecked: boolean;
 	isLoading: boolean;
