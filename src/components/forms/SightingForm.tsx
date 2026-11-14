@@ -1,15 +1,12 @@
 import ThemedButton from "@/components/ui/ThemedButton";
+import ThemedText from "@/components/ui/ThemedText";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
+import { TEN_YEARS_AGO, TODAY } from "@/constants/dates";
 import { SightingSchema } from "@/services/validation/sighting";
 import type { SightingFormInputs } from "@/types/forms";
 import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { Formik } from "formik";
-import { type GestureResponderEvent, Text, View } from "react-native";
-
-export const today = new Date();
-export const tenYearsAgo = new Date(
-	today.getTime() - 1000 * 60 * 60 * 24 * 365 * 10,
-);
+import { type GestureResponderEvent, View } from "react-native";
 
 export default function SightingForm() {
 	const isLoading = false;
@@ -21,7 +18,7 @@ export default function SightingForm() {
 	return (
 		<View>
 			<Formik
-				initialValues={{ commonName: "", date: today, description: "" }}
+				initialValues={{ commonName: "", date: TODAY, description: "" }}
 				onSubmit={handleSubmit}
 				validationSchema={SightingSchema}
 			>
@@ -37,7 +34,7 @@ export default function SightingForm() {
 					<View className="my-10">
 						<ThemedTextInput
 							handleBlur={handleBlur("commonName")}
-							label="common name"
+							label="Common Name"
 							isLoading={isLoading}
 							isTouched={touched.commonName}
 							onBlur={handleBlur("commonName")}
@@ -48,11 +45,11 @@ export default function SightingForm() {
 						/>
 
 						<View>
-							<Text>Date</Text>
+							<ThemedText>Date</ThemedText>
 							<DateTimePicker
 								display="default"
-								maximumDate={today}
-								minimumDate={tenYearsAgo}
+								maximumDate={TODAY}
+								minimumDate={TEN_YEARS_AGO}
 								mode="date"
 								onValueChange={(_, selectedDate) => {
 									if (selectedDate) {
@@ -65,7 +62,7 @@ export default function SightingForm() {
 
 						<ThemedTextInput
 							handleBlur={handleBlur("description")}
-							label="description"
+							label="Description"
 							isLoading={isLoading}
 							isTouched={touched.description}
 							onBlur={handleBlur("description")}

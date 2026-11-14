@@ -4,6 +4,7 @@ export const ERROR_MESSAGES = {
 		"Unable to reach the server. Please check your connection or try again in a moment.",
 	INCORRECT_CREDENTIALS: "Email or password are incorrect. Please try again.",
 	INVALID_CREDENTIALS: "Invalid email or password.",
+	INVALID_DATE: "Invalid date range.",
 	INVALID_EMAIL: "Please enter a valid email.",
 	PASSWORD_LENGTH_SHORT: "Password must be at least 8 characters.",
 	PASSWORD_LENGTH_LONG: "Password must be less than 128 characters.",
