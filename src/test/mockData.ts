@@ -1,3 +1,4 @@
+import type { Auth } from "@/context/AuthContext";
 import type {
 	DetailsQueryData,
 	DetailsQueryReturnValue,
@@ -25,6 +26,18 @@ export const mockUser = {
 
 export const userAuthenticated = "Authenticated";
 export const userUnauthenticated = "Unauthenticated";
+
+export const mockAuthContext: Auth = {
+	error: "",
+	isAuthChecked: false,
+	isLoading: false,
+	isLoggedIn: false,
+	login: () => {},
+	logout: () => {},
+	register: () => {},
+	setError: () => {},
+	user: null,
+};
 
 /** List component */
 export const mockListData: ListQueryData = {
