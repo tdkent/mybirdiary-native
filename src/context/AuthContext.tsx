@@ -8,7 +8,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { ID } from "react-native-appwrite";
+import { ID, type Models } from "react-native-appwrite";
 
 export interface Auth {
 	error: string | null;
@@ -19,6 +19,7 @@ export interface Auth {
 	logout: () => void;
 	register: (values: UserAuthInputs) => void;
 	setError: Dispatch<SetStateAction<string | null>>;
+	user: Models.User | null;
 }
 
 export const AuthContext = createContext<Auth>({
@@ -30,6 +31,7 @@ export const AuthContext = createContext<Auth>({
 	logout: () => {},
 	register: () => {},
 	setError: () => {},
+	user: null,
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
@@ -37,6 +39,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isAuthChecked, setIsAuthChecked] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [user, setUser] = useState<Models.User | null>(null);
 
 	async function register({ email, password }: UserAuthInputs) {
 		setError(null);
@@ -53,7 +56,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				password,
 			});
 
+			const user = await account.get();
+
 			setIsLoggedIn(true);
+			setUser(user);
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
@@ -70,7 +76,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				password,
 			});
 
+			const user = await account.get();
+
 			setIsLoggedIn(true);
+			setUser(user);
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
@@ -83,6 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		try {
 			await account.deleteSession({ sessionId: "current" });
 			setIsLoggedIn(false);
+			setUser(null);
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
@@ -96,7 +106,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsAuthChecked(false);
 			try {
 				const user = await account.get();
-				if (user) setIsLoggedIn(true);
+				if (user) {
+					setIsLoggedIn(true);
+					setUser(user);
+				}
 			} catch {
 				return null;
 			} finally {
@@ -118,6 +131,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				logout,
 				register,
 				setError,
+				user,
 			}}
 		>
 			{children}
