@@ -1,18 +1,7 @@
 import Index from "@/app";
-import type { Auth } from "@/context/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
+import { mockAuthContext } from "@/test/mockData";
 import { render } from "@testing-library/react-native";
-
-const mockAuth: Auth = {
-	error: "",
-	isAuthChecked: false,
-	isLoading: false,
-	isLoggedIn: false,
-	login: () => {},
-	logout: () => {},
-	register: () => {},
-	setError: () => {},
-};
 
 jest.mock("expo-router", () => {
 	const React = require("react");
@@ -38,7 +27,7 @@ describe("Index", () => {
 
 	it("does not redirect while authentication is being checked", async () => {
 		mockUseAuth.mockReturnValue({
-			...mockAuth,
+			...mockAuthContext,
 			isAuthChecked: false,
 			isLoggedIn: false,
 		});
@@ -50,7 +39,7 @@ describe("Index", () => {
 
 	it("redirects authenticated users to the application", async () => {
 		mockUseAuth.mockReturnValue({
-			...mockAuth,
+			...mockAuthContext,
 			isAuthChecked: true,
 			isLoggedIn: true,
 		});
@@ -64,7 +53,7 @@ describe("Index", () => {
 
 	it("redirects unauthenticated users to login", async () => {
 		mockUseAuth.mockReturnValue({
-			...mockAuth,
+			...mockAuthContext,
 			isAuthChecked: true,
 			isLoggedIn: false,
 		});
