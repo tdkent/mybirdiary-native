@@ -14,3 +14,8 @@ export interface SightingFormInputs {
 	date: Date;
 	description: string;
 }
+
+export interface SightingMutationInputs {
+	userId: string;
+	formValues: SightingFormInputs;
+}

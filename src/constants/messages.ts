@@ -1,5 +1,6 @@
 export const ERROR_MESSAGES = {
 	APPWRITE_UNEXPECTED: "A server error occurred.",
+	AUTH_ERROR: "An authentication error occurred.",
 	FETCH_FAILED:
 		"Unable to reach the server. Please check your connection or try again in a moment.",
 	INCORRECT_CREDENTIALS: "Email or password are incorrect. Please try again.",

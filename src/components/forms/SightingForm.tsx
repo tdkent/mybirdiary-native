@@ -2,24 +2,34 @@ import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedText from "@/components/ui/ThemedText";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { TEN_YEARS_AGO, TODAY } from "@/constants/dates";
+import { ERROR_MESSAGES } from "@/constants/messages";
+import { useAuth } from "@/hooks/useAuth";
+import { createSighting } from "@/services/api/mutate";
 import { SightingSchema } from "@/services/validation/sighting";
-import type { SightingFormInputs } from "@/types/forms";
+import type { SightingMutationInputs } from "@/types/forms";
 import DateTimePicker from "@expo/ui/community/datetime-picker";
+import { useMutation } from "@tanstack/react-query";
 import { Formik } from "formik";
-import { type GestureResponderEvent, View } from "react-native";
+import { type GestureResponderEvent, Text, View } from "react-native";
 
 export default function SightingForm() {
-	const isLoading = false;
+	const { user } = useAuth();
 
-	function handleSubmit(values: SightingFormInputs) {
-		console.log(values);
+	if (!user) {
+		throw new Error(ERROR_MESSAGES.AUTH_ERROR);
 	}
+
+	const { error, isError, isPending, mutate } = useMutation({
+		mutationFn: ({ userId, formValues }: SightingMutationInputs) =>
+			createSighting({ userId, formValues }),
+	});
 
 	return (
 		<View>
+			{isError && <Text>{error.message}</Text>}
 			<Formik
 				initialValues={{ commonName: "", date: TODAY, description: "" }}
-				onSubmit={handleSubmit}
+				onSubmit={(formValues) => mutate({ userId: user.$id, formValues })}
 				validationSchema={SightingSchema}
 			>
 				{({
@@ -35,7 +45,7 @@ export default function SightingForm() {
 						<ThemedTextInput
 							handleBlur={handleBlur("commonName")}
 							label="Common Name"
-							isLoading={isLoading}
+							isLoading={isPending}
 							isTouched={touched.commonName}
 							onBlur={handleBlur("commonName")}
 							onChangeText={handleChange("commonName")}
@@ -63,7 +73,7 @@ export default function SightingForm() {
 						<ThemedTextInput
 							handleBlur={handleBlur("description")}
 							label="Description"
-							isLoading={isLoading}
+							isLoading={isPending}
 							isTouched={touched.description}
 							onBlur={handleBlur("description")}
 							onChangeText={handleChange("description")}
@@ -73,8 +83,8 @@ export default function SightingForm() {
 						/>
 
 						<ThemedButton
-							isLoading={isLoading}
-							label={isLoading ? `Submitting...` : `Submit`}
+							isLoading={isPending}
+							label={isPending ? `Submitting...` : `Submit`}
 							onPress={handleSubmit as (e?: GestureResponderEvent) => void}
 						/>
 					</View>
