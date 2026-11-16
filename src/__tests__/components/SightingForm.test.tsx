@@ -32,10 +32,10 @@ describe("SightingForm", () => {
 			<SightingForm />,
 		);
 
-		expect(getByLabelText(/common name/i));
-		expect(getByTestId(/sighting-date/i));
-		expect(getByLabelText(/description/i));
-		expect(getByRole("button", { name: /submit/i }));
+		expect(getByLabelText(/common name/i)).toBeOnTheScreen();
+		expect(getByTestId(/sighting-date/i)).toBeOnTheScreen();
+		expect(getByLabelText(/description/i)).toBeOnTheScreen();
+		expect(getByRole("button", { name: /submit/i })).toBeOnTheScreen();
 	});
 
 	test("rejects empty common name input and displays error", async () => {
@@ -85,7 +85,7 @@ describe("SightingForm", () => {
 
 		const { findByText, getByRole } = await render(<SightingForm />);
 
-		expect(await findByText(/submitting/i));
+		expect(await findByText(/submitting/i)).toBeOnTheScreen();
 		expect(getByRole("button", { name: /submit/i })).toBeDisabled();
 	});
 
@@ -98,10 +98,12 @@ describe("SightingForm", () => {
 		} as unknown as ReturnType<typeof useMutation>);
 
 		const { findByText } = await render(<SightingForm />);
-		expect(await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED));
+		expect(
+			await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
+		).toBeOnTheScreen();
 	});
 
-	test("calls mutate with valid credentials", async () => {
+	test("calls mutate with valid inputs", async () => {
 		const { getByLabelText, getByRole } = await render(<SightingForm />);
 
 		const commonName = "Blue Jay";
