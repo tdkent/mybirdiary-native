@@ -1,4 +1,4 @@
-// Mock appwrite
+// Appwrite
 jest.mock("react-native-appwrite", () => ({
 	Client: jest.fn().mockImplementation(() => ({
 		setEndpoint: jest.fn().mockReturnThis(),
@@ -31,13 +31,13 @@ jest.mock("react-native-appwrite", () => ({
 	},
 }));
 
-// Mock uniwind
+// Uniwind
 jest.mock("uniwind", () => ({
 	useUniwind: jest.fn(),
 	withUniwind: (component: React.ComponentType<unknown>) => component,
 }));
 
-// Mock Tanstack Query
+// Tanstack Query
 jest.mock("@tanstack/react-query", () => ({
 	useMutation: jest.fn(),
 	useQuery: jest.fn(),
@@ -46,3 +46,9 @@ jest.mock("@tanstack/react-query", () => ({
 beforeEach(() => {
 	jest.clearAllMocks();
 });
+
+// Console
+global.console = {
+	...console,
+	error: jest.fn(),
+};
