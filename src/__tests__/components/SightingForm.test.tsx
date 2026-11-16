@@ -51,7 +51,28 @@ describe("SightingForm", () => {
 
 	test("rejects invalid date and displays error", async () => {});
 
-	test("displays error message if an error occurs", async () => {});
+	test("displays error message if a server error occurs", async () => {
+		jest.mocked(useMutation).mockReturnValue({
+			error: { message: ERROR_MESSAGES.APPWRITE_UNEXPECTED },
+			isError: true,
+			isPending: false,
+			mutate: mockMutate,
+		} as unknown as ReturnType<typeof useMutation>);
+
+		const { findByText, getByLabelText, getByRole } = await render(
+			<SightingForm />,
+		);
+
+		const commonName = "Blue Jay";
+		const nameInput = getByLabelText(/common name/i);
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(nameInput, commonName);
+		await fireEvent.press(button);
+
+		expect(mockMutate).toHaveBeenCalled();
+		expect(await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED));
+	});
 
 	test("calls mutate with valid credentials", async () => {
 		const { getByLabelText, getByRole } = await render(<SightingForm />);
