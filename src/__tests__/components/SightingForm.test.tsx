@@ -5,6 +5,7 @@
 
 import SightingForm from "@/components/forms/SightingForm";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import { useMutation } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 
 jest.mock("@/hooks/useAuth", () => ({
@@ -12,6 +13,17 @@ jest.mock("@/hooks/useAuth", () => ({
 		user: { $id: "1" },
 	}),
 }));
+
+const mockMutate = jest.fn();
+
+beforeEach(() => {
+	jest.mocked(useMutation).mockReturnValue({
+		error: null,
+		isError: false,
+		isPending: false,
+		mutate: mockMutate,
+	} as unknown as ReturnType<typeof useMutation>);
+});
 
 describe("SightingForm", () => {
 	test("renders form inputs and submit button", async () => {
@@ -34,11 +46,29 @@ describe("SightingForm", () => {
 		expect(
 			await findByTestId(/commonName-validation-alert/i),
 		).toHaveTextContent(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
+		expect(mockMutate).not.toHaveBeenCalled();
 	});
 
 	test("rejects invalid date and displays error", async () => {});
 
 	test("displays error message if an error occurs", async () => {});
 
-	test("calls mutate with valid credentials", async () => {});
+	test("calls mutate with valid credentials", async () => {
+		const { getByLabelText, getByRole } = await render(<SightingForm />);
+
+		const commonName = "Blue Jay";
+		const nameInput = getByLabelText(/common name/i);
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(nameInput, commonName);
+		await fireEvent.press(button);
+
+		expect(mockMutate).toHaveBeenCalledTimes(1);
+		expect(mockMutate).toHaveBeenCalledWith({
+			userId: "1",
+			formValues: expect.objectContaining({
+				commonName,
+			}),
+		});
+	});
 });
