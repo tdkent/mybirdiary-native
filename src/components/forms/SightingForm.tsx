@@ -66,6 +66,7 @@ export default function SightingForm() {
 										setFieldValue("date", selectedDate);
 									}
 								}}
+								testID="sighting-date"
 								value={values.date}
 							/>
 						</View>
