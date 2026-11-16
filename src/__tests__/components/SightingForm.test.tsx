@@ -5,6 +5,7 @@
 
 import SightingForm from "@/components/forms/SightingForm";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import { VALIDATION } from "@/constants/validation";
 import { useMutation } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 
@@ -46,6 +47,31 @@ describe("SightingForm", () => {
 		expect(
 			await findByTestId(/commonName-validation-alert/i),
 		).toHaveTextContent(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
+		expect(mockMutate).not.toHaveBeenCalled();
+	});
+
+	test("rejects description over character limit", async () => {
+		const { findByTestId, getByLabelText, getByRole } = await render(
+			<SightingForm />,
+		);
+
+		// Create 151-character string
+		const mockDescription = new Array(
+			VALIDATION.DESCRIPTION_CHAR_LIMIT + 2,
+		).join("x");
+
+		const commonName = "Blue Jay";
+		const nameInput = getByLabelText(/common name/i);
+		const descriptionInput = getByLabelText(/description/i);
+		const button = getByRole("button", { name: /submit/i });
+
+		await fireEvent.changeText(nameInput, commonName);
+		await fireEvent.changeText(descriptionInput, mockDescription);
+		await fireEvent.press(button);
+
+		expect(
+			await findByTestId(/description-validation-alert/i),
+		).toHaveTextContent(ERROR_MESSAGES.SIGHTING_DESCRIPTION_LENGTH);
 		expect(mockMutate).not.toHaveBeenCalled();
 	});
 
