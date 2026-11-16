@@ -57,6 +57,7 @@ export default function SightingForm() {
 						<View>
 							<ThemedText>Date</ThemedText>
 							<DateTimePicker
+								disabled={isPending}
 								display="default"
 								maximumDate={TODAY}
 								minimumDate={TEN_YEARS_AGO}
@@ -66,6 +67,7 @@ export default function SightingForm() {
 										setFieldValue("date", selectedDate);
 									}
 								}}
+								testID="sighting-date"
 								value={values.date}
 							/>
 						</View>

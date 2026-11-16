@@ -1,4 +1,5 @@
 import NewSightingScreen from "@/app/(app)/(tabs)/new-sighting";
+import { useMutation } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 
 jest.mock("@/hooks/useAuth", () => ({
@@ -6,6 +7,12 @@ jest.mock("@/hooks/useAuth", () => ({
 		user: { $id: "1" },
 	}),
 }));
+
+beforeEach(() => {
+	jest
+		.mocked(useMutation)
+		.mockReturnValue({} as unknown as ReturnType<typeof useMutation>);
+});
 
 describe("NewSightingScreen", () => {
 	test("displays the expected screen heading", async () => {

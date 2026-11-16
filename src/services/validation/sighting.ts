@@ -1,5 +1,6 @@
 import { TEN_YEARS_AGO, TODAY } from "@/constants/dates";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import { VALIDATION } from "@/constants/validation";
 import * as Yup from "yup";
 
 const CommonName = Yup.string().required(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
@@ -10,7 +11,7 @@ const SightingDate = Yup.date()
 	.max(TODAY, ERROR_MESSAGES.INVALID_DATE);
 
 const Description = Yup.string().max(
-	150,
+	VALIDATION.DESCRIPTION_CHAR_LIMIT,
 	ERROR_MESSAGES.SIGHTING_DESCRIPTION_LENGTH,
 );
 

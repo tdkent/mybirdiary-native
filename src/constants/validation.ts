@@ -1,0 +1,3 @@
+export const VALIDATION = {
+	DESCRIPTION_CHAR_LIMIT: 150,
+};

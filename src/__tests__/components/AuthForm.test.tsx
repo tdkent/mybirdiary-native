@@ -15,8 +15,6 @@ import {
 } from "@/test/mockData";
 import { fireEvent, render } from "@testing-library/react-native";
 
-// Mock auth context (do not mock these globally
-// so that real functions can be called in other tests)
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
 
