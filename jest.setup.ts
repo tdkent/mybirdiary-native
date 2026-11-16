@@ -22,10 +22,12 @@ jest.mock("react-native-appwrite", () => ({
 	},
 
 	AppwriteException: class AppwriteException extends Error {
+		code: number;
 		type: string;
 
-		constructor(message: string, type: string) {
+		constructor(message: string, code: number, type: string) {
 			super(message);
+			this.code = code;
 			this.type = type;
 		}
 	},
