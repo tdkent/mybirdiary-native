@@ -37,7 +37,7 @@ describe("SightingForm", () => {
 		expect(getByRole("button", { name: /submit/i }));
 	});
 
-	test("rejects empty name input and displays error", async () => {
+	test("rejects empty common name input and displays error", async () => {
 		const { findByTestId, getByRole } = await render(<SightingForm />);
 
 		const button = getByRole("button", { name: /submit/i });
@@ -48,8 +48,6 @@ describe("SightingForm", () => {
 		).toHaveTextContent(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
 		expect(mockMutate).not.toHaveBeenCalled();
 	});
-
-	test("rejects invalid date and displays error", async () => {});
 
 	test("displays error message if a server error occurs", async () => {
 		jest.mocked(useMutation).mockReturnValue({
