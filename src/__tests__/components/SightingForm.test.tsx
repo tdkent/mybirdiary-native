@@ -1,5 +1,11 @@
+/**
+ * Test form behavior and validation
+ * Verify the form behaves correctly during user interaction
+ */
+
 import SightingForm from "@/components/forms/SightingForm";
-import { render } from "@testing-library/react-native";
+import { ERROR_MESSAGES } from "@/constants/messages";
+import { fireEvent, render } from "@testing-library/react-native";
 
 jest.mock("@/hooks/useAuth", () => ({
 	useAuth: jest.fn().mockReturnValue({
@@ -8,25 +14,31 @@ jest.mock("@/hooks/useAuth", () => ({
 }));
 
 describe("SightingForm", () => {
-	// test inputs and button are present
-	test("renders default forms element", async () => {
+	test("renders form inputs and submit button", async () => {
 		const { getByLabelText, getByRole, getByTestId } = await render(
 			<SightingForm />,
 		);
 
-		// Inputs
 		expect(getByLabelText(/common name/i));
 		expect(getByTestId(/sighting-date/i));
 		expect(getByLabelText(/description/i));
-
-		// Button
 		expect(getByRole("button", { name: /submit/i }));
 	});
-	// validation error if name input is blank
-	// validation error if date > today
-	// validation error if date < 10 years ago
-	// validation error if desc > 150 chars
-	// shows error if server error occurs
-	// calls create action once with inputs if all inputs valid
-	// test that new sighting is added to /sightings
+
+	test("rejects empty name input and displays error", async () => {
+		const { findByTestId, getByRole } = await render(<SightingForm />);
+
+		const button = getByRole("button", { name: /submit/i });
+		await fireEvent.press(button);
+
+		expect(
+			await findByTestId(/commonName-validation-alert/i),
+		).toHaveTextContent(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
+	});
+
+	test("rejects invalid date and displays error", async () => {});
+
+	test("displays error message if an error occurs", async () => {});
+
+	test("calls mutate with valid credentials", async () => {});
 });
