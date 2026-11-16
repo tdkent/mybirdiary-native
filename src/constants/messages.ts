@@ -16,4 +16,13 @@ export const ERROR_MESSAGES = {
 	SIGHTING_NAME_REQUIRED: "Name is required.",
 	SIGHTING_DESCRIPTION_LENGTH: "Description must be less than 150 characters.",
 	UNKNOWN_ERROR: "An unknown exception occurred.",
-};
+} as const;
+
+export const appwriteErrorMessage = {
+	general_argument_invalid: ERROR_MESSAGES.INVALID_CREDENTIALS,
+	user_already_exists: ERROR_MESSAGES.REGISTERED_EMAIL,
+	user_invalid_credentials: ERROR_MESSAGES.INCORRECT_CREDENTIALS,
+} as const;
+
+// Create type matching `appwriteErrorMessage` object's keys.
+export type AppwriteErrorMessage = keyof typeof appwriteErrorMessage;
