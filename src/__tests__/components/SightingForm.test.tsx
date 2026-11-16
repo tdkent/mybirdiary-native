@@ -41,8 +41,7 @@ describe("SightingForm", () => {
 	test("rejects empty common name input and displays error", async () => {
 		const { findByTestId, getByRole } = await render(<SightingForm />);
 
-		const button = getByRole("button", { name: /submit/i });
-		await fireEvent.press(button);
+		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(
 			await findByTestId(/commonName-validation-alert/i),
@@ -60,14 +59,12 @@ describe("SightingForm", () => {
 			VALIDATION.DESCRIPTION_CHAR_LIMIT + 2,
 		).join("x");
 
-		const commonName = "Blue Jay";
 		const nameInput = getByLabelText(/common name/i);
 		const descriptionInput = getByLabelText(/description/i);
-		const button = getByRole("button", { name: /submit/i });
 
-		await fireEvent.changeText(nameInput, commonName);
+		await fireEvent.changeText(nameInput, "Blue Jay");
 		await fireEvent.changeText(descriptionInput, mockDescription);
-		await fireEvent.press(button);
+		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(
 			await findByTestId(/description-validation-alert/i),
@@ -108,10 +105,9 @@ describe("SightingForm", () => {
 
 		const commonName = "Blue Jay";
 		const nameInput = getByLabelText(/common name/i);
-		const button = getByRole("button", { name: /submit/i });
 
-		await fireEvent.changeText(nameInput, commonName);
-		await fireEvent.press(button);
+		await fireEvent.changeText(nameInput, "Blue Jay");
+		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(mockMutate).toHaveBeenCalledTimes(1);
 		expect(mockMutate).toHaveBeenCalledWith({
