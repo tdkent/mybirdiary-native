@@ -12,7 +12,7 @@ export async function createSighting({
 	formValues,
 }: SightingMutationInputs) {
 	try {
-		const result = await tablesDB.createRow({
+		await tablesDB.createRow({
 			databaseId: CONFIG.DATABASE_ID,
 			tableId: CONFIG.SIGHTINGS_TABLE_ID,
 			rowId: ID.unique(),
@@ -27,8 +27,6 @@ export async function createSighting({
 				Permission.delete(Role.user(userId)),
 			],
 		});
-
-		console.log(result);
 	} catch (e) {
 		throw new Error(getErrorMessage(e));
 	}
