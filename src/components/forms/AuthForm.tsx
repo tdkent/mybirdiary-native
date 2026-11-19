@@ -15,7 +15,7 @@ export default function AuthForm({ action }: AuthActions) {
 
 	useEffect(() => {
 		setError(null);
-	}, []);
+	}, [setError]);
 
 	function handleAuthAction(values: UserAuthInputs) {
 		if (action === "register") {

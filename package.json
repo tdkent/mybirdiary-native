@@ -9,7 +9,7 @@
 	},
 	"scripts": {
 		"android": "expo start --android",
-		"check": "biome check --verbose",
+		"check": "npx biome ci --reporter=github",
 		"check:fix": "biome check --write --no-errors-on-unmatched",
 		"format": "biome format --write",
 		"ios": "WITH_ROZENITE=true expo start --ios",

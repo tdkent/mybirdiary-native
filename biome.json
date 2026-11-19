@@ -1,9 +1,5 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
-	"files": {
-		"ignoreUnknown": true,
-		"includes": ["**", "!assets"]
-	},
 	"assist": {
 		"enabled": true,
 		"actions": {
@@ -11,6 +7,10 @@
 				"organizeImports": "on"
 			}
 		}
+	},
+	"files": {
+		"ignoreUnknown": true,
+		"includes": ["**", "!assets"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -29,8 +29,7 @@
 		"rules": {
 			"preset": "recommended",
 			"correctness": {
-				"noReactNativeRawText": "off",
-				"useExhaustiveDependencies": "info"
+				"noReactNativeRawText": "off"
 			}
 		}
 	},
@@ -40,6 +39,7 @@
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": true
+		"useIgnoreFile": true,
+		"defaultBranch": "main"
 	}
 }

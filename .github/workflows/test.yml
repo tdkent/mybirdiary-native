@@ -14,7 +14,6 @@ on:
       - synchronize
     paths-ignore:
       - ".husky/**"
-      - ".vscode/**"
       - "assets/**"
       - "README.md"
       - ".gitignore"
