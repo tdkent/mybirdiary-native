@@ -3,7 +3,7 @@
 # - Manual activation.
 
 # JOBS:
-# - Lint, run tests
+# - Lint, type check, run tests
 
 name: Test
 
@@ -43,6 +43,9 @@ jobs:
 
       - name: Run biome check
         run: npm run check
+
+      - name: Type check
+        run: npm run typecheck
 
       - name: Run tests
         run: npm run test
