@@ -1,6 +1,6 @@
-import NewSightingScreen from "@/app/(app)/(tabs)/new-sighting";
 import { useMutation } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
+import NewSightingScreen from "@/app/(app)/(tabs)/new-sighting";
 
 jest.mock("@/hooks/useAuth", () => ({
 	useAuth: () => ({

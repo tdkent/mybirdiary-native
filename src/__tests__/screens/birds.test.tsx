@@ -1,6 +1,6 @@
-import BirdsScreen from "@/app/(app)/(tabs)/birds";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
+import BirdsScreen from "@/app/(app)/(tabs)/birds";
 
 const mockUserQuery = jest.mocked(useQuery);
 

@@ -1,3 +1,7 @@
+import DateTimePicker from "@expo/ui/community/datetime-picker";
+import { useMutation } from "@tanstack/react-query";
+import { Formik } from "formik";
+import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedText from "@/components/ui/ThemedText";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
@@ -7,10 +11,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { createSighting } from "@/services/api/mutate";
 import { SightingSchema } from "@/services/validation/sighting";
 import type { SightingMutationInputs } from "@/types/forms";
-import DateTimePicker from "@expo/ui/community/datetime-picker";
-import { useMutation } from "@tanstack/react-query";
-import { Formik } from "formik";
-import { type GestureResponderEvent, Text, View } from "react-native";
 
 export default function SightingForm() {
 	const { user } = useAuth();

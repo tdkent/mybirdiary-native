@@ -1,7 +1,7 @@
-import SightingsScreen from "@/app/(app)/(tabs)/sightings";
-import { defaultListReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
+import SightingsScreen from "@/app/(app)/(tabs)/sightings";
+import { defaultListReturnValue } from "@/test/mockData";
 
 const mockUserQuery = jest.mocked(useQuery);
 

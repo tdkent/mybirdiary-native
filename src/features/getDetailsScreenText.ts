@@ -1,6 +1,6 @@
+import type { Models } from "react-native-appwrite";
 import type { Bird, DbTables, Sighting } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
-import type { Models } from "react-native-appwrite";
 
 interface TitleDescriptionListInputs {
 	table: DbTables;

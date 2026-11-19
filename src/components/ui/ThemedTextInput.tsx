@@ -1,5 +1,5 @@
-import ThemedText from "@/components/ui/ThemedText";
 import { type KeyboardTypeOptions, Text, TextInput, View } from "react-native";
+import ThemedText from "@/components/ui/ThemedText";
 
 interface Props {
 	handleBlur: (e: unknown) => void;

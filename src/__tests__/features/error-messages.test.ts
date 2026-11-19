@@ -1,6 +1,6 @@
+import { AppwriteException } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { getErrorMessage } from "@/services/errors/error-messages";
-import { AppwriteException } from "react-native-appwrite";
 
 describe("error-messages", () => {
 	describe("getErrorMessage", () => {

@@ -1,8 +1,8 @@
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { FlatList, Text, View } from "react-native";
 import ListItem from "@/components/screens/ListItem";
 import { getListData } from "@/services/api/list";
 import type { AppwriteListQuery, DbTables } from "@/types/db";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { FlatList, Text, View } from "react-native";
 
 interface Props {
 	queryKey: DbTables;

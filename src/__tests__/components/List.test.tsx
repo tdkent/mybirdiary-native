@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
+import { render, screen, userEvent } from "@testing-library/react-native";
+import { renderRouter } from "expo-router/build/testing-library/index.js";
 import BirdsScreen from "@/app/(app)/(tabs)/birds";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
 import List from "@/components/screens/List";
 import { defaultListReturnValue } from "@/test/mockData";
-import { useQuery } from "@tanstack/react-query";
-import { render, screen, userEvent } from "@testing-library/react-native";
-import { renderRouter } from "expo-router/build/testing-library/index.js";
 
 // Mock useQuery
 const mockUseQuery = jest.mocked(useQuery);

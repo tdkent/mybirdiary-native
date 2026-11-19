@@ -1,8 +1,8 @@
+import { ID, Permission, Role } from "react-native-appwrite";
 import { CONFIG } from "@/constants/config";
 import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/error-messages";
 import type { SightingMutationInputs } from "@/types/forms";
-import { ID, Permission, Role } from "react-native-appwrite";
 
 const birdId = "6af3a497003101bcab37"; // test id
 

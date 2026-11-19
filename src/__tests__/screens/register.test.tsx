@@ -1,7 +1,7 @@
-import LoginScreen from "@/app/(auth)/login";
-import RegisterScreen from "@/app/(auth)/register";
 import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
+import LoginScreen from "@/app/(auth)/login";
+import RegisterScreen from "@/app/(auth)/register";
 
 describe("RegisterScreen", () => {
 	test("provides the correct navigation link to login", async () => {

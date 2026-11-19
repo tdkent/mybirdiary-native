@@ -1,5 +1,5 @@
-import { useAuth } from "@/hooks/useAuth";
 import { Redirect } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Index() {
 	const { isAuthChecked, isLoggedIn } = useAuth();
