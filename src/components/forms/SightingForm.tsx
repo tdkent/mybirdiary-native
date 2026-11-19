@@ -1,5 +1,6 @@
 import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
@@ -15,6 +16,7 @@ import type { SightingMutationInputs } from "@/types/forms";
 export default function SightingForm() {
 	const { user } = useAuth();
 	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	if (!user) {
 		throw new Error(ERROR_MESSAGES.AUTH_ERROR);
@@ -25,6 +27,7 @@ export default function SightingForm() {
 			createSighting({ userId, formValues }),
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ["sightings"] });
+			router.push("/sightings");
 		},
 	});
 
