@@ -9,12 +9,12 @@
   },
   "scripts": {
     "android": "expo start --android",
-    "check": "biome check --verbose ./src",
-    "check:fix": "biome check --write --no-errors-on-unmatched ./src",
-    "format": "biome format --write ./src",
+    "check": "biome check --verbose",
+    "check:fix": "biome check --write --no-errors-on-unmatched",
+    "format": "biome format --write",
     "ios": "WITH_ROZENITE=true expo start --ios",
-    "lint": "biome lint --verbose ./src",
-    "lint:fix": "biome lint --write ./src",
+    "lint": "biome lint --verbose",
+    "lint:fix": "biome lint --write",
     "prepare": "husky",
     "start": "expo start",
     "test": "jest",
@@ -23,7 +23,7 @@
     "typegen": "uniwind generate-artifacts --css ./src/global.css --dts ./src/uniwind-types.d.ts && echo '/// <reference types=\"expo/types\" />' > expo-env.d.ts"
   },
   "lint-staged": {
-    "*": "biome check --write --no-errors-on-unmatched --verbose ./src"
+    "*": "biome check --write --no-errors-on-unmatched --verbose"
   },
   "dependencies": {
     "@expo/ui": "~58.0.25",
