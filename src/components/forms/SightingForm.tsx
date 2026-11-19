@@ -36,8 +36,11 @@ export default function SightingForm() {
 			{isError && <Text>{error.message}</Text>}
 			<Formik
 				initialValues={{ commonName: "", date: TODAY, description: "" }}
-				onSubmit={(formValues) => mutate({ userId: user.$id, formValues })}
 				validationSchema={SightingSchema}
+				onSubmit={(formValues, { resetForm }) => {
+					mutate({ userId: user.$id, formValues });
+					resetForm();
+				}}
 			>
 				{({
 					errors,
