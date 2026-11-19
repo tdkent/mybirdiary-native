@@ -43,6 +43,7 @@ jest.mock("uniwind", () => ({
 jest.mock("@tanstack/react-query", () => ({
 	useMutation: jest.fn(),
 	useQuery: jest.fn(),
+	useQueryClient: jest.fn(),
 }));
 
 beforeEach(() => {

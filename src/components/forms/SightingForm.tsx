@@ -1,5 +1,6 @@
 import DateTimePicker from "@expo/ui/community/datetime-picker";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 import { Formik } from "formik";
 import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
@@ -14,6 +15,8 @@ import type { SightingMutationInputs } from "@/types/forms";
 
 export default function SightingForm() {
 	const { user } = useAuth();
+	const queryClient = useQueryClient();
+	const router = useRouter();
 
 	if (!user) {
 		throw new Error(ERROR_MESSAGES.AUTH_ERROR);
@@ -22,6 +25,10 @@ export default function SightingForm() {
 	const { error, isError, isPending, mutate } = useMutation({
 		mutationFn: ({ userId, formValues }: SightingMutationInputs) =>
 			createSighting({ userId, formValues }),
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["sightings"] });
+			router.push("/sightings");
+		},
 	});
 
 	return (
@@ -29,8 +36,11 @@ export default function SightingForm() {
 			{isError && <Text>{error.message}</Text>}
 			<Formik
 				initialValues={{ commonName: "", date: TODAY, description: "" }}
-				onSubmit={(formValues) => mutate({ userId: user.$id, formValues })}
 				validationSchema={SightingSchema}
+				onSubmit={(formValues, { resetForm }) => {
+					mutate({ userId: user.$id, formValues });
+					resetForm();
+				}}
 			>
 				{({
 					errors,
