@@ -21,11 +21,6 @@
 			"quoteStyle": "double"
 		}
 	},
-	"json": {
-		"formatter": {
-			"enabled": false
-		}
-	},
 	"linter": {
 		"enabled": true,
 		"domains": {
