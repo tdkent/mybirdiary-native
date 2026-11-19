@@ -1,7 +1,7 @@
+import * as Yup from "yup";
 import { TEN_YEARS_AGO, TODAY } from "@/constants/dates";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
-import * as Yup from "yup";
 
 const CommonName = Yup.string().required(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
 

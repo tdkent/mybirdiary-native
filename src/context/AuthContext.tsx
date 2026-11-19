@@ -1,6 +1,3 @@
-import { account } from "@/lib/appwrite";
-import { getErrorMessage } from "@/services/errors/error-messages";
-import type { UserAuthInputs } from "@/types/forms";
 import {
 	createContext,
 	type Dispatch,
@@ -9,6 +6,9 @@ import {
 	useState,
 } from "react";
 import { ID, type Models } from "react-native-appwrite";
+import { account } from "@/lib/appwrite";
+import { getErrorMessage } from "@/services/errors/error-messages";
+import type { UserAuthInputs } from "@/types/forms";
 
 export interface Auth {
 	error: string | null;

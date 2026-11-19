@@ -1,6 +1,6 @@
-import { useAuth } from "@/hooks/useAuth";
 import { SplashScreen } from "expo-router";
 import { useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
 
 /** Controls how the Splash screen renders. */
 export default function SplashScreenController() {

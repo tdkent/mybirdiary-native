@@ -4,12 +4,13 @@
 		"enabled": true,
 		"actions": {
 			"source": {
-				"organizeImports": "off"
+				"organizeImports": "on"
 			}
 		}
 	},
 	"files": {
-		"ignoreUnknown": true
+		"ignoreUnknown": true,
+		"includes": ["**", "!assets"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -20,11 +21,6 @@
 			"quoteStyle": "double"
 		}
 	},
-	"json": {
-		"formatter": {
-			"enabled": false
-		}
-	},
 	"linter": {
 		"enabled": true,
 		"domains": {
@@ -33,8 +29,7 @@
 		"rules": {
 			"preset": "recommended",
 			"correctness": {
-				"noReactNativeRawText": "off",
-				"useExhaustiveDependencies": "info"
+				"noReactNativeRawText": "off"
 			}
 		}
 	},
@@ -44,6 +39,7 @@
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
-		"useIgnoreFile": true
+		"useIgnoreFile": true,
+		"defaultBranch": "main"
 	}
 }

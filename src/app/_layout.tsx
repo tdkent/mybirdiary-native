@@ -1,12 +1,12 @@
-import RootNavigator from "@/components/navigators/RootNavigator";
-import SplashScreenController from "@/components/ui/Splash";
-import { AuthProvider } from "@/context/AuthContext";
-import { queryClient } from "@/lib/query-client";
 import { useTanStackQueryDevTools } from "@rozenite/tanstack-query-plugin";
 import { QueryClientProvider } from "@tanstack/react-query";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { Uniwind } from "uniwind";
+import RootNavigator from "@/components/navigators/RootNavigator";
+import SplashScreenController from "@/components/ui/Splash";
+import { AuthProvider } from "@/context/AuthContext";
+import { queryClient } from "@/lib/query-client";
 import "../global.css";
 import "../lib/query-lifecycle";
 

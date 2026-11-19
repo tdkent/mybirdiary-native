@@ -3,11 +3,11 @@
  * Verify the form behaves correctly during user interaction
  */
 
+import { useMutation } from "@tanstack/react-query";
+import { fireEvent, render } from "@testing-library/react-native";
 import SightingForm from "@/components/forms/SightingForm";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
-import { useMutation } from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
 
 jest.mock("@/hooks/useAuth", () => ({
 	useAuth: jest.fn().mockReturnValue({

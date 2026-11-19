@@ -1,5 +1,5 @@
-import { ERROR_MESSAGES } from "@/constants/messages";
 import * as Yup from "yup";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 const Email = Yup.string()
 	.email(ERROR_MESSAGES.INVALID_EMAIL)

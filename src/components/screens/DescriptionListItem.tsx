@@ -1,5 +1,5 @@
-import type { DescriptionListItem as DLItem } from "@/types/ui";
 import { Text, View } from "react-native";
+import type { DescriptionListItem as DLItem } from "@/types/ui";
 
 interface Props {
 	item: DLItem;

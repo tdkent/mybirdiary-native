@@ -1,5 +1,5 @@
-import { CONFIG } from "@/constants/config";
 import { Account, Client, TablesDB } from "react-native-appwrite";
+import { CONFIG } from "@/constants/config";
 import "react-native-url-polyfill";
 
 export const client = new Client()

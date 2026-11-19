@@ -1,6 +1,6 @@
-import type { Bird, DbTables, Sighting } from "@/types/db";
 import { Link } from "expo-router";
 import { Text, View } from "react-native";
+import type { Bird, DbTables, Sighting } from "@/types/db";
 
 interface Props {
 	item: Bird | object;

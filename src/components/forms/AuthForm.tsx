@@ -1,11 +1,11 @@
+import { Formik } from "formik";
+import { useEffect } from "react";
+import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
 import { useAuth } from "@/hooks/useAuth";
 import { AuthSchema } from "@/services/validation/auth";
 import type { AuthActions, UserAuthInputs } from "@/types/forms";
-import { Formik } from "formik";
-import { useEffect } from "react";
-import { type GestureResponderEvent, Text, View } from "react-native";
 
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
@@ -15,7 +15,7 @@ export default function AuthForm({ action }: AuthActions) {
 
 	useEffect(() => {
 		setError(null);
-	}, []);
+	}, [setError]);
 
 	function handleAuthAction(values: UserAuthInputs) {
 		if (action === "register") {

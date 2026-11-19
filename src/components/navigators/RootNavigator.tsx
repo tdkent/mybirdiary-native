@@ -1,5 +1,5 @@
-import { useAuth } from "@/hooks/useAuth";
 import { Stack } from "expo-router";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RootNavigator() {
 	const { isLoggedIn } = useAuth();

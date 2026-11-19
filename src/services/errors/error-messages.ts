@@ -1,9 +1,9 @@
+import { AppwriteException } from "react-native-appwrite";
 import {
-	appwriteErrorMessage,
 	type AppwriteErrorMessage,
+	appwriteErrorMessage,
 	ERROR_MESSAGES,
 } from "@/constants/messages";
-import { AppwriteException } from "react-native-appwrite";
 
 /** Type predicate that narrows type of Appwrite error `type` value. */
 function isKnownAppwriteErrorType(type: string): type is AppwriteErrorMessage {

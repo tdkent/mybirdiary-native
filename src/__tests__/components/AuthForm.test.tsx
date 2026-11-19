@@ -4,6 +4,7 @@
  * Auth context functions are mocked to test calls
  */
 
+import { fireEvent, render } from "@testing-library/react-native";
 import AuthForm from "@/components/forms/AuthForm";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/AuthContext";
@@ -13,7 +14,6 @@ import {
 	testInvalidPassword,
 	testPassword,
 } from "@/test/mockData";
-import { fireEvent, render } from "@testing-library/react-native";
 
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();

@@ -4,6 +4,9 @@
  * Appwrite methods are mocked
  */
 
+import { fireEvent, render } from "@testing-library/react-native";
+import { Button, Text, View } from "react-native";
+import { AppwriteException } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/AuthContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -15,9 +18,6 @@ import {
 	userUnauthenticated,
 } from "@/test/mockData";
 import type { AuthActions } from "@/types/forms";
-import { fireEvent, render } from "@testing-library/react-native";
-import { Button, Text, View } from "react-native";
-import { AppwriteException } from "react-native-appwrite";
 
 // Mock appwrite methods
 const mockCreateUser = jest.mocked(account.create);

@@ -1,7 +1,7 @@
-import Details from "@/components/screens/Details";
-import { defaultDetailsReturnValue } from "@/test/mockData";
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
+import Details from "@/components/screens/Details";
+import { defaultDetailsReturnValue } from "@/test/mockData";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
