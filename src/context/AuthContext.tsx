@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import {
 	createContext,
 	type Dispatch,
@@ -41,6 +42,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [user, setUser] = useState<Models.User | null>(null);
 
+	const queryClient = useQueryClient();
+
 	async function register({ email, password }: UserAuthInputs) {
 		setError(null);
 		setIsLoading(true);
@@ -60,6 +63,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 			setUser(user);
+
+			// clear cache here in case previous session was not ended by logout()
+			queryClient.clear();
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
@@ -80,6 +86,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 			setIsLoggedIn(true);
 			setUser(user);
+
+			// clear cache here in case previous session was not ended by logout()
+			queryClient.clear();
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
@@ -93,6 +102,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			await account.deleteSession({ sessionId: "current" });
 			setIsLoggedIn(false);
 			setUser(null);
+
+			// clear query cache
+			queryClient.clear();
 		} catch (e) {
 			setError(getErrorMessage(e));
 		} finally {
