@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "mybirdiary-native",
+    "name": "My Birdiary",
     "slug": "mybirdiary-native",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,7 +10,7 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "supportsTablet": true,
-			"bundleIdentifier": "dev.tdkent.mybirdiary"
+      "bundleIdentifier": "com.mybirdiary.app"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,11 +20,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "dev.tdkent.mybirdiary"
-    },
-    "web": {
-      "output": "server",
-      "favicon": "./assets/images/favicon.png"
+      "package": "com.mybirdiary.app"
     },
     "plugins": [
       "expo-router",
@@ -44,14 +40,6 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    },
-    "build": {
-      "preview": {
-        "ios": {
-          "simulator": true
-        }
-      },
-      "production": {}
     }
   }
 }
