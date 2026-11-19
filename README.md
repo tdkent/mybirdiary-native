@@ -211,6 +211,10 @@ Runs automatically on `npm install`. Installs Husky git hooks.
 
 Type checker that runs TypeScript compiler `tsc` with `--noEmit` flag.
 
+#### `npm run typegen`
+
+Generates gitignored type files required to pass type check when clean installing.
+
 ## Testing
 
 Tests use Jest with the `jest-expo` preset and React Native Testing Library.
