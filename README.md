@@ -16,13 +16,12 @@ The application is still in early development, with the first milestone (MVP #1)
 
 - User authentication
 - Birdpedia and bird details screens (placeholder data)
-- Sightings and sighting details screens (placeholder data)
+- Sightings and sighting details screens
 - Create a new sighting with user-specific read, update, delete permissions
 
 ### Limitations and stubs
 
 - Placeholder bird data
-- Placeholder sightings data
 - New sighting form incomplete
   - sends hardcoded bird id to db only
   - no location data
@@ -62,7 +61,10 @@ See the [Roadmap section](#roadmap) for more info
 1. Clone the [`mybirdiary-native` repository](https://github.com/tdkent/mybirdiary-native)
 2. `npm install`
 3. Create a `.env` file from `.env.example` (see [Backend Setup](#backend-setup))
-4. Run the application. Use `npm run ios` to open the app in iOS Simulator with Expo Go. Use `npm run android` to open the app on an Android device or emulator with Android Studio. Use `npm start` to see all options for running the application.
+4. Run the application.
+   - Use `npm run ios` to open the app in iOS Simulator with Expo Go.
+   - Use `npm run android` to open the app on an Android device or emulator with Android Studio.
+   - Use `npm start` to see all options for running the application.
 5. Successful first run should navigate the app to the login screen.
 
 ## Environment variables
@@ -83,13 +85,13 @@ EXPO_PUBLIC_SIGHTINGS_TABLE_ID=
 
 #### `EXPO_PUBLIC_APPWRITE_ENDPOINT`
 
-> The region where the Appwrite services endpoint resides.
+The region where the Appwrite services endpoint resides.
 
 Appwrite console -> Projects -> Project Dashboard
 
 #### `EXPO_PUBLIC_APPWRITE_PLATFORM`
 
-> Bundle ID
+Must match `bundleIdentifier` / `package` value in `app.json`.
 
 Appwrite console -> Projects -> App
 
@@ -118,10 +120,7 @@ Appwrite console -> Projects -> Databases -> Database tables
 
 ## Backend Setup
 
-The application uses [Appwrite backend-as-a-service](https://appwrite.io) for authentication and data persistence.
-
-- Bundle ID: `com.mybirdiary.app`
-- Package name: `mybirdiary-native`
+The application uses [Appwrite backend-as-a-service](https://appwrite.io) for authentication and data persistence. Register an iOS platform and an Android platform in the Appwrite project, both using `com.mybirdiary.app`, and make sure `EXPO_PUBLIC_APPWRITE_PLATFORM` uses the same value.
 
 ### Authentication
 
@@ -149,9 +148,9 @@ Uses [Appwrite TablesDB](https://appwrite.io/docs/products/databases/tablesdb)
   - `relationship type`: one-way
   - `related table`: `birds`
   - `column key`: `bird`
-  - `relation`: many-to-one `sightings` -> `bird`
-  - `on delete`: cascade
-- `date`: date of sighting (datetime (64), required)
+  - `relation`: many-to-one `sightings` -> `birds`
+  - `on delete`: Restricted (a row in `birds` cannot be deleted if there is a related row in `sightings`)
+- `date`: date of sighting (datetime, required)
 - `description`: description of sighting (varchar (150))
 - `$createdAt`: auto-generated when row is created (datetime)
 - `$updatedAt`: auto-generated when row is updated (datetime)
@@ -160,7 +159,11 @@ Uses [Appwrite TablesDB](https://appwrite.io/docs/products/databases/tablesdb)
 
 - `birds`: Read permissions active for all authenticated users. Create, Update, and Delete are disallowed for all users.
 
-- `sightings`: Create permissions active for all authenticated users. Row permissions lock Read, Update, and Delete permissions to the user who created the row.
+- `sightings`: Create permissions active for all authenticated users at the table level. Read, Update, and Delete must **not** be granted at table level. Turn on Row level security (RLS) so that the per-row permissions set in `mutate.ts` give access only to the user who created the row.
+
+#### Seed data
+
+Since `birdId` is currently hardcoded when creating a new sighting, create at least one `birds` row and put its ID in `mutate.ts`, or creating a new sighting will fail.
 
 ## Scripts
 
