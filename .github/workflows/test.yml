@@ -44,6 +44,10 @@ jobs:
       - name: Run biome check
         run: npm run check
 
+      # Generate gitignored type files required to pass type check
+      - name: Generate type declarations
+        run: npm run typegen
+
       - name: Type check
         run: npm run typecheck
 

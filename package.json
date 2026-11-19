@@ -15,11 +15,12 @@
     "ios": "WITH_ROZENITE=true expo start --ios",
     "lint": "biome lint --verbose ./src",
     "lint:fix": "biome lint --write ./src",
+    "prepare": "husky",
     "start": "expo start",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "prepare": "husky",
-    "typecheck": "npx tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typegen": "uniwind generate-artifacts --css ./src/global.css --dts ./src/uniwind-types.d.ts && echo '/// <reference types=\"expo/types\" />' > expo-env.d.ts"
   },
   "lint-staged": {
     "*": "biome check --write --no-errors-on-unmatched --verbose ./src"
