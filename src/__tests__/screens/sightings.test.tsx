@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import SightingsScreen from "@/app/(app)/(tabs)/sightings";
-import { defaultListReturnValue } from "@/test/mockData";
+import { defaultListReturnValue } from "@/test/mocks";
 
 // Mock useAuth, return user object
-jest.mock("@/hooks/useAuth", () => ({
+jest.mock("@/hooks/use-auth", () => ({
 	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
 }));
 

@@ -221,17 +221,17 @@ Tests use Jest with the `jest-expo` preset and React Native Testing Library.
 
 ### Where tests live
 
-| Folder                      | What it covers                                                                              |
-| --------------------------- | ------------------------------------------------------------------------------------------- |
-| `src/__tests__/components/` | Forms, generic `List` and `Details`, `DescriptionList`                                      |
-| `src/__tests__/screens/`    | Each route screen                                                                           |
-| `src/__tests__/context/`    | `AuthContext`                                                                               |
-| `src/__tests__/features/`   | Error-message mapping                                                                       |
-| `src/test/`                 | Shared fixtures and default hook return values (`mockData.ts`) and their types (`types.ts`) |
+| Folder                      | What it covers                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------ |
+| `src/__tests__/components/` | Forms, generic `List` and `Details`, `DescriptionList`, details text mapping   |
+| `src/__tests__/screens/`    | Each route screen                                                              |
+| `src/__tests__/context/`    | Auth context                                                                   |
+| `src/__tests__/services/`   | Error-message mapping                                                          |
+| `src/test/`                 | Static data (`fixtures.ts`), hook and context mocks (`mocks.ts`), types, setup |
 
 ### Global mocks
 
-`jest.setup.ts` mocks these modules for every test:
+`src/test/setup.ts` mocks these modules for every test:
 
 - `react-native-appwrite`: `Client`, `Account`, `TablesDB`, `ID` and `AppwriteException`, so no test reaches a real Appwrite backend
 - `uniwind`
@@ -273,14 +273,14 @@ src/
 │   ├── (auth)/          login and register, logged-out only
 │   └── (app)/(tabs)/    protected tabs: new-sighting, sightings, birds, account
 ├── components/
-│   ├── forms/           AuthForm, SightingForm
-│   ├── navigators/      RootNavigator with Stack.Protected
-│   ├── screens/         generic List and Details
+│   ├── details/         generic Details, DescriptionList, per-table details text
+│   ├── forms/           auth-form, sighting-form
+│   ├── list/            generic List and ListItem
+│   ├── navigators/      root-navigator with Stack.Protected
 │   └── ui/              themed primitives
 ├── constants/           config, messages, dates, navigation
-├── context/             AuthContext
-├── features/            per-table details text
-├── hooks/               useAuth
+├── context/             auth context
+├── hooks/               use-auth
 ├── lib/                 Appwrite client, QueryClient
 ├── services/
 │   ├── api/             Appwrite list, details, mutate
@@ -288,7 +288,7 @@ src/
 │   └── validation/      Yup schemas
 ├── types/               db, forms, ui
 ├── __tests__/           Jest tests
-└── test/                mock data and types
+└── test/                fixtures, mocks, types, Jest setup
 ```
 
 See [CLAUDE.md](CLAUDE.md) for the architecture in more detail.

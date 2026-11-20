@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react-native";
 import Index from "@/app";
-import { useAuth } from "@/hooks/useAuth";
-import { mockAuthContext } from "@/test/mockData";
+import { useAuth } from "@/hooks/use-auth";
+import { mockAuthContext } from "@/test/mocks";
 
 jest.mock("expo-router", () => {
 	const React = require("react");
@@ -14,7 +14,7 @@ jest.mock("expo-router", () => {
 	};
 });
 
-jest.mock("@/hooks/useAuth", () => ({
+jest.mock("@/hooks/use-auth", () => ({
 	useAuth: jest.fn(),
 }));
 

@@ -9,15 +9,15 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
 import { AppwriteException } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { AuthProvider } from "@/context/AuthContext";
-import { useAuth } from "@/hooks/useAuth";
+import { AuthProvider } from "@/context/auth-context";
+import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
 import {
 	mockUser,
 	mockUserInputs,
 	userAuthenticated,
 	userUnauthenticated,
-} from "@/test/mockData";
+} from "@/test/fixtures";
 import type { AuthActions } from "@/types/forms";
 
 // Mock appwrite methods

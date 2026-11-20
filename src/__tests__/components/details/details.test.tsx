@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
-import Details from "@/components/screens/Details";
-import { defaultDetailsReturnValue } from "@/test/mockData";
+import Details from "@/components/details/details";
+import { defaultDetailsReturnValue } from "@/test/mocks";
 
 const mockUseQuery = jest.mocked(useQuery);
 

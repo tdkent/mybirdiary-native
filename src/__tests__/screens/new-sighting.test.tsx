@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import NewSightingScreen from "@/app/(app)/(tabs)/new-sighting";
 
-jest.mock("@/hooks/useAuth", () => ({
+jest.mock("@/hooks/use-auth", () => ({
 	useAuth: () => ({
 		user: { $id: "1" },
 	}),

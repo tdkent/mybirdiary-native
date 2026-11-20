@@ -5,7 +5,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
-import SightingForm from "@/components/forms/SightingForm";
+import SightingForm from "@/components/forms/sighting-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
 

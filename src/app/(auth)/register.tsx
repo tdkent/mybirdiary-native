@@ -1,7 +1,7 @@
 import { Link } from "expo-router";
-import AuthForm from "@/components/forms/AuthForm";
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
-import ThemedText from "@/components/ui/ThemedText";
+import AuthForm from "@/components/forms/auth-form";
+import ThemedSafeView from "@/components/ui/themed-safe-view";
+import ThemedText from "@/components/ui/themed-text";
 
 export default function RegisterScreen() {
 	return (

@@ -1,5 +1,5 @@
 import { FlatList, View } from "react-native";
-import DescriptionListItem from "@/components/screens/DescriptionListItem";
+import DescriptionListItem from "@/components/details/description-list-item";
 import type { DescriptionListItem as DLItem } from "@/types/ui";
 
 interface Props {

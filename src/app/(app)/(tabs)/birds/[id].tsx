@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
-import Details from "@/components/screens/Details";
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import Details from "@/components/details/details";
+import ThemedSafeView from "@/components/ui/themed-safe-view";
 import { ERROR_MESSAGES } from "@/constants/messages";
 
 export default function BirdDetailsScreen() {

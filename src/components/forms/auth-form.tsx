@@ -1,9 +1,9 @@
 import { Formik } from "formik";
 import { useEffect } from "react";
 import { type GestureResponderEvent, Text, View } from "react-native";
-import ThemedButton from "@/components/ui/ThemedButton";
-import ThemedTextInput from "@/components/ui/ThemedTextInput";
-import { useAuth } from "@/hooks/useAuth";
+import ThemedButton from "@/components/ui/themed-button";
+import ThemedTextInput from "@/components/ui/themed-text-input";
+import { useAuth } from "@/hooks/use-auth";
 import { AuthSchema } from "@/services/validation/auth";
 import type { AuthActions, UserAuthInputs } from "@/types/forms";
 

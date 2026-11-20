@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Text, View } from "react-native";
-import DescriptionList from "@/components/screens/DescriptionList";
-import ThemedText from "@/components/ui/ThemedText";
-import { getDetailsScreenText } from "@/features/getDetailsScreenText";
+import DescriptionList from "@/components/details/description-list";
+import { getDetailsScreenText } from "@/components/details/get-details-screen-text";
+import ThemedText from "@/components/ui/themed-text";
 import { getDetailsData } from "@/services/api/details";
 import type { DbTables } from "@/types/db";
 

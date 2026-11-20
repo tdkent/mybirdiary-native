@@ -1,8 +1,8 @@
 import { View } from "react-native";
-import ThemedButton from "@/components/ui/ThemedButton";
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
-import ThemedText from "@/components/ui/ThemedText";
-import { useAuth } from "@/hooks/useAuth";
+import ThemedButton from "@/components/ui/themed-button";
+import ThemedSafeView from "@/components/ui/themed-safe-view";
+import ThemedText from "@/components/ui/themed-text";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function AccountScreen() {
 	const { isLoading, logout } = useAuth();

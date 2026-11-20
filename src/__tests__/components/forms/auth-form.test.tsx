@@ -5,20 +5,20 @@
  */
 
 import { fireEvent, render } from "@testing-library/react-native";
-import AuthForm from "@/components/forms/AuthForm";
+import AuthForm from "@/components/forms/auth-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/auth-context";
 import {
 	testEmail,
 	testInvalidEmail,
 	testInvalidPassword,
 	testPassword,
-} from "@/test/mockData";
+} from "@/test/fixtures";
 
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
 
-jest.mock("@/hooks/useAuth", () => ({
+jest.mock("@/hooks/use-auth", () => ({
 	useAuth: () => ({
 		login: mockLogin,
 		register: mockRegister,

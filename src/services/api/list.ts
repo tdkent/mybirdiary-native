@@ -1,7 +1,7 @@
 import { Query } from "react-native-appwrite";
 import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
 import { tablesDB } from "@/lib/appwrite";
-import { getErrorMessage } from "@/services/errors/error-messages";
+import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { DbTables } from "@/types/db";
 
 interface Inputs {

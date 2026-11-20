@@ -1,6 +1,6 @@
 import { render } from "@testing-library/react-native";
-import DescriptionList from "@/components/screens/DescriptionList";
-import { mockDescriptionList } from "@/test/mockData";
+import DescriptionList from "@/components/details/description-list";
+import { mockDescriptionList } from "@/test/fixtures";
 
 describe("List", () => {
 	test("displays description list items", async () => {
