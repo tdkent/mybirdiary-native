@@ -53,10 +53,14 @@ describe("AuthContext", () => {
 
 		test("handles incorrect credentials", async () => {
 			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new AppwriteException("Invalid credentials"),
+				new AppwriteException(
+					"Invalid credentials",
+					401,
+					"user_invalid_credentials",
+				),
 			);
 
-			const { findByTestId, findByText, getByRole, getByText } = await render(
+			const { findByText, getByRole, getByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
@@ -68,8 +72,10 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			// Check for error component and user still signed out
-			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			// Check for error message and user still signed out
+			expect(
+				await findByText(ERROR_MESSAGES.INCORRECT_CREDENTIALS),
+			).toBeOnTheScreen();
 			expect(await findByText(userUnauthenticated)).toBeTruthy();
 		});
 
@@ -172,10 +178,14 @@ describe("AuthContext", () => {
 
 		test("handles registration errors", async () => {
 			mockCreateUser.mockRejectedValueOnce(
-				new AppwriteException("Invalid credentials"),
+				new AppwriteException(
+					"User already exists",
+					409,
+					"user_already_exists",
+				),
 			);
 
-			const { findByTestId, findByText, getByRole, getByText } = await render(
+			const { findByText, getByRole, getByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
@@ -188,7 +198,9 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			// Check for error text and still signed out
-			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(
+				await findByText(ERROR_MESSAGES.REGISTERED_EMAIL),
+			).toBeOnTheScreen();
 			expect(await findByText(userUnauthenticated)).toBeTruthy();
 		});
 
@@ -228,10 +240,10 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache if registration fails", async () => {
+			const { clear } = mockUseQueryClient();
 			mockCreateUser.mockRejectedValueOnce(
 				new AppwriteException("Invalid credentials"),
 			);
-			const { clear } = mockUseQueryClient();
 
 			const { findByTestId, getByRole } = await render(
 				<AuthProvider>
@@ -244,6 +256,21 @@ describe("AuthContext", () => {
 
 			expect(await findByTestId("auth-error")).toBeOnTheScreen();
 			expect(clear).not.toHaveBeenCalled();
+		});
+
+		test("handles appwrite server outage", async () => {
+			mockCreateUser.mockRejectedValueOnce(new Error("fetch failed"));
+
+			const { getByRole, findByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="register" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeTruthy();
 		});
 	});
 
