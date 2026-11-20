@@ -6,12 +6,12 @@ import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedText from "@/components/ui/ThemedText";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
-import { TEN_YEARS_AGO, TODAY } from "@/constants/dates";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { useAuth } from "@/hooks/useAuth";
 import { createSighting } from "@/services/api/mutate";
 import { SightingSchema } from "@/services/validation/sighting";
 import type { SightingMutationInputs } from "@/types/forms";
+import { getOneYearAgo, getToday } from "@/utils/dates";
 
 export default function SightingForm() {
 	const { user } = useAuth();
@@ -31,11 +31,14 @@ export default function SightingForm() {
 		},
 	});
 
+	const today = getToday();
+	const oneYearAgo = getOneYearAgo();
+
 	return (
 		<View>
 			{isError && <Text>{error.message}</Text>}
 			<Formik
-				initialValues={{ commonName: "", date: TODAY, description: "" }}
+				initialValues={{ commonName: "", date: today, description: "" }}
 				validationSchema={SightingSchema}
 				onSubmit={(formValues, { resetForm }) => {
 					mutate({ userId: user.$id, formValues });
@@ -69,8 +72,8 @@ export default function SightingForm() {
 							<DateTimePicker
 								disabled={isPending}
 								display="default"
-								maximumDate={TODAY}
-								minimumDate={TEN_YEARS_AGO}
+								maximumDate={today}
+								minimumDate={oneYearAgo}
 								mode="date"
 								onValueChange={(_, selectedDate) => {
 									if (selectedDate) {
@@ -80,6 +83,9 @@ export default function SightingForm() {
 								testID="sighting-date"
 								value={values.date}
 							/>
+							{touched.date && typeof errors.date === "string" && (
+								<Text>{errors.date}</Text>
+							)}
 						</View>
 
 						<ThemedTextInput
