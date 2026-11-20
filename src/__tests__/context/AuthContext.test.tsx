@@ -53,7 +53,7 @@ describe("AuthContext", () => {
 
 		test("handles incorrect credentials", async () => {
 			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new Error("Invalid credentials"),
+				new AppwriteException("Invalid credentials"),
 			);
 
 			const { findByTestId, findByText, getByRole, getByText } = await render(
@@ -107,9 +107,29 @@ describe("AuthContext", () => {
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
+		test("does not clear the query cache when login fails", async () => {
+			const { clear } = mockUseQueryClient();
+
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new AppwriteException("An error occurred"),
+			);
+
+			const { getByRole, findByTestId } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(clear).not.toHaveBeenCalled();
+		});
+
 		test("handles appwrite server outage", async () => {
 			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new AppwriteException("fetch failed"),
+				new Error("fetch failed"),
 			);
 
 			const { getByRole, findByText } = await render(
@@ -151,7 +171,9 @@ describe("AuthContext", () => {
 		});
 
 		test("handles registration errors", async () => {
-			mockCreateUser.mockRejectedValueOnce(new Error("Invalid credentials"));
+			mockCreateUser.mockRejectedValueOnce(
+				new AppwriteException("Invalid credentials"),
+			);
 
 			const { findByTestId, findByText, getByRole, getByText } = await render(
 				<AuthProvider>
@@ -204,6 +226,25 @@ describe("AuthContext", () => {
 			expect(await findByText(userAuthenticated)).toBeTruthy();
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
+
+		test("does not clear the query cache if registration fails", async () => {
+			mockCreateUser.mockRejectedValueOnce(
+				new AppwriteException("Invalid credentials"),
+			);
+			const { clear } = mockUseQueryClient();
+
+			const { findByTestId, getByRole } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="register" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(clear).not.toHaveBeenCalled();
+		});
 	});
 
 	describe("logout", () => {
@@ -255,6 +296,25 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(clear).toHaveBeenCalledTimes(1);
+		});
+
+		test("does not clear the query cache if logout fails", async () => {
+			const { clear } = mockUseQueryClient();
+			mockDeleteSession.mockRejectedValueOnce(
+				new AppwriteException("An error occurred"),
+			);
+
+			const { getByRole, findByTestId } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /logout/i });
+			await fireEvent.press(button);
+
+			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(clear).not.toHaveBeenCalled();
 		});
 	});
 
