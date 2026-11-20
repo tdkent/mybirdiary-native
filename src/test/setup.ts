@@ -48,12 +48,12 @@ jest.mock("@tanstack/react-query", () => ({
 	}),
 }));
 
-beforeEach(() => {
-	jest.clearAllMocks();
-});
-
 // Console
 global.console = {
 	...console,
 	error: jest.fn(),
 };
+
+beforeEach(() => {
+	jest.clearAllMocks();
+});

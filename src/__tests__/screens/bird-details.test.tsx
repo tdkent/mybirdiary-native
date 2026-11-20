@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
-import { defaultDetailsReturnValue } from "@/test/mockData";
+import { defaultDetailsReturnValue } from "@/test/mocks";
 
 // Mock expo router
 jest.mock("expo-router", () => ({

@@ -3,7 +3,7 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
 import BirdsScreen from "@/app/(app)/(tabs)/birds";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
-import { defaultListReturnValue } from "@/test/mockData";
+import { defaultListReturnValue } from "@/test/mocks";
 
 const mockUserQuery = jest.mocked(useQuery);
 

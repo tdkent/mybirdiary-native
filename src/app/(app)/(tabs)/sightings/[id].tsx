@@ -1,8 +1,8 @@
 import { useLocalSearchParams } from "expo-router";
-import Details from "@/components/screens/Details";
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
+import Details from "@/components/details/details";
+import ThemedSafeView from "@/components/ui/themed-safe-view";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function SightingDetailsScreen() {
 	const { id } = useLocalSearchParams();

@@ -1,10 +1,4 @@
-import type { Auth } from "@/context/AuthContext";
-import type {
-	DetailsQueryData,
-	DetailsQueryReturnValue,
-	ListQueryData,
-	ListQueryReturnValue,
-} from "@/test/types";
+import type { DetailsQueryData, ListQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
 /** Authentication */
@@ -27,18 +21,6 @@ export const mockUser = {
 export const userAuthenticated = "Authenticated";
 export const userUnauthenticated = "Unauthenticated";
 
-export const mockAuthContext: Auth = {
-	error: "",
-	isAuthChecked: false,
-	isLoading: false,
-	isLoggedIn: false,
-	login: () => {},
-	logout: () => {},
-	register: () => {},
-	setError: () => {},
-	user: null,
-};
-
 /** List component */
 export const mockListData: ListQueryData = {
 	rows: [
@@ -48,26 +30,12 @@ export const mockListData: ListQueryData = {
 	total: 2,
 };
 
-export const defaultListReturnValue: ListQueryReturnValue = {
-	data: mockListData,
-	error: null,
-	isError: false,
-	isPending: false,
-};
-
 /** Details component */
 export const mockDetailsData: DetailsQueryData = {
 	$id: "1",
 	commonName: "Green Heron",
 	scientificName: "Butorides virescens",
 	description: "A small heron",
-};
-
-export const defaultDetailsReturnValue: DetailsQueryReturnValue = {
-	data: mockDetailsData,
-	error: null,
-	isError: false,
-	isPending: false,
 };
 
 export const mockDescriptionList: DescriptionListItem[] = [

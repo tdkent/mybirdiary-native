@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import SightingDetailsScreen from "@/app/(app)/(tabs)/sightings/[id]";
-import { defaultDetailsReturnValue } from "@/test/mockData";
+import { defaultDetailsReturnValue } from "@/test/mocks";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
@@ -12,7 +12,7 @@ jest.mock("expo-router", () => ({
 }));
 
 // Mock useAuth, return user object
-jest.mock("@/hooks/useAuth", () => ({
+jest.mock("@/hooks/use-auth", () => ({
 	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
 }));
 

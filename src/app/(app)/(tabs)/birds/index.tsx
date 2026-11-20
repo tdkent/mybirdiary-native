@@ -1,6 +1,6 @@
-import List from "@/components/screens/List";
-import ThemedSafeView from "@/components/ui/ThemedSafeView";
-import ThemedText from "@/components/ui/ThemedText";
+import List from "@/components/list/list";
+import ThemedSafeView from "@/components/ui/themed-safe-view";
+import ThemedText from "@/components/ui/themed-text";
 
 export default function BirdsScreen() {
 	return (

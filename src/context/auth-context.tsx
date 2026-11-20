@@ -8,7 +8,7 @@ import {
 } from "react";
 import { ID, type Models } from "react-native-appwrite";
 import { account } from "@/lib/appwrite";
-import { getErrorMessage } from "@/services/errors/error-messages";
+import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { UserAuthInputs } from "@/types/forms";
 
 export interface Auth {

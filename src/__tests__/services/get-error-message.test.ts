@@ -1,8 +1,8 @@
 import { AppwriteException } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { getErrorMessage } from "@/services/errors/error-messages";
+import { getErrorMessage } from "@/services/errors/get-error-message";
 
-describe("error-messages", () => {
+describe("getErrorMessage", () => {
 	describe("getErrorMessage", () => {
 		test("fetch failed error returns correct message", () => {
 			const msg = getErrorMessage(Error("fetch failed"));
