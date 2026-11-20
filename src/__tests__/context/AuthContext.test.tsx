@@ -4,6 +4,7 @@
  * Appwrite methods are mocked
  */
 
+import { useQueryClient } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
 import { AppwriteException } from "react-native-appwrite";
@@ -26,6 +27,9 @@ const mockCreateEmailPasswordSession = jest.mocked(
 );
 const mockDeleteSession = jest.mocked(account.deleteSession);
 const mockGetUser = jest.mocked(account.get);
+
+// useQueryClient
+const mockUseQueryClient = jest.mocked(useQueryClient);
 
 describe("AuthContext", () => {
 	describe("login", () => {
@@ -85,6 +89,22 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(await findByText(userAuthenticated)).toBeTruthy();
+		});
+
+		test("clears the query cache on successful login", async () => {
+			const { clear } = mockUseQueryClient();
+
+			const { getByRole, findByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
 		test("handles appwrite server outage", async () => {
@@ -168,6 +188,22 @@ describe("AuthContext", () => {
 
 			expect(await findByText(userAuthenticated)).toBeTruthy();
 		});
+
+		test("clears the query cache on successful register", async () => {
+			const { clear } = mockUseQueryClient();
+
+			const { getByRole, findByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="register" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /submit/i });
+			await fireEvent.press(button);
+
+			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(clear).toHaveBeenCalledTimes(1);
+		});
 	});
 
 	describe("logout", () => {
@@ -204,6 +240,21 @@ describe("AuthContext", () => {
 			const logoutBtn = getByRole("button", { name: /logout/i });
 			await fireEvent.press(logoutBtn);
 			expect(await findByText(userUnauthenticated)).toBeTruthy();
+		});
+
+		test("clears the query cache on successful logout", async () => {
+			const { clear } = mockUseQueryClient();
+
+			const { getByRole } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			const button = getByRole("button", { name: /logout/i });
+			await fireEvent.press(button);
+
+			expect(clear).toHaveBeenCalledTimes(1);
 		});
 	});
 
