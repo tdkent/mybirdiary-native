@@ -3,11 +3,16 @@ import { render } from "@testing-library/react-native";
 import SightingsScreen from "@/app/(app)/(tabs)/sightings";
 import { defaultListReturnValue } from "@/test/mockData";
 
-const mockUserQuery = jest.mocked(useQuery);
+// Mock useAuth, return user object
+jest.mock("@/hooks/useAuth", () => ({
+	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
+}));
+
+const mockUseQuery = jest.mocked(useQuery);
 
 describe("SightingsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUserQuery.mockReturnValue({
+		mockUseQuery.mockReturnValue({
 			...defaultListReturnValue,
 			data: {
 				rows: [],

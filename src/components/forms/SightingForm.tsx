@@ -6,27 +6,24 @@ import { type GestureResponderEvent, Text, View } from "react-native";
 import ThemedButton from "@/components/ui/ThemedButton";
 import ThemedText from "@/components/ui/ThemedText";
 import ThemedTextInput from "@/components/ui/ThemedTextInput";
-import { ERROR_MESSAGES } from "@/constants/messages";
-import { useAuth } from "@/hooks/useAuth";
 import { createSighting } from "@/services/api/mutate";
 import { SightingSchema } from "@/services/validation/sighting";
 import type { SightingMutationInputs } from "@/types/forms";
 import { getOneYearAgo, getToday } from "@/utils/dates";
 
-export default function SightingForm() {
-	const { user } = useAuth();
+interface Props {
+	userId: string;
+}
+
+export default function SightingForm({ userId }: Props) {
 	const queryClient = useQueryClient();
 	const router = useRouter();
-
-	if (!user) {
-		throw new Error(ERROR_MESSAGES.AUTH_ERROR);
-	}
 
 	const { error, isError, isPending, mutate } = useMutation({
 		mutationFn: ({ userId, formValues }: SightingMutationInputs) =>
 			createSighting({ userId, formValues }),
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: ["sightings"] });
+			await queryClient.invalidateQueries({ queryKey: ["sightings", userId] });
 			router.push("/sightings");
 		},
 	});
@@ -41,7 +38,7 @@ export default function SightingForm() {
 				initialValues={{ commonName: "", date: today, description: "" }}
 				validationSchema={SightingSchema}
 				onSubmit={(formValues, { resetForm }) => {
-					mutate({ userId: user.$id, formValues });
+					mutate({ userId, formValues });
 					resetForm();
 				}}
 			>

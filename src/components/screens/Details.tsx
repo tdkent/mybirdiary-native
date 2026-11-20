@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 import DescriptionList from "@/components/screens/DescriptionList";
@@ -9,17 +8,19 @@ import { getDetailsData } from "@/services/api/details";
 import type { DbTables } from "@/types/db";
 
 interface Props {
-	queries: string[];
 	table: DbTables;
+	userId?: string;
+	rowId: string;
+	queries: string[];
 }
 
 /** Renders details screen heading, image and description list. */
-export default function Details({ queries, table }: Props) {
-	const { id } = useLocalSearchParams();
-
+export default function Details({ queries, table, rowId, userId }: Props) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: [table, id],
-		queryFn: () => getDetailsData({ queries, rowId: id as string, table }),
+		queryKey: userId
+			? [table, userId, rowId, queries]
+			: [table, rowId, queries],
+		queryFn: () => getDetailsData({ queries, rowId, table }),
 	});
 
 	if (isPending) {

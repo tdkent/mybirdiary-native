@@ -7,6 +7,7 @@ export const ERROR_MESSAGES = {
 	INVALID_CREDENTIALS: "Invalid email or password.",
 	INVALID_DATE: "Invalid date range.",
 	INVALID_EMAIL: "Please enter a valid email.",
+	INVALID_ROUTE_PARAM: "Invalid route param",
 	PASSWORD_LENGTH_SHORT: "Password must be at least 8 characters.",
 	PASSWORD_LENGTH_LONG: "Password must be less than 128 characters.",
 	REGISTERED_EMAIL: "Email already registered. Sign in?",

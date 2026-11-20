@@ -7,12 +7,13 @@ import type { AppwriteListQuery, DbTables } from "@/types/db";
 interface Props {
 	queryKey: DbTables;
 	queries: string[];
+	userId?: string;
 }
 
 /** Renders list screen FlatList component. */
-export default function List({ queryKey, queries }: Props) {
+export default function List({ queryKey, queries, userId }: Props) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: [queryKey],
+		queryKey: userId ? [queryKey, userId] : [queryKey],
 		queryFn: () => getListData({ queryKey, queries }),
 		placeholderData: keepPreviousData,
 	});
