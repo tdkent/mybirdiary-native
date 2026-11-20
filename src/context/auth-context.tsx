@@ -23,17 +23,7 @@ export interface Auth {
 	user: Models.User | null;
 }
 
-export const AuthContext = createContext<Auth>({
-	error: null,
-	isAuthChecked: false,
-	isLoading: false,
-	isLoggedIn: false,
-	login: () => {},
-	logout: () => {},
-	register: () => {},
-	setError: () => {},
-	user: null,
-});
+export const AuthContext = createContext<Auth | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [error, setError] = useState<string | null>(null);

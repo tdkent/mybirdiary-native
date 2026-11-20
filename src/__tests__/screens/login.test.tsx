@@ -3,6 +3,13 @@ import { renderRouter } from "expo-router/build/testing-library/index.js";
 import LoginScreen from "@/app/(auth)/login";
 import RegisterScreen from "@/app/(auth)/register";
 
+jest.mock("@/hooks/use-auth", () => ({
+	useAuth: jest.fn().mockReturnValue({
+		error: null,
+		setError: jest.fn(),
+	}),
+}));
+
 describe("LoginScreen", () => {
 	test("provides the correct navigation link to registration", async () => {
 		await renderRouter({
