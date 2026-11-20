@@ -9,12 +9,6 @@ import SightingForm from "@/components/forms/SightingForm";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
 
-jest.mock("@/hooks/useAuth", () => ({
-	useAuth: jest.fn().mockReturnValue({
-		user: { $id: "1" },
-	}),
-}));
-
 const mockMutate = jest.fn();
 
 beforeEach(() => {
