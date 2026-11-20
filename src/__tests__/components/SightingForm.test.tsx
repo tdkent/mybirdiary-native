@@ -29,7 +29,7 @@ beforeEach(() => {
 describe("SightingForm", () => {
 	test("renders form inputs and submit button", async () => {
 		const { getByLabelText, getByRole, getByTestId } = await render(
-			<SightingForm />,
+			<SightingForm userId="1" />,
 		);
 
 		expect(getByLabelText(/common name/i)).toBeOnTheScreen();
@@ -39,7 +39,9 @@ describe("SightingForm", () => {
 	});
 
 	test("rejects empty common name input and displays error", async () => {
-		const { findByTestId, getByRole } = await render(<SightingForm />);
+		const { findByTestId, getByRole } = await render(
+			<SightingForm userId="1" />,
+		);
 
 		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
@@ -51,7 +53,7 @@ describe("SightingForm", () => {
 
 	test("rejects description over character limit", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await render(
-			<SightingForm />,
+			<SightingForm userId="1" />,
 		);
 
 		// Create 151-character string
@@ -80,7 +82,7 @@ describe("SightingForm", () => {
 			mutate: mockMutate,
 		} as unknown as ReturnType<typeof useMutation>);
 
-		const { findByText, getByRole } = await render(<SightingForm />);
+		const { findByText, getByRole } = await render(<SightingForm userId="1" />);
 
 		expect(await findByText(/submitting/i)).toBeOnTheScreen();
 		expect(getByRole("button", { name: /submit/i })).toBeDisabled();
@@ -94,14 +96,16 @@ describe("SightingForm", () => {
 			mutate: mockMutate,
 		} as unknown as ReturnType<typeof useMutation>);
 
-		const { findByText } = await render(<SightingForm />);
+		const { findByText } = await render(<SightingForm userId="1" />);
 		expect(
 			await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
 		).toBeOnTheScreen();
 	});
 
 	test("calls mutate with valid inputs", async () => {
-		const { getByLabelText, getByRole } = await render(<SightingForm />);
+		const { getByLabelText, getByRole } = await render(
+			<SightingForm userId="1" />,
+		);
 
 		const commonName = "Blue Jay";
 		const nameInput = getByLabelText(/common name/i);

@@ -11,6 +11,11 @@ jest.mock("expo-router", () => ({
 	useLocalSearchParams: jest.fn().mockReturnValue({ id: "1" }),
 }));
 
+// Mock useAuth, return user object
+jest.mock("@/hooks/useAuth", () => ({
+	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
+}));
+
 const mockUseQuery = jest.mocked(useQuery);
 
 describe("SightingDetailsScreen", () => {

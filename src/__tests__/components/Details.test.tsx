@@ -22,7 +22,7 @@ describe("List", () => {
 		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(
-			<Details queries={[""]} table="birds" />,
+			<Details table="birds" rowId="" queries={[""]} />,
 		);
 
 		expect(getByText(/loading.../i));
@@ -38,7 +38,7 @@ describe("List", () => {
 		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(
-			<Details queries={[""]} table="birds" />,
+			<Details table="birds" rowId="" queries={[""]} />,
 		);
 
 		expect(getByText(errorMsg));
@@ -51,7 +51,7 @@ describe("List", () => {
 		} as ReturnType<typeof useQuery>);
 
 		const { getByText } = await render(
-			<Details queries={[""]} table="birds" />,
+			<Details table="birds" rowId="" queries={[""]} />,
 		);
 
 		expect(getByText(/no data to show/i));
@@ -63,7 +63,7 @@ describe("List", () => {
 		} as ReturnType<typeof useQuery>);
 
 		const { getByTestId } = await render(
-			<Details queries={[""]} table="birds" />,
+			<Details table="birds" rowId="" queries={[""]} />,
 		);
 
 		expect(getByTestId(/description-list/i));
