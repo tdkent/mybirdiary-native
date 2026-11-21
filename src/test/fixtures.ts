@@ -1,7 +1,14 @@
+/**
+ * Fixtures: simulated state values.
+ * Remain frozen so that tests produce the same output.
+ */
+
 import type { DetailsQueryData, ListQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
 /** Authentication */
+export const testUserId = "123";
+
 export const testEmail = "test@fake.me";
 export const testInvalidEmail = "invalid-email";
 
@@ -20,6 +27,7 @@ export const mockUser = {
 
 export const userAuthenticated = "Authenticated";
 export const userUnauthenticated = "Unauthenticated";
+export const authChecked = "Checked";
 
 /** List component */
 export const mockListData: ListQueryData = {

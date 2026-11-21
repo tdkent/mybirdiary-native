@@ -11,11 +11,11 @@ import type { AuthActions, UserAuthInputs } from "@/types/forms";
 
 /** Form to authenticate user. */
 export default function AuthForm({ action }: AuthActions) {
-	const { error, isLoading, login, register, setError } = useAuth();
+	const { authError, isLoading, login, register, setAuthError } = useAuth();
 
 	useEffect(() => {
-		setError(null);
-	}, [setError]);
+		setAuthError(null);
+	}, [setAuthError]);
 
 	function handleAuthAction(values: UserAuthInputs) {
 		if (action === "register") {
@@ -27,9 +27,9 @@ export default function AuthForm({ action }: AuthActions) {
 
 	return (
 		<View>
-			{error && (
+			{authError && (
 				<Text className="text-red-500" testID="auth-error">
-					{error}
+					{authError}
 				</Text>
 			)}
 			<Formik

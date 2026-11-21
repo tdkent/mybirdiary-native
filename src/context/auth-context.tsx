@@ -8,105 +8,83 @@ import {
 } from "react";
 import { ID, type Models } from "react-native-appwrite";
 import { account } from "@/lib/appwrite";
+import { createSession } from "@/services/api/auth";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { UserAuthInputs } from "@/types/forms";
 
 export interface Auth {
-	error: string | null;
+	authError: string | null;
+	logoutError: string | null;
 	isAuthChecked: boolean;
 	isLoading: boolean;
-	isLoggedIn: boolean;
 	login: (values: UserAuthInputs) => void;
 	logout: () => void;
 	register: (values: UserAuthInputs) => void;
-	setError: Dispatch<SetStateAction<string | null>>;
-	user: Models.User | null;
+	setAuthError: Dispatch<SetStateAction<string | null>>;
+	user: Models.User<Models.Preferences> | null;
 }
 
-export const AuthContext = createContext<Auth>({
-	error: null,
-	isAuthChecked: false,
-	isLoading: false,
-	isLoggedIn: false,
-	login: () => {},
-	logout: () => {},
-	register: () => {},
-	setError: () => {},
-	user: null,
-});
+export const AuthContext = createContext<Auth | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [error, setError] = useState<string | null>(null);
+	const [authError, setAuthError] = useState<string | null>(null);
+	const [logoutError, setLogoutError] = useState<string | null>(null);
 	const [isAuthChecked, setIsAuthChecked] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [user, setUser] = useState<Models.User | null>(null);
+	const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
+		null,
+	);
 
 	const queryClient = useQueryClient();
 
-	async function register({ email, password }: UserAuthInputs) {
-		setError(null);
+	async function register(values: UserAuthInputs) {
+		setAuthError(null);
 		setIsLoading(true);
 		try {
 			await account.create({
 				userId: ID.unique(),
-				email,
-				password,
+				...values,
 			});
 
-			await account.createEmailPasswordSession({
-				email,
-				password,
-			});
-
-			const user = await account.get();
-
-			setIsLoggedIn(true);
+			const user = await createSession(values);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setAuthError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
-	async function login({ email, password }: UserAuthInputs) {
-		setError(null);
+	async function login(values: UserAuthInputs) {
+		setAuthError(null);
 		setIsLoading(true);
 		try {
-			await account.createEmailPasswordSession({
-				email,
-				password,
-			});
-
-			const user = await account.get();
-
-			setIsLoggedIn(true);
+			const user = await createSession(values);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setAuthError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	async function logout() {
+		setLogoutError(null);
 		setIsLoading(true);
 		try {
 			await account.deleteSession({ sessionId: "current" });
-			setIsLoggedIn(false);
 			setUser(null);
 
 			// clear query cache
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setLogoutError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
@@ -118,12 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsAuthChecked(false);
 			try {
 				const user = await account.get();
-				if (user) {
-					setIsLoggedIn(true);
-					setUser(user);
-				}
+				setUser(user);
 			} catch {
-				return null;
+				// not logged in
 			} finally {
 				setIsAuthChecked(true);
 			}
@@ -135,14 +110,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<AuthContext.Provider
 			value={{
-				error,
+				authError,
+				logoutError,
 				isAuthChecked,
 				isLoading,
-				isLoggedIn,
 				login,
 				logout,
 				register,
-				setError,
+				setAuthError,
 				user,
 			}}
 		>
