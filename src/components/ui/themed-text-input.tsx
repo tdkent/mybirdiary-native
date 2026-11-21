@@ -1,4 +1,4 @@
-import { type KeyboardTypeOptions, Text, TextInput, View } from "react-native";
+import { type KeyboardTypeOptions, TextInput, View } from "react-native";
 import ThemedText from "@/components/ui/themed-text";
 
 interface Props {
@@ -41,7 +41,7 @@ export default function ThemedTextInput({
 				value={value}
 			/>
 			{isTouched && validationError && (
-				<Text testID={testId}>{validationError}</Text>
+				<ThemedText testId={testId}>{validationError}</ThemedText>
 			)}
 		</View>
 	);

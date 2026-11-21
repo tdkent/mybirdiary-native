@@ -1,7 +1,8 @@
 import { Formik } from "formik";
 import { useEffect } from "react";
-import { type GestureResponderEvent, Text, View } from "react-native";
+import { type GestureResponderEvent, View } from "react-native";
 import ThemedButton from "@/components/ui/themed-button";
+import ThemedText from "@/components/ui/themed-text";
 import ThemedTextInput from "@/components/ui/themed-text-input";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthSchema } from "@/services/validation/auth";
@@ -27,11 +28,7 @@ export default function AuthForm({ action }: AuthActions) {
 
 	return (
 		<View>
-			{authError && (
-				<Text className="text-red-500" testID="auth-error">
-					{authError}
-				</Text>
-			)}
+			{authError && <ThemedText testId="auth-error">{authError}</ThemedText>}
 			<Formik
 				initialValues={{ email: "", password: "" }}
 				onSubmit={(values) => handleAuthAction(values)}

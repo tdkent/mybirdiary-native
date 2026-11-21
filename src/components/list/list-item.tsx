@@ -1,5 +1,6 @@
 import { Link } from "expo-router";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import ThemedText from "@/components/ui/themed-text";
 import type { Bird, DbTables, Sighting } from "@/types/db";
 
 interface Props {
@@ -21,7 +22,7 @@ export default function ListItem({ item, type }: Props) {
 							params: { id: $id },
 						}}
 					>
-						<Text>{commonName}</Text>
+						<ThemedText>{commonName}</ThemedText>
 					</Link>
 				</View>
 			);
@@ -38,7 +39,7 @@ export default function ListItem({ item, type }: Props) {
 							params: { id: $id },
 						}}
 					>
-						<Text>{bird.commonName}</Text>
+						<ThemedText>{bird.commonName}</ThemedText>
 					</Link>
 				</View>
 			);
@@ -47,7 +48,7 @@ export default function ListItem({ item, type }: Props) {
 		default: {
 			return (
 				<View>
-					<Text>Item</Text>
+					<ThemedText>Item</ThemedText>
 				</View>
 			);
 		}
