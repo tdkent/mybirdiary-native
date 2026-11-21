@@ -32,7 +32,7 @@ export default function ThemedTextInput({
 			<ThemedText>{label}</ThemedText>
 			<TextInput
 				accessibilityLabel={label}
-				className="p-4 border w-80"
+				className="p-4 border w-80 text-foreground border-border"
 				editable={!isLoading}
 				keyboardType={keyboardType}
 				onBlur={handleBlur}
