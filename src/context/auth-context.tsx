@@ -8,6 +8,7 @@ import {
 } from "react";
 import { ID, type Models } from "react-native-appwrite";
 import { account } from "@/lib/appwrite";
+import { createSession } from "@/services/api/auth";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { UserAuthInputs } from "@/types/forms";
 
@@ -34,22 +35,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 	const queryClient = useQueryClient();
 
-	async function register({ email, password }: UserAuthInputs) {
+	async function register(values: UserAuthInputs) {
 		setError(null);
 		setIsLoading(true);
 		try {
 			await account.create({
 				userId: ID.unique(),
-				email,
-				password,
+				...values,
 			});
 
-			await account.createEmailPasswordSession({
-				email,
-				password,
-			});
-
-			const user = await account.get();
+			const user = await createSession(values);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
@@ -61,16 +56,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		}
 	}
 
-	async function login({ email, password }: UserAuthInputs) {
+	async function login(values: UserAuthInputs) {
 		setError(null);
 		setIsLoading(true);
 		try {
-			await account.createEmailPasswordSession({
-				email,
-				password,
-			});
-
-			const user = await account.get();
+			const user = await createSession(values);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
@@ -105,7 +95,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				const user = await account.get();
 				if (user) setUser(user);
 			} catch {
-				return null;
 			} finally {
 				setIsAuthChecked(true);
 			}
