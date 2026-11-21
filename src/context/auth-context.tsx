@@ -15,12 +15,11 @@ export interface Auth {
 	error: string | null;
 	isAuthChecked: boolean;
 	isLoading: boolean;
-	isLoggedIn: boolean;
 	login: (values: UserAuthInputs) => void;
 	logout: () => void;
 	register: (values: UserAuthInputs) => void;
 	setError: Dispatch<SetStateAction<string | null>>;
-	user: Models.User | null;
+	user: Models.User<Models.Preferences> | null;
 }
 
 export const AuthContext = createContext<Auth | null>(null);
@@ -29,8 +28,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [error, setError] = useState<string | null>(null);
 	const [isAuthChecked, setIsAuthChecked] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [user, setUser] = useState<Models.User | null>(null);
+	const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
+		null,
+	);
 
 	const queryClient = useQueryClient();
 
@@ -50,8 +50,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			});
 
 			const user = await account.get();
-
-			setIsLoggedIn(true);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
@@ -73,8 +71,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			});
 
 			const user = await account.get();
-
-			setIsLoggedIn(true);
 			setUser(user);
 
 			// clear cache here in case previous session was not ended by logout()
@@ -90,7 +86,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		setIsLoading(true);
 		try {
 			await account.deleteSession({ sessionId: "current" });
-			setIsLoggedIn(false);
 			setUser(null);
 
 			// clear query cache
@@ -108,10 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsAuthChecked(false);
 			try {
 				const user = await account.get();
-				if (user) {
-					setIsLoggedIn(true);
-					setUser(user);
-				}
+				if (user) setUser(user);
 			} catch {
 				return null;
 			} finally {
@@ -128,7 +120,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				error,
 				isAuthChecked,
 				isLoading,
-				isLoggedIn,
 				login,
 				logout,
 				register,

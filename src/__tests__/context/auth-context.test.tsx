@@ -13,11 +13,13 @@ import { AuthProvider } from "@/context/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
 import {
+	authChecked,
 	mockUser,
 	mockUserInputs,
 	userAuthenticated,
 	userUnauthenticated,
 } from "@/test/fixtures";
+import { mockAppwriteUser } from "@/test/mocks";
 import type { AuthActions } from "@/types/forms";
 
 // Mock appwrite methods
@@ -31,16 +33,30 @@ const mockGetUser = jest.mocked(account.get);
 // useQueryClient
 const mockUseQueryClient = jest.mocked(useQueryClient);
 
+// Reset mocks to prevent mock state leaking between tests
+beforeEach(() => {
+	// Mock .get() throwing an error when no one is logged in
+	mockGetUser
+		.mockReset()
+		.mockRejectedValue(
+			new AppwriteException("Unauthorized", 401, "general_unauthorized_scope"),
+		);
+	mockCreateUser.mockReset();
+	mockCreateEmailPasswordSession.mockReset();
+	mockDeleteSession.mockReset();
+});
+
 describe("AuthContext", () => {
 	describe("login", () => {
 		test("calls appwrite with supplied credentials", async () => {
-			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
-
 			const { getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			mockCreateEmailPasswordSession.mockReturnValue({} as never);
+			mockGetUser.mockReturnValue(mockAppwriteUser as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -49,21 +65,23 @@ describe("AuthContext", () => {
 			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(
 				mockUserInputs,
 			);
+			// Get user (also called by auth check effect when component mounts)
+			expect(mockGetUser).toHaveBeenCalledTimes(2);
 		});
 
 		test("handles incorrect credentials", async () => {
+			const { findByText, getByRole, getByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
 			mockCreateEmailPasswordSession.mockRejectedValueOnce(
 				new AppwriteException(
 					"Invalid credentials",
 					401,
 					"user_invalid_credentials",
 				),
-			);
-
-			const { findByText, getByRole, getByText } = await render(
-				<AuthProvider>
-					<AuthTestComponent action="login" />
-				</AuthProvider>,
 			);
 
 			// Check if signed out by default
@@ -80,13 +98,13 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after successful login", async () => {
-			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
-
 			const { getByRole, getByText, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			mockGetUser.mockReturnValue(mockAppwriteUser as never);
 
 			// Check if signed out by default
 			expect(getByText(userUnauthenticated)).toBeTruthy();
@@ -98,13 +116,14 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful login", async () => {
-			const { clear } = mockUseQueryClient();
-
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			const { clear } = mockUseQueryClient();
+			mockGetUser.mockReturnValue(mockAppwriteUser as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -114,16 +133,15 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache when login fails", async () => {
-			const { clear } = mockUseQueryClient();
-
-			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new AppwriteException("An error occurred"),
-			);
-
 			const { getByRole, findByTestId } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
+			);
+
+			const { clear } = mockUseQueryClient();
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new AppwriteException("An error occurred"),
 			);
 
 			const button = getByRole("button", { name: /submit/i });
@@ -134,14 +152,14 @@ describe("AuthContext", () => {
 		});
 
 		test("handles appwrite server outage", async () => {
-			mockCreateEmailPasswordSession.mockRejectedValueOnce(
-				new Error("fetch failed"),
-			);
-
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
+			);
+
+			mockCreateEmailPasswordSession.mockRejectedValueOnce(
+				new Error("fetch failed"),
 			);
 
 			const button = getByRole("button", { name: /submit/i });
@@ -153,14 +171,15 @@ describe("AuthContext", () => {
 
 	describe("register", () => {
 		test("calls appwrite with the supplied registration details", async () => {
-			mockCreateUser.mockReturnValueOnce({} as never);
-			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
-
 			const { getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
 			);
+
+			mockCreateUser.mockReturnValueOnce(mockAppwriteUser as never);
+			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
+			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -174,21 +193,24 @@ describe("AuthContext", () => {
 			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(
 				mockUserInputs,
 			);
+
+			// Get user (also called by auth check effect when component mounts)
+			expect(mockGetUser).toHaveBeenCalledTimes(2);
 		});
 
 		test("handles registration errors", async () => {
+			const { findByText, getByRole, getByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="register" />
+				</AuthProvider>,
+			);
+
 			mockCreateUser.mockRejectedValueOnce(
 				new AppwriteException(
 					"User already exists",
 					409,
 					"user_already_exists",
 				),
-			);
-
-			const { findByText, getByRole, getByText } = await render(
-				<AuthProvider>
-					<AuthTestComponent action="register" />
-				</AuthProvider>,
 			);
 
 			// Check if signed out by default
@@ -205,14 +227,13 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after successful registration", async () => {
-			mockCreateUser.mockReturnValueOnce({} as never);
-			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
-
 			const { getByRole, getByText, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
 			);
+
+			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
 
 			// User is signed out by default
 			expect(getByText(userUnauthenticated)).toBeTruthy();
@@ -224,13 +245,14 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful register", async () => {
-			const { clear } = mockUseQueryClient();
-
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
 			);
+
+			const { clear } = mockUseQueryClient();
+			mockGetUser.mockReturnValue(mockAppwriteUser as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -240,15 +262,15 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache if registration fails", async () => {
-			const { clear } = mockUseQueryClient();
-			mockCreateUser.mockRejectedValueOnce(
-				new AppwriteException("Invalid credentials"),
-			);
-
 			const { findByTestId, getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
+			);
+
+			const { clear } = mockUseQueryClient();
+			mockCreateUser.mockRejectedValueOnce(
+				new AppwriteException("Invalid credentials"),
 			);
 
 			const button = getByRole("button", { name: /submit/i });
@@ -259,13 +281,13 @@ describe("AuthContext", () => {
 		});
 
 		test("handles appwrite server outage", async () => {
-			mockCreateUser.mockRejectedValueOnce(new Error("fetch failed"));
-
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="register" />
 				</AuthProvider>,
 			);
+
+			mockCreateUser.mockRejectedValueOnce(new Error("fetch failed"));
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -276,13 +298,13 @@ describe("AuthContext", () => {
 
 	describe("logout", () => {
 		test("calls appwrite in logout function", async () => {
-			mockDeleteSession.mockReturnValueOnce({} as never);
-
 			const { getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			mockDeleteSession.mockReturnValueOnce({} as never);
 
 			const button = getByRole("button", { name: /logout/i });
 			await fireEvent.press(button);
@@ -291,13 +313,14 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after logout", async () => {
-			mockDeleteSession.mockReturnValueOnce({} as never);
-
 			const { findByText, getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockDeleteSession.mockReturnValueOnce({} as never);
 
 			// Sign in user and check auth status
 			const submitBtn = getByRole("button", { name: /submit/i });
@@ -311,13 +334,13 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful logout", async () => {
-			const { clear } = mockUseQueryClient();
-
 			const { getByRole } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			const { clear } = mockUseQueryClient();
 
 			const button = getByRole("button", { name: /logout/i });
 			await fireEvent.press(button);
@@ -326,15 +349,15 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache if logout fails", async () => {
-			const { clear } = mockUseQueryClient();
-			mockDeleteSession.mockRejectedValueOnce(
-				new AppwriteException("An error occurred"),
-			);
-
 			const { getByRole, findByTestId } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
+			);
+
+			const { clear } = mockUseQueryClient();
+			mockDeleteSession.mockRejectedValueOnce(
+				new AppwriteException("An error occurred"),
 			);
 
 			const button = getByRole("button", { name: /logout/i });
@@ -347,7 +370,7 @@ describe("AuthContext", () => {
 
 	describe("session restoration", () => {
 		test("restores an existing session", async () => {
-			mockGetUser.mockReturnValueOnce(mockUser as never);
+			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
 
 			// Remount AuthProvider to refresh state
 			const { findByText } = await render(
@@ -362,14 +385,15 @@ describe("AuthContext", () => {
 		});
 
 		test("handles an unauthenticated user", async () => {
-			mockGetUser.mockRejectedValueOnce(new Error("User is not signed in"));
-
 			// Remount AuthProvider to refresh state
 			const { findByText } = await render(
 				<AuthProvider>
 					<AuthTestComponent action="login" />
 				</AuthProvider>,
 			);
+
+			// Wait for auth check
+			expect(await findByText(authChecked)).toBeTruthy();
 
 			// Check user remains unauthenticated
 			expect(await findByText(userUnauthenticated)).toBeTruthy();
@@ -379,7 +403,7 @@ describe("AuthContext", () => {
 });
 
 function AuthTestComponent({ action }: AuthActions) {
-	const { error, isLoggedIn, login, logout, register } = useAuth();
+	const { error, user, isAuthChecked, login, logout, register } = useAuth();
 
 	async function handleSubmit() {
 		if (action === "login") {
@@ -392,7 +416,8 @@ function AuthTestComponent({ action }: AuthActions) {
 	return (
 		<View>
 			{error && <Text testID="auth-error">{error}</Text>}
-			<Text>{isLoggedIn ? userAuthenticated : userUnauthenticated}</Text>
+			<Text>{isAuthChecked ? authChecked : "Unchecked"}</Text>
+			<Text>{user ? userAuthenticated : userUnauthenticated}</Text>
 			<Button onPress={handleSubmit} title="submit" />
 			<Button onPress={logout} title="logout" />
 		</View>
