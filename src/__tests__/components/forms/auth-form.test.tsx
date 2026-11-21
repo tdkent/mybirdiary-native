@@ -22,7 +22,7 @@ jest.mock("@/hooks/use-auth", () => ({
 	useAuth: () => ({
 		login: mockLogin,
 		register: mockRegister,
-		setError: jest.fn(),
+		setAuthError: jest.fn(),
 	}),
 }));
 

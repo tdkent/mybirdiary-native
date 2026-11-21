@@ -38,7 +38,7 @@ describe("Index", () => {
 			...mockDefaultAuthContext,
 			isAuthChecked: true,
 			user: mockAppwriteUser,
-		}) as unknown as ReturnType<typeof useAuth>;
+		});
 
 		const { getByTestId } = await render(<Index />);
 

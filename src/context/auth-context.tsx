@@ -13,20 +13,22 @@ import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { UserAuthInputs } from "@/types/forms";
 
 export interface Auth {
-	error: string | null;
+	authError: string | null;
+	logoutError: string | null;
 	isAuthChecked: boolean;
 	isLoading: boolean;
 	login: (values: UserAuthInputs) => void;
 	logout: () => void;
 	register: (values: UserAuthInputs) => void;
-	setError: Dispatch<SetStateAction<string | null>>;
+	setAuthError: Dispatch<SetStateAction<string | null>>;
 	user: Models.User<Models.Preferences> | null;
 }
 
 export const AuthContext = createContext<Auth | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-	const [error, setError] = useState<string | null>(null);
+	const [authError, setAuthError] = useState<string | null>(null);
+	const [logoutError, setLogoutError] = useState<string | null>(null);
 	const [isAuthChecked, setIsAuthChecked] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [user, setUser] = useState<Models.User<Models.Preferences> | null>(
@@ -36,7 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const queryClient = useQueryClient();
 
 	async function register(values: UserAuthInputs) {
-		setError(null);
+		setAuthError(null);
 		setIsLoading(true);
 		try {
 			await account.create({
@@ -50,14 +52,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			// clear cache here in case previous session was not ended by logout()
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setAuthError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	async function login(values: UserAuthInputs) {
-		setError(null);
+		setAuthError(null);
 		setIsLoading(true);
 		try {
 			const user = await createSession(values);
@@ -66,13 +68,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			// clear cache here in case previous session was not ended by logout()
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setAuthError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
 	async function logout() {
+		setLogoutError(null);
 		setIsLoading(true);
 		try {
 			await account.deleteSession({ sessionId: "current" });
@@ -81,7 +84,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			// clear query cache
 			queryClient.clear();
 		} catch (e) {
-			setError(getErrorMessage(e));
+			setLogoutError(getErrorMessage(e));
 		} finally {
 			setIsLoading(false);
 		}
@@ -93,8 +96,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			setIsAuthChecked(false);
 			try {
 				const user = await account.get();
-				if (user) setUser(user);
+				setUser(user);
 			} catch {
+				// not logged in
 			} finally {
 				setIsAuthChecked(true);
 			}
@@ -106,13 +110,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<AuthContext.Provider
 			value={{
-				error,
+				authError,
+				logoutError,
 				isAuthChecked,
 				isLoading,
 				login,
 				logout,
 				register,
-				setError,
+				setAuthError,
 				user,
 			}}
 		>

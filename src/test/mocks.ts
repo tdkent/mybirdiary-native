@@ -33,13 +33,14 @@ export const mockAppwriteUser: Models.User<Models.Preferences> = {
 
 /** Auth context */
 export const mockDefaultAuthContext: Auth = {
-	error: null,
+	authError: null,
+	logoutError: null,
 	isAuthChecked: false,
 	isLoading: false,
 	login: () => {},
 	logout: () => {},
 	register: () => {},
-	setError: () => {},
+	setAuthError: () => {},
 	user: null,
 };
 

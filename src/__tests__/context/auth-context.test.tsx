@@ -268,10 +268,10 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
 			mockCreateUser.mockRejectedValueOnce(
 				new AppwriteException("Invalid credentials"),
 			);
+			const { clear } = mockUseQueryClient();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -348,6 +348,24 @@ describe("AuthContext", () => {
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
+		test("displays an error if logout fails", async () => {
+			const { getByRole, findByTestId, findByText } = await render(
+				<AuthProvider>
+					<AuthTestComponent action="login" />
+				</AuthProvider>,
+			);
+
+			mockDeleteSession.mockRejectedValueOnce(
+				new AppwriteException("An error occurred"),
+			);
+
+			const button = getByRole("button", { name: /logout/i });
+			await fireEvent.press(button);
+
+			expect(await findByTestId("logout-error")).toBeOnTheScreen();
+			expect(await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED)).toBeTruthy();
+		});
+
 		test("does not clear the query cache if logout fails", async () => {
 			const { getByRole, findByTestId } = await render(
 				<AuthProvider>
@@ -363,7 +381,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /logout/i });
 			await fireEvent.press(button);
 
-			expect(await findByTestId("auth-error")).toBeOnTheScreen();
+			expect(await findByTestId("logout-error")).toBeOnTheScreen();
 			expect(clear).not.toHaveBeenCalled();
 		});
 	});
@@ -403,7 +421,15 @@ describe("AuthContext", () => {
 });
 
 function AuthTestComponent({ action }: AuthActions) {
-	const { error, user, isAuthChecked, login, logout, register } = useAuth();
+	const {
+		authError,
+		logoutError,
+		user,
+		isAuthChecked,
+		login,
+		logout,
+		register,
+	} = useAuth();
 
 	async function handleSubmit() {
 		if (action === "login") {
@@ -415,7 +441,8 @@ function AuthTestComponent({ action }: AuthActions) {
 
 	return (
 		<View>
-			{error && <Text testID="auth-error">{error}</Text>}
+			{authError && <Text testID="auth-error">{authError}</Text>}
+			{logoutError && <Text testID="logout-error">{logoutError}</Text>}
 			<Text>{isAuthChecked ? authChecked : "Unchecked"}</Text>
 			<Text>{user ? userAuthenticated : userUnauthenticated}</Text>
 			<Button onPress={handleSubmit} title="submit" />

@@ -6,7 +6,7 @@ import RegisterScreen from "@/app/(auth)/register";
 jest.mock("@/hooks/use-auth", () => ({
 	useAuth: jest.fn().mockReturnValue({
 		error: null,
-		setError: jest.fn(),
+		setAuthError: jest.fn(),
 	}),
 }));
 
