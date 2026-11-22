@@ -1,4 +1,5 @@
-import { Pressable, Text } from "react-native";
+import { Pressable } from "react-native";
+import ThemedText from "@/components/ui/themed-text";
 
 interface Props {
 	isLoading: boolean;
@@ -14,7 +15,7 @@ export default function ThemedButton({ isLoading, label, onPress }: Props) {
 			onPress={onPress}
 			role="button"
 		>
-			<Text className="text-white text-center font-semibold">{label}</Text>
+			<ThemedText>{label}</ThemedText>
 		</Pressable>
 	);
 }

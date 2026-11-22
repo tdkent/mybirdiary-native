@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 import ListItem from "@/components/list/list-item";
+import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
 import type { AppwriteListQuery, DbTables } from "@/types/db";
 
@@ -19,18 +20,18 @@ export default function List({ queryKey, queries, userId }: Props) {
 	});
 
 	if (isPending) {
-		return <Text>Loading...</Text>;
+		return <ThemedText>Loading...</ThemedText>;
 	}
 
 	if (isError) {
-		return <Text>{error.message}</Text>;
+		return <ThemedText>{error.message}</ThemedText>;
 	}
 
 	const fetchedData = data as unknown as AppwriteListQuery;
 	const rows = fetchedData.rows;
 
 	if (!rows.length) {
-		return <Text>No data to show.</Text>;
+		return <ThemedText>No data to show.</ThemedText>;
 	}
 
 	return (
@@ -38,7 +39,7 @@ export default function List({ queryKey, queries, userId }: Props) {
 			<FlatList
 				data={rows}
 				initialNumToRender={10}
-				ItemSeparatorComponent={<Text>---------</Text>}
+				ItemSeparatorComponent={<ThemedText>---------</ThemedText>}
 				keyExtractor={(item) => item.$id}
 				renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
 			/>

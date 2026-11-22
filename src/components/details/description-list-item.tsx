@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import ThemedText from "@/components/ui/themed-text";
 import type { DescriptionListItem as DLItem } from "@/types/ui";
 
 interface Props {
@@ -9,8 +10,8 @@ interface Props {
 export default function DescriptionListItem({ item }: Props) {
 	return (
 		<View>
-			<Text>{item.label}</Text>
-			<Text>{item.details}</Text>
+			<ThemedText>{item.label}</ThemedText>
+			<ThemedText>{item.details}</ThemedText>
 		</View>
 	);
 }

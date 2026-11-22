@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import DescriptionList from "@/components/details/description-list";
 import { getDetailsScreenText } from "@/components/details/get-details-screen-text";
 import ThemedText from "@/components/ui/themed-text";
@@ -24,15 +24,15 @@ export default function Details({ queries, table, rowId, userId }: Props) {
 	});
 
 	if (isPending) {
-		return <Text>Loading...</Text>;
+		return <ThemedText>Loading...</ThemedText>;
 	}
 
 	if (isError) {
-		return <Text>{error.message}</Text>;
+		return <ThemedText>{error.message}</ThemedText>;
 	}
 
 	if (!data) {
-		return <Text>No data to show.</Text>;
+		return <ThemedText>No data to show.</ThemedText>;
 	}
 
 	const { descriptionList, headingText } = getDetailsScreenText({

@@ -2,7 +2,7 @@ import DateTimePicker from "@expo/ui/community/datetime-picker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Formik } from "formik";
-import { type GestureResponderEvent, Text, View } from "react-native";
+import { type GestureResponderEvent, View } from "react-native";
 import ThemedButton from "@/components/ui/themed-button";
 import ThemedText from "@/components/ui/themed-text";
 import ThemedTextInput from "@/components/ui/themed-text-input";
@@ -33,7 +33,7 @@ export default function SightingForm({ userId }: Props) {
 
 	return (
 		<View>
-			{isError && <Text>{error.message}</Text>}
+			{isError && <ThemedText>{error.message}</ThemedText>}
 			<Formik
 				initialValues={{ commonName: "", date: today, description: "" }}
 				validationSchema={SightingSchema}
@@ -81,7 +81,7 @@ export default function SightingForm({ userId }: Props) {
 								value={values.date}
 							/>
 							{touched.date && typeof errors.date === "string" && (
-								<Text>{errors.date}</Text>
+								<ThemedText>{errors.date}</ThemedText>
 							)}
 						</View>
 
