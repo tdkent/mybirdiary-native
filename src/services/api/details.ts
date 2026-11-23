@@ -4,18 +4,16 @@ import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { DbTables, RowFor } from "@/types/db";
 
-interface Inputs<T> {
-	table: T;
-	rowId: string;
-	queries: string[];
-}
-
 /** Get a single row. */
 export async function getDetailsData<T extends DbTables>({
 	queries,
 	rowId,
 	table,
-}: Inputs<T>) {
+}: {
+	table: T;
+	rowId: string;
+	queries: string[];
+}) {
 	try {
 		const row = await tablesDB.getRow<RowFor[T]>({
 			databaseId: CONFIG.DATABASE_ID,

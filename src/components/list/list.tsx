@@ -5,17 +5,19 @@ import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
 import type { DbTables } from "@/types/db";
 
-interface Props {
-	queryKey: DbTables;
+/** Renders list screen FlatList component. */
+export default function List<T extends DbTables>({
+	queryKey,
+	queries,
+	userId,
+}: {
+	queryKey: T;
 	queries: string[];
 	userId?: string;
-}
-
-/** Renders list screen FlatList component. */
-export default function List({ queryKey, queries, userId }: Props) {
+}) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: userId ? [queryKey, userId] : [queryKey],
-		queryFn: () => getListData<typeof queryKey>({ queryKey, queries }),
+		queryFn: () => getListData({ queryKey, queries }),
 		placeholderData: keepPreviousData,
 	});
 
@@ -37,8 +39,8 @@ export default function List({ queryKey, queries, userId }: Props) {
 		<FlatList
 			data={rows}
 			initialNumToRender={10}
-			keyExtractor={(item) => item.$id}
-			renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
+			keyExtractor={(row) => row.$id}
+			renderItem={({ item }) => <ListItem row={item} table={queryKey} />}
 		/>
 	);
 }

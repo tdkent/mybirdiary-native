@@ -1,59 +1,42 @@
-import { Link } from "expo-router";
+import { type Href, Link } from "expo-router";
 import { View } from "react-native";
 import ThemedText from "@/components/ui/themed-text";
 import { DISPLAY_MESSAGES } from "@/constants/messages";
-import type { Bird, DbTables, Sighting } from "@/types/db";
+import type { DbTables, RowFor } from "@/types/db";
 
-interface Props {
-	item: Bird | object;
-	type: DbTables;
+interface ItemText {
+	href: Href;
+	label: string;
 }
 
+const itemText: { [K in DbTables]: (row: RowFor[K]) => ItemText } = {
+	birds: (row) => ({
+		href: { pathname: "/(app)/(tabs)/birds/[id]", params: { id: row.$id } },
+		label: row.commonName,
+	}),
+	sightings: (row) => ({
+		href: {
+			pathname: "/(app)/(tabs)/sightings/[id]",
+			params: { id: row.$id },
+		},
+		label: row.bird?.commonName || DISPLAY_MESSAGES.UNKNOWN_BIRD,
+	}),
+};
+
 /** Single FlatList item on list screen. */
-export default function ListItem({ item, type }: Props) {
-	switch (type) {
-		case "birds": {
-			const { $id, commonName } = item as Bird;
-
-			return (
-				<View>
-					<Link
-						href={{
-							pathname: "/(app)/(tabs)/birds/[id]",
-							params: { id: $id },
-						}}
-					>
-						<ThemedText>{commonName}</ThemedText>
-					</Link>
-				</View>
-			);
-		}
-
-		case "sightings": {
-			const { $id, bird } = item as Sighting;
-
-			return (
-				<View>
-					<Link
-						href={{
-							pathname: "/(app)/(tabs)/sightings/[id]",
-							params: { id: $id },
-						}}
-					>
-						<ThemedText>
-							{bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD}
-						</ThemedText>
-					</Link>
-				</View>
-			);
-		}
-
-		default: {
-			return (
-				<View>
-					<ThemedText>Item</ThemedText>
-				</View>
-			);
-		}
-	}
+export default function ListItem<T extends DbTables>({
+	row,
+	table,
+}: {
+	row: RowFor[T];
+	table: T;
+}) {
+	const text = itemText[table](row);
+	return (
+		<View>
+			<Link href={text.href}>
+				<ThemedText>{text.label}</ThemedText>
+			</Link>
+		</View>
+	);
 }
