@@ -8,8 +8,7 @@ export const CONFIG = {
 	SIGHTINGS_TABLE_ID: process.env.EXPO_PUBLIC_SIGHTINGS_TABLE_ID as string,
 } as const;
 
-/** Object of Appwrite db table ids. */
 export const APPWRITE_TABLE_IDS = {
 	birds: CONFIG.BIRDS_TABLE_ID,
 	sightings: CONFIG.SIGHTINGS_TABLE_ID,
-};
+} as const;
