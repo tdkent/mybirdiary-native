@@ -1,6 +1,7 @@
 import { Link } from "expo-router";
 import { View } from "react-native";
 import ThemedText from "@/components/ui/themed-text";
+import { DISPLAY_MESSAGES } from "@/constants/messages";
 import type { Bird, DbTables, Sighting } from "@/types/db";
 
 interface Props {
@@ -39,7 +40,9 @@ export default function ListItem({ item, type }: Props) {
 							params: { id: $id },
 						}}
 					>
-						<ThemedText>{bird.commonName}</ThemedText>
+						<ThemedText>
+							{bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD}
+						</ThemedText>
 					</Link>
 				</View>
 			);
