@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 import ListItem from "@/components/list/list-item";
 import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
-import type { AppwriteListQuery, DbTables } from "@/types/db";
+import type { DbTables } from "@/types/db";
 
 interface Props {
 	queryKey: DbTables;
@@ -15,7 +15,7 @@ interface Props {
 export default function List({ queryKey, queries, userId }: Props) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: userId ? [queryKey, userId] : [queryKey],
-		queryFn: () => getListData({ queryKey, queries }),
+		queryFn: () => getListData<typeof queryKey>({ queryKey, queries }),
 		placeholderData: keepPreviousData,
 	});
 
@@ -27,10 +27,9 @@ export default function List({ queryKey, queries, userId }: Props) {
 		return <ThemedText>{error.message}</ThemedText>;
 	}
 
-	const fetchedData = data as unknown as AppwriteListQuery;
-	const rows = fetchedData.rows;
+	const { rows, total } = data;
 
-	if (!rows.length) {
+	if (total === 0) {
 		return <ThemedText>No data to show.</ThemedText>;
 	}
 
