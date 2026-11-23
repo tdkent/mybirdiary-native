@@ -7,7 +7,7 @@ export default function RegisterScreen() {
 	return (
 		<ThemedSafeView>
 			<ThemedText variant="heading">Create a new account</ThemedText>
-			<AuthForm action="register" />
+			<AuthForm />
 
 			<ThemedText>
 				Already a member? <Link href="/login">Sign in</Link>

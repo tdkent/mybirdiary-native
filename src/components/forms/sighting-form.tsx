@@ -55,7 +55,7 @@ export default function SightingForm({ userId }: Props) {
 						<ThemedTextInput
 							handleBlur={handleBlur("commonName")}
 							label="Common Name"
-							isLoading={isPending}
+							disabled={isPending}
 							isTouched={touched.commonName}
 							onBlur={handleBlur("commonName")}
 							onChangeText={handleChange("commonName")}
@@ -88,7 +88,7 @@ export default function SightingForm({ userId }: Props) {
 						<ThemedTextInput
 							handleBlur={handleBlur("description")}
 							label="Description"
-							isLoading={isPending}
+							disabled={isPending}
 							isTouched={touched.description}
 							onBlur={handleBlur("description")}
 							onChangeText={handleChange("description")}

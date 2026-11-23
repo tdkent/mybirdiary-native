@@ -1,4 +1,5 @@
 import type { Models } from "react-native-appwrite";
+import { DISPLAY_MESSAGES } from "@/constants/messages";
 import type { Bird, DbTables, Sighting } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
 
@@ -46,12 +47,12 @@ export function getDetailsScreenText({
 		case "sightings": {
 			const { bird, description } = data as unknown as Sighting;
 
-			const headingText = `Sighting Details: ${bird.commonName}`;
+			const headingText = `Sighting Details: ${bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD}`;
 
 			const descriptionList: DescriptionListItem[] = [
 				{
 					label: "Species",
-					details: bird.commonName,
+					details: bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD,
 				},
 				{
 					label: "Description",
@@ -62,7 +63,7 @@ export function getDetailsScreenText({
 			return {
 				descriptionList,
 				headingText,
-				title: `Sighting: ${bird.commonName}`,
+				title: `Sighting: ${bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD}`,
 			};
 		}
 

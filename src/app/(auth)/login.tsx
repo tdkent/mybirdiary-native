@@ -8,7 +8,7 @@ export default function LoginScreen() {
 		<ThemedSafeView>
 			<ThemedText variant="heading">Sign in</ThemedText>
 
-			<AuthForm action="login" />
+			<AuthForm isLogin />
 
 			<ThemedText>
 				Don't have an account? <Link href="/register">Sign up</Link>

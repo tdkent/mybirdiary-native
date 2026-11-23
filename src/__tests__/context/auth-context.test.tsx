@@ -20,7 +20,6 @@ import {
 	userUnauthenticated,
 } from "@/test/fixtures";
 import { mockAppwriteUser } from "@/test/mocks";
-import type { AuthActions } from "@/types/forms";
 
 // Mock appwrite methods
 const mockCreateUser = jest.mocked(account.create);
@@ -51,7 +50,7 @@ describe("AuthContext", () => {
 		test("calls appwrite with supplied credentials", async () => {
 			const { getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -72,7 +71,7 @@ describe("AuthContext", () => {
 		test("handles incorrect credentials", async () => {
 			const { findByText, getByRole, getByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -100,7 +99,7 @@ describe("AuthContext", () => {
 		test("updates authentication state after successful login", async () => {
 			const { getByRole, getByText, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -118,7 +117,7 @@ describe("AuthContext", () => {
 		test("clears the query cache on successful login", async () => {
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -135,7 +134,7 @@ describe("AuthContext", () => {
 		test("does not clear the query cache when login fails", async () => {
 			const { getByRole, findByTestId } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -154,7 +153,7 @@ describe("AuthContext", () => {
 		test("handles appwrite server outage", async () => {
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
@@ -173,7 +172,7 @@ describe("AuthContext", () => {
 		test("calls appwrite with the supplied registration details", async () => {
 			const { getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -201,7 +200,7 @@ describe("AuthContext", () => {
 		test("handles registration errors", async () => {
 			const { findByText, getByRole, getByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -229,7 +228,7 @@ describe("AuthContext", () => {
 		test("updates authentication state after successful registration", async () => {
 			const { getByRole, getByText, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -247,7 +246,7 @@ describe("AuthContext", () => {
 		test("clears the query cache on successful register", async () => {
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -264,7 +263,7 @@ describe("AuthContext", () => {
 		test("does not clear the query cache if registration fails", async () => {
 			const { findByTestId, getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -283,7 +282,7 @@ describe("AuthContext", () => {
 		test("handles appwrite server outage", async () => {
 			const { getByRole, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="register" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -300,7 +299,7 @@ describe("AuthContext", () => {
 		test("calls appwrite in logout function", async () => {
 			const { getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -315,7 +314,7 @@ describe("AuthContext", () => {
 		test("updates authentication state after logout", async () => {
 			const { findByText, getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -336,7 +335,7 @@ describe("AuthContext", () => {
 		test("clears the query cache on successful logout", async () => {
 			const { getByRole } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -351,7 +350,7 @@ describe("AuthContext", () => {
 		test("displays an error if logout fails", async () => {
 			const { getByRole, findByTestId, findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -369,7 +368,7 @@ describe("AuthContext", () => {
 		test("does not clear the query cache if logout fails", async () => {
 			const { getByRole, findByTestId } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -393,7 +392,7 @@ describe("AuthContext", () => {
 			// Remount AuthProvider to refresh state
 			const { findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -406,7 +405,7 @@ describe("AuthContext", () => {
 			// Remount AuthProvider to refresh state
 			const { findByText } = await render(
 				<AuthProvider>
-					<AuthTestComponent action="login" />
+					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
@@ -420,7 +419,7 @@ describe("AuthContext", () => {
 	});
 });
 
-function AuthTestComponent({ action }: AuthActions) {
+function AuthTestComponent({ isLogin }: { isLogin?: boolean }) {
 	const {
 		authError,
 		logoutError,
@@ -432,11 +431,11 @@ function AuthTestComponent({ action }: AuthActions) {
 	} = useAuth();
 
 	async function handleSubmit() {
-		if (action === "login") {
+		if (isLogin) {
 			login(mockUserInputs);
-		} else if (action === "register") {
+		} else {
 			register(mockUserInputs);
-		} else return;
+		}
 	}
 
 	return (

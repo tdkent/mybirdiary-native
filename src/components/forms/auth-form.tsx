@@ -6,12 +6,16 @@ import ThemedText from "@/components/ui/themed-text";
 import ThemedTextInput from "@/components/ui/themed-text-input";
 import { useAuth } from "@/hooks/use-auth";
 import { AuthSchema } from "@/services/validation/auth";
-import type { AuthActions, UserAuthInputs } from "@/types/forms";
+import type { UserAuthInputs } from "@/types/forms";
 
 //? handleSubmit type error: https://github.com/jaredpalmer/formik/issues/3643
 
+interface Props {
+	isLogin?: boolean;
+}
+
 /** Form to authenticate user. */
-export default function AuthForm({ action }: AuthActions) {
+export default function AuthForm({ isLogin }: Props) {
 	const { authError, isLoading, login, register, setAuthError } = useAuth();
 
 	useEffect(() => {
@@ -19,11 +23,11 @@ export default function AuthForm({ action }: AuthActions) {
 	}, [setAuthError]);
 
 	function handleAuthAction(values: UserAuthInputs) {
-		if (action === "register") {
-			register(values);
-		} else if (action === "login") {
+		if (isLogin) {
 			login(values);
-		} else return;
+		} else {
+			register(values);
+		}
 	}
 
 	return (
@@ -47,7 +51,7 @@ export default function AuthForm({ action }: AuthActions) {
 							handleBlur={handleBlur("email")}
 							keyboardType="email-address"
 							label="email"
-							isLoading={isLoading}
+							disabled={isLoading}
 							isTouched={touched.email}
 							onBlur={handleBlur("email")}
 							onChangeText={handleChange("email")}
@@ -59,7 +63,7 @@ export default function AuthForm({ action }: AuthActions) {
 						<ThemedTextInput
 							handleBlur={handleBlur("password")}
 							label="password"
-							isLoading={isLoading}
+							disabled={isLoading}
 							isTouched={touched.password}
 							onBlur={handleBlur("password")}
 							onChangeText={handleChange("password")}

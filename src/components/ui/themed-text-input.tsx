@@ -1,13 +1,17 @@
-import { type KeyboardTypeOptions, TextInput, View } from "react-native";
+import {
+	type KeyboardTypeOptions,
+	TextInput,
+	type TextInputProps,
+	View,
+} from "react-native";
 import ThemedText from "@/components/ui/themed-text";
 
-interface Props {
+interface Props extends TextInputProps {
 	handleBlur: (e: unknown) => void;
-	isLoading: boolean;
+	disabled: boolean;
 	isTouched: boolean | undefined;
 	keyboardType?: KeyboardTypeOptions;
 	label: string;
-	onBlur: unknown;
 	onChangeText: (text: string) => unknown;
 	secure?: boolean;
 	testId?: string;
@@ -17,7 +21,7 @@ interface Props {
 
 export default function ThemedTextInput({
 	handleBlur,
-	isLoading,
+	disabled,
 	isTouched,
 	keyboardType,
 	label,
@@ -33,7 +37,7 @@ export default function ThemedTextInput({
 			<TextInput
 				accessibilityLabel={label}
 				className="p-4 border w-80 text-foreground border-border"
-				editable={!isLoading}
+				editable={!disabled}
 				keyboardType={keyboardType}
 				onBlur={handleBlur}
 				onChangeText={onChangeText}

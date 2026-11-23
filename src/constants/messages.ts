@@ -1,3 +1,4 @@
+/** Error messages displayed in the UI */
 export const ERROR_MESSAGES = {
 	APPWRITE_UNEXPECTED: "A server error occurred.",
 	AUTH_ERROR: "An authentication error occurred.",
@@ -19,6 +20,7 @@ export const ERROR_MESSAGES = {
 	UNKNOWN_ERROR: "An unknown exception occurred.",
 } as const;
 
+/** Map Appwrite error types to UI messages. */
 export const appwriteErrorMessage = {
 	general_argument_invalid: ERROR_MESSAGES.INVALID_CREDENTIALS,
 	user_already_exists: ERROR_MESSAGES.REGISTERED_EMAIL,
@@ -27,3 +29,8 @@ export const appwriteErrorMessage = {
 
 // Create type matching `appwriteErrorMessage` object's keys.
 export type AppwriteErrorMessage = keyof typeof appwriteErrorMessage;
+
+/** Non-error UI messages and alerts. */
+export const DISPLAY_MESSAGES = {
+	UNKNOWN_BIRD: "Unknown bird",
+};
