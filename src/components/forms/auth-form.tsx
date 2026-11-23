@@ -51,7 +51,7 @@ export default function AuthForm({ isLogin }: Props) {
 							handleBlur={handleBlur("email")}
 							keyboardType="email-address"
 							label="email"
-							isLoading={isLoading}
+							disabled={isLoading}
 							isTouched={touched.email}
 							onBlur={handleBlur("email")}
 							onChangeText={handleChange("email")}
@@ -63,7 +63,7 @@ export default function AuthForm({ isLogin }: Props) {
 						<ThemedTextInput
 							handleBlur={handleBlur("password")}
 							label="password"
-							isLoading={isLoading}
+							disabled={isLoading}
 							isTouched={touched.password}
 							onBlur={handleBlur("password")}
 							onChangeText={handleChange("password")}

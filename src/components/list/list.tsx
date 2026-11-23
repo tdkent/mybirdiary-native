@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { FlatList, View } from "react-native";
+import { FlatList } from "react-native";
 import ListItem from "@/components/list/list-item";
 import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
@@ -35,14 +35,11 @@ export default function List({ queryKey, queries, userId }: Props) {
 	}
 
 	return (
-		<View>
-			<FlatList
-				data={rows}
-				initialNumToRender={10}
-				ItemSeparatorComponent={<ThemedText>---------</ThemedText>}
-				keyExtractor={(item) => item.$id}
-				renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
-			/>
-		</View>
+		<FlatList
+			data={rows}
+			initialNumToRender={10}
+			keyExtractor={(item) => item.$id}
+			renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
+		/>
 	);
 }

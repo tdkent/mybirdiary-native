@@ -4,7 +4,7 @@ import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { SightingMutationInputs } from "@/types/forms";
 
-const birdId = "6af3a497003101bcab37"; // test id
+const birdId = "6af3a497003101bcab37"; // TODO(MVP2)
 
 /** Add a new sighting in Appwrite db. */
 export async function createSighting({
