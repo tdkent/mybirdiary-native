@@ -28,9 +28,7 @@ jest.mock("@/hooks/use-auth", () => ({
 
 describe("AuthForm", () => {
 	test("renders email and password inputs and submit button", async () => {
-		const { getByLabelText, getByRole } = await render(
-			<AuthForm action="login" />,
-		);
+		const { getByLabelText, getByRole } = await render(<AuthForm isLogin />);
 
 		getByLabelText("email");
 		getByLabelText("password");
@@ -38,9 +36,7 @@ describe("AuthForm", () => {
 	});
 
 	test("displays validation error for empty inputs", async () => {
-		const { findByTestId, getByRole } = await render(
-			<AuthForm action="login" />,
-		);
+		const { findByTestId, getByRole } = await render(<AuthForm isLogin />);
 
 		const button = getByRole("button", { name: /submit/i });
 		await fireEvent.press(button);
@@ -56,7 +52,7 @@ describe("AuthForm", () => {
 
 	test("rejects invalid email input", async () => {
 		const { findByTestId, getByRole, getByLabelText } = await render(
-			<AuthForm action="login" />,
+			<AuthForm isLogin />,
 		);
 
 		const emailInput = getByLabelText("email");
@@ -72,7 +68,7 @@ describe("AuthForm", () => {
 
 	test("rejects invalid password input", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await render(
-			<AuthForm action="login" />,
+			<AuthForm isLogin />,
 		);
 
 		const passwordInput = getByLabelText("password");
@@ -89,7 +85,7 @@ describe("AuthForm", () => {
 	test("calls login with valid credentials", async () => {
 		const { getByLabelText, getByRole } = await render(
 			<AuthProvider>
-				<AuthForm action="login" />
+				<AuthForm isLogin />
 			</AuthProvider>,
 		);
 
@@ -107,7 +103,7 @@ describe("AuthForm", () => {
 	test("calls register with valid credentials", async () => {
 		const { getByLabelText, getByRole } = await render(
 			<AuthProvider>
-				<AuthForm action="register" />
+				<AuthForm />
 			</AuthProvider>,
 		);
 

@@ -4,10 +4,6 @@ export interface UserAuthInputs {
 	password: string;
 }
 
-export interface AuthActions {
-	action: "login" | "register";
-}
-
 /** Sighting form input types */
 export interface SightingFormInputs {
 	commonName: string;
