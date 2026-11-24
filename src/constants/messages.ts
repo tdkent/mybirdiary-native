@@ -33,4 +33,5 @@ export type AppwriteErrorMessage = keyof typeof appwriteErrorMessage;
 /** Non-error UI messages and alerts. */
 export const DISPLAY_MESSAGES = {
 	UNKNOWN_BIRD: "Unknown bird",
-};
+	NO_DESCRIPTION: "No description",
+} as const;

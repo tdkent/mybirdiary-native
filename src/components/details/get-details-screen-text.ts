@@ -34,7 +34,7 @@ export const itemText: {
 			},
 			{
 				label: "Description",
-				details: description || "N/A",
+				details: description || DISPLAY_MESSAGES.NO_DESCRIPTION,
 			},
 		],
 	}),
