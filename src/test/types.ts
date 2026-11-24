@@ -1,9 +1,10 @@
-import type { AppwriteListQuery, Bird } from "@/types/db";
+import type { Bird } from "@/types/db";
 
 // Appwrite list data types
-export type ListQueryData = Pick<AppwriteListQuery, "total"> & {
+export interface ListQueryData {
 	rows: Partial<Bird>[];
-};
+	total: number;
+}
 
 export interface ListQueryReturnValue {
 	data: ListQueryData | undefined;

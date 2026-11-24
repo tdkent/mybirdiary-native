@@ -12,7 +12,7 @@ export default function SightingsScreen() {
 	return (
 		<ThemedSafeView>
 			<ThemedText variant="heading">My Sightings</ThemedText>
-			<List queryKey="sightings" queries={["*", "bird.*"]} userId={user.$id} />
+			<List table="sightings" queries={["*", "bird.*"]} userId={user.$id} />
 		</ThemedSafeView>
 	);
 }

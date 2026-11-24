@@ -15,9 +15,7 @@ describe("List", () => {
 				isPending: true,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<List queryKey="birds" queries={[""]} />,
-			);
+			const { getByText } = await render(<List table="birds" queries={[""]} />);
 
 			expect(getByText(/loading.../i));
 		});
@@ -31,9 +29,7 @@ describe("List", () => {
 				isError: true,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<List queryKey="birds" queries={[""]} />,
-			);
+			const { getByText } = await render(<List table="birds" queries={[""]} />);
 
 			expect(getByText(errorMsg));
 		});
@@ -47,9 +43,7 @@ describe("List", () => {
 				},
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<List queryKey="birds" queries={[""]} />,
-			);
+			const { getByText } = await render(<List table="birds" queries={[""]} />);
 
 			expect(getByText(/no data to show/i));
 		});
@@ -61,9 +55,7 @@ describe("List", () => {
 				defaultListReturnValue as ReturnType<typeof useQuery>,
 			);
 
-			const { getByText } = await render(
-				<List queryKey="birds" queries={[""]} />,
-			);
+			const { getByText } = await render(<List table="birds" queries={[""]} />);
 
 			expect(getByText(/blue jay/i));
 			expect(getByText(/northern cardinal/i));
@@ -74,7 +66,7 @@ describe("List", () => {
 				defaultListReturnValue as ReturnType<typeof useQuery>,
 			);
 
-			await render(<List queryKey="birds" queries={[""]} />);
+			await render(<List table="birds" queries={[""]} />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
 				expect.objectContaining({ queryKey: ["birds"] }),
@@ -92,7 +84,7 @@ describe("List", () => {
 				},
 			} as ReturnType<typeof useQuery>);
 
-			await render(<List queryKey="sightings" userId="123" queries={[""]} />);
+			await render(<List table="sightings" userId="123" queries={[""]} />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
 				expect.objectContaining({ queryKey: ["sightings", "123"] }),

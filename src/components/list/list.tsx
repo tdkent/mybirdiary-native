@@ -3,19 +3,21 @@ import { FlatList } from "react-native";
 import ListItem from "@/components/list/list-item";
 import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
-import type { AppwriteListQuery, DbTables } from "@/types/db";
-
-interface Props {
-	queryKey: DbTables;
-	queries: string[];
-	userId?: string;
-}
+import type { TableName } from "@/types/db";
 
 /** Renders list screen FlatList component. */
-export default function List({ queryKey, queries, userId }: Props) {
+export default function List<T extends TableName>({
+	table,
+	queries,
+	userId,
+}: {
+	table: T;
+	queries: string[];
+	userId?: string;
+}) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: userId ? [queryKey, userId] : [queryKey],
-		queryFn: () => getListData({ queryKey, queries }),
+		queryKey: userId ? [table, userId] : [table],
+		queryFn: () => getListData({ table, queries }),
 		placeholderData: keepPreviousData,
 	});
 
@@ -27,8 +29,7 @@ export default function List({ queryKey, queries, userId }: Props) {
 		return <ThemedText>{error.message}</ThemedText>;
 	}
 
-	const fetchedData = data as unknown as AppwriteListQuery;
-	const rows = fetchedData.rows;
+	const { rows } = data;
 
 	if (!rows.length) {
 		return <ThemedText>No data to show.</ThemedText>;
@@ -38,8 +39,8 @@ export default function List({ queryKey, queries, userId }: Props) {
 		<FlatList
 			data={rows}
 			initialNumToRender={10}
-			keyExtractor={(item) => item.$id}
-			renderItem={({ item }) => <ListItem item={item} type={queryKey} />}
+			keyExtractor={(row) => row.$id}
+			renderItem={({ item }) => <ListItem row={item} table={table} />}
 		/>
 	);
 }
