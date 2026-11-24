@@ -72,7 +72,7 @@ describe("Details", () => {
 			await render(<Details table="birds" rowId="456" queries={["*"]} />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({ queryKey: ["birds", "456", ["*"]] }),
+				expect.objectContaining({ queryKey: ["birds", "456"] }),
 			);
 		});
 	});
@@ -90,7 +90,7 @@ describe("Details", () => {
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
 				expect.objectContaining({
-					queryKey: ["sightings", "123", "456", ["*"]],
+					queryKey: ["sightings", "123", "456"],
 				}),
 			);
 		});
