@@ -5,7 +5,7 @@ import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { RowFor, TableName } from "@/types/db";
 
-/** Get list items with pagination and sorting. */
+/** Get list items. */
 export async function getListData<T extends TableName>(table: T) {
 	const { tableId, select } = TABLES[table];
 	try {

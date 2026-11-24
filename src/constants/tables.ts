@@ -1,7 +1,7 @@
 import type { Href } from "expo-router";
 import { CONFIG } from "@/constants/config";
 import { DISPLAY_MESSAGES } from "@/constants/messages";
-import type { RowFor, TableName } from "@/types/db";
+import type { RowFor, Sighting, TableName } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
 
 interface TableConfig<K extends TableName> {
@@ -54,20 +54,26 @@ export const TABLES: { [K in TableName]: TableConfig<K> } = {
 				pathname: "/(app)/(tabs)/sightings/[id]",
 				params: { id: row.$id },
 			},
-			label: row.bird?.commonName || DISPLAY_MESSAGES.UNKNOWN_BIRD,
+			label: birdName(row),
 		}),
-		details: ({ bird, description }) => ({
-			headingText: `Sighting Details: ${bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD}`,
+		details: (row) => ({
+			headingText: `Sighting Details: ${birdName(row)}`,
 			descriptionList: [
 				{
 					label: "Species",
-					details: bird ? bird.commonName : DISPLAY_MESSAGES.UNKNOWN_BIRD,
+					details: birdName(row),
 				},
 				{
 					label: "Description",
-					details: description || DISPLAY_MESSAGES.NO_DESCRIPTION,
+					details: row.description || DISPLAY_MESSAGES.NO_DESCRIPTION,
 				},
 			],
 		}),
 	},
 };
+
+/** Get common name or alt text. */
+function birdName(row: Sighting) {
+	if (!row.bird) return DISPLAY_MESSAGES.UNKNOWN_BIRD;
+	return row.bird.commonName;
+}
