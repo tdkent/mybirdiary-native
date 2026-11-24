@@ -6,7 +6,7 @@ import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { RowFor, TableName } from "@/types/db";
 
 /** Get list items with pagination and sorting. */
-export async function getListData<T extends TableName>(table: TableName) {
+export async function getListData<T extends TableName>(table: T) {
 	const { tableId, select } = TABLES[table];
 	try {
 		const result = await tablesDB.listRows<RowFor[T]>({

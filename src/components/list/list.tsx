@@ -15,7 +15,7 @@ export default function List<T extends TableName>({
 }) {
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: userId ? [table, userId] : [table],
-		queryFn: () => getListData<typeof table>(table),
+		queryFn: () => getListData(table),
 		placeholderData: keepPreviousData,
 	});
 

@@ -19,7 +19,7 @@ export default function Details<T extends TableName>({
 	const { data, error, isError, isPending } = useQuery({
 		queryKey: userId ? [table, userId, rowId] : [table, rowId],
 		queryFn: () =>
-			getDetailsData<typeof table>({
+			getDetailsData({
 				table,
 				rowId,
 			}),

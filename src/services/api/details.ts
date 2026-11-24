@@ -10,7 +10,7 @@ export async function getDetailsData<T extends TableName>({
 	table,
 	rowId,
 }: {
-	table: TableName;
+	table: T;
 	rowId: string;
 }) {
 	const { tableId, select } = TABLES[table];
