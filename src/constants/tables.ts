@@ -7,7 +7,7 @@ import type { DescriptionListItem } from "@/types/ui";
 interface TableConfig<K extends TableName> {
 	tableId: string;
 	userScoped: boolean;
-	selectQueries: string[];
+	select: string[];
 	listItem: (row: RowFor[K]) => {
 		href: Href;
 		label: string;
@@ -22,7 +22,7 @@ export const TABLES: { [K in TableName]: TableConfig<K> } = {
 	birds: {
 		tableId: CONFIG.BIRDS_TABLE_ID,
 		userScoped: false,
-		selectQueries: ["*"],
+		select: ["*"],
 		listItem: (row) => ({
 			href: { pathname: "/(app)/(tabs)/birds/[id]", params: { id: row.$id } },
 			label: row.commonName,
@@ -48,7 +48,7 @@ export const TABLES: { [K in TableName]: TableConfig<K> } = {
 	sightings: {
 		tableId: CONFIG.SIGHTINGS_TABLE_ID,
 		userScoped: true,
-		selectQueries: ["*", "bird.*"],
+		select: ["*", "bird.*"],
 		listItem: (row) => ({
 			href: {
 				pathname: "/(app)/(tabs)/sightings/[id]",
