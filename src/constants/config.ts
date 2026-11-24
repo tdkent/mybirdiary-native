@@ -7,8 +7,3 @@ export const CONFIG = {
 	BIRDS_TABLE_ID: process.env.EXPO_PUBLIC_BIRDS_TABLE_ID as string,
 	SIGHTINGS_TABLE_ID: process.env.EXPO_PUBLIC_SIGHTINGS_TABLE_ID as string,
 } as const;
-
-export const APPWRITE_TABLE_IDS = {
-	birds: CONFIG.BIRDS_TABLE_ID,
-	sightings: CONFIG.SIGHTINGS_TABLE_ID,
-} as const;

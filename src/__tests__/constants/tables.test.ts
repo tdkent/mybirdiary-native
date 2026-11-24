@@ -1,4 +1,4 @@
-import { itemText } from "@/components/details/get-details-screen-text";
+import { TABLES } from "@/constants/tables";
 import { mockDetailsData } from "@/test/fixtures";
 import type { Bird, Sighting } from "@/types/db";
 
@@ -13,9 +13,9 @@ const sightingRow = {
 	description: sightingDescription,
 } as unknown as Sighting;
 
-describe("getDetailsScreenText", () => {
+describe("TABLES record", () => {
 	test("returns bird heading, title, and description list", () => {
-		const { headingText, descriptionList } = itemText.birds(birdRow);
+		const { headingText, descriptionList } = TABLES.birds.details(birdRow);
 
 		expect(headingText).toEqual("Bird Details: Green Heron");
 		expect(descriptionList).toStrictEqual([
@@ -26,7 +26,8 @@ describe("getDetailsScreenText", () => {
 	});
 
 	test("returns sighting heading, title, and description list", () => {
-		const { headingText, descriptionList } = itemText.sightings(sightingRow);
+		const { headingText, descriptionList } =
+			TABLES.sightings.details(sightingRow);
 
 		expect(headingText).toEqual("Sighting Details: Green Heron");
 		expect(descriptionList).toStrictEqual([

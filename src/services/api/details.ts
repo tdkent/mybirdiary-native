@@ -1,23 +1,23 @@
 import { Query } from "react-native-appwrite";
-import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
+import { CONFIG } from "@/constants/config";
 import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { RowFor, TableName } from "@/types/db";
 
 /** Get a single row. */
 export async function getDetailsData<T extends TableName>({
-	queries,
+	tableId,
 	rowId,
-	table,
+	queries,
 }: {
-	table: T;
+	tableId: string;
 	rowId: string;
 	queries: string[];
 }) {
 	try {
 		const row = await tablesDB.getRow<RowFor[T]>({
 			databaseId: CONFIG.DATABASE_ID,
-			tableId: APPWRITE_TABLE_IDS[table],
+			tableId,
 			rowId,
 			queries: [Query.select(queries)],
 		});
