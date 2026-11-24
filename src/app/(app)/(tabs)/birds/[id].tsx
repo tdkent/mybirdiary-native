@@ -11,7 +11,7 @@ export default function BirdDetailsScreen() {
 
 	return (
 		<ThemedSafeView>
-			<Details table="birds" rowId={id} queries={["*"]} />
+			<Details table="birds" rowId={id} />
 		</ThemedSafeView>
 	);
 }
