@@ -4,10 +4,10 @@ import DescriptionList from "@/components/details/description-list";
 import { itemText } from "@/components/details/get-details-screen-text";
 import ThemedText from "@/components/ui/themed-text";
 import { getDetailsData } from "@/services/api/details";
-import type { DbTables } from "@/types/db";
+import type { TableName } from "@/types/db";
 
 /** Renders details screen heading, image and description list. */
-export default function Details<T extends DbTables>({
+export default function Details<T extends TableName>({
 	queries,
 	table,
 	rowId,

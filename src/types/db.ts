@@ -20,5 +20,5 @@ export interface RowFor {
 	sightings: Sighting;
 }
 
-/** Queryable tables in db. */
-export type DbTables = keyof RowFor;
+/** Names of queryable tables in db. */
+export type TableName = keyof RowFor;

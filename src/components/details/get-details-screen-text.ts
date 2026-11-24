@@ -1,9 +1,9 @@
 import { DISPLAY_MESSAGES } from "@/constants/messages";
-import type { DbTables, RowFor } from "@/types/db";
+import type { RowFor, TableName } from "@/types/db";
 import type { DescriptionListItem } from "@/types/ui";
 
 export const itemText: {
-	[K in DbTables]: (row: RowFor[K]) => {
+	[K in TableName]: (row: RowFor[K]) => {
 		headingText: string;
 		descriptionList: DescriptionListItem[];
 	};
@@ -30,11 +30,11 @@ export const itemText: {
 		descriptionList: [
 			{
 				label: "Species",
-				details: bird?.commonName ?? DISPLAY_MESSAGES.UNKNOWN_BIRD,
+				details: bird ? bird.commonName : DISPLAY_MESSAGES.UNKNOWN_BIRD,
 			},
 			{
 				label: "Description",
-				details: description ?? "N/A",
+				details: description || "N/A",
 			},
 		],
 	}),

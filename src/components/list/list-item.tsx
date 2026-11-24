@@ -2,14 +2,14 @@ import { type Href, Link } from "expo-router";
 import { View } from "react-native";
 import ThemedText from "@/components/ui/themed-text";
 import { DISPLAY_MESSAGES } from "@/constants/messages";
-import type { DbTables, RowFor } from "@/types/db";
+import type { RowFor, TableName } from "@/types/db";
 
 interface ItemText {
 	href: Href;
 	label: string;
 }
 
-const itemText: { [K in DbTables]: (row: RowFor[K]) => ItemText } = {
+const itemText: { [K in TableName]: (row: RowFor[K]) => ItemText } = {
 	birds: (row) => ({
 		href: { pathname: "/(app)/(tabs)/birds/[id]", params: { id: row.$id } },
 		label: row.commonName,
@@ -24,7 +24,7 @@ const itemText: { [K in DbTables]: (row: RowFor[K]) => ItemText } = {
 };
 
 /** Single FlatList item on list screen. */
-export default function ListItem<T extends DbTables>({
+export default function ListItem<T extends TableName>({
 	row,
 	table,
 }: {

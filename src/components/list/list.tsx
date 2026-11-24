@@ -3,21 +3,21 @@ import { FlatList } from "react-native";
 import ListItem from "@/components/list/list-item";
 import ThemedText from "@/components/ui/themed-text";
 import { getListData } from "@/services/api/list";
-import type { DbTables } from "@/types/db";
+import type { TableName } from "@/types/db";
 
 /** Renders list screen FlatList component. */
-export default function List<T extends DbTables>({
-	queryKey,
+export default function List<T extends TableName>({
+	table,
 	queries,
 	userId,
 }: {
-	queryKey: T;
+	table: T;
 	queries: string[];
 	userId?: string;
 }) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: userId ? [queryKey, userId] : [queryKey],
-		queryFn: () => getListData({ queryKey, queries }),
+		queryKey: userId ? [table, userId] : [table],
+		queryFn: () => getListData({ table, queries }),
 		placeholderData: keepPreviousData,
 	});
 
@@ -29,9 +29,9 @@ export default function List<T extends DbTables>({
 		return <ThemedText>{error.message}</ThemedText>;
 	}
 
-	const { rows, total } = data;
+	const { rows } = data;
 
-	if (total === 0) {
+	if (!rows.length) {
 		return <ThemedText>No data to show.</ThemedText>;
 	}
 
@@ -40,7 +40,7 @@ export default function List<T extends DbTables>({
 			data={rows}
 			initialNumToRender={10}
 			keyExtractor={(row) => row.$id}
-			renderItem={({ item }) => <ListItem row={item} table={queryKey} />}
+			renderItem={({ item }) => <ListItem row={item} table={table} />}
 		/>
 	);
 }
