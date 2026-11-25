@@ -4,10 +4,11 @@ import type { Auth } from "@/context/auth-context";
 import {
 	BIRD_BLUE_JAY,
 	BIRD_GREEN_HERON,
+	SIGHTING_GREEN_HERON,
 	USER_EMAIL,
 	USER_ID,
 } from "@/test/fixtures";
-import type { Bird } from "@/types/db";
+import type { Bird, Sighting } from "@/types/db";
 
 /* ── Auth ──────────────────────────────────────────── */
 
@@ -73,6 +74,28 @@ export const MOCK_DEFAULT_APPWRITE_ROW: Models.Row = {
 export const MOCK_BIRD_ROW: Bird = {
 	...MOCK_DEFAULT_APPWRITE_ROW,
 	...BIRD_GREEN_HERON,
+};
+
+/** Appwrite row with Sighting data */
+export const MOCK_SIGHTING_ROW: Sighting = {
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...SIGHTING_GREEN_HERON,
+	bird: MOCK_BIRD_ROW,
+};
+
+/** Appwrite row with Sighting data */
+export const MOCK_SIGHTING_ROW_WITH_NULL_BIRD: Sighting = {
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...SIGHTING_GREEN_HERON,
+	bird: null,
+};
+
+/** Appwrite row with Sighting data with empty description */
+export const MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION: Sighting = {
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...SIGHTING_GREEN_HERON,
+	bird: MOCK_BIRD_ROW,
+	description: "",
 };
 
 /* ── Tanstack ──────────────────────────────────────────── */

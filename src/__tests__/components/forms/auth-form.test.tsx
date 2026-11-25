@@ -1,9 +1,3 @@
-/**
- * Test form behavior and validation
- * Verify the form behaves correctly during user interaction
- * Auth context functions are mocked to test calls
- */
-
 import { fireEvent, render } from "@testing-library/react-native";
 import AuthForm from "@/components/forms/auth-form";
 import { ERROR_MESSAGES } from "@/constants/messages";

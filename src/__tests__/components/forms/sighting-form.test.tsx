@@ -1,8 +1,3 @@
-/**
- * Test form behavior and validation
- * Verify the form behaves correctly during user interaction
- */
-
 import { useMutation } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import SightingForm from "@/components/forms/sighting-form";

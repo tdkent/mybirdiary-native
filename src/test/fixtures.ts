@@ -1,4 +1,3 @@
-import type { DetailsQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
 /* ── Auth ──────────────────────────────────────────── */
@@ -28,39 +27,39 @@ export const AUTH_STATUS = {
 };
 
 /* ── Birds ──────────────────────────────────────────── */
-export const BIRD_GREEN_HERON = Object.freeze({
+export const BIRD_GREEN_HERON = {
 	$id: "bird-1234",
 	commonName: "Green Heron",
 	scientificName: "Butorides virescens",
 	description: "A small heron with green plumage",
-});
+};
 
-export const BIRD_BLUE_JAY = Object.freeze({
+export const BIRD_BLUE_JAY = {
 	$id: "bird-5678",
 	commonName: "Blue Jay",
 	scientificName: "Cyanocitta cristata",
 	description: "A noisy jaybird with blue plumage",
-});
-
-/** Details component */
-export const mockDetailsData: DetailsQueryData = {
-	$id: "1",
-	commonName: "Green Heron",
-	scientificName: "Butorides virescens",
-	description: "A small heron",
 };
 
-export const mockDescriptionList: DescriptionListItem[] = [
+export const BIRD_DETAILS: DescriptionListItem[] = [
 	{
 		label: "Common Name",
-		details: "Blue Jay",
+		details: BIRD_GREEN_HERON.commonName,
 	},
 	{
 		label: "Scientific Name",
-		details: "Cyanocitta cristata",
+		details: BIRD_GREEN_HERON.scientificName,
 	},
 	{
 		label: "Description",
-		details: "A loud blue corvid",
+		details: BIRD_GREEN_HERON.description,
 	},
 ];
+
+/* ── Sightings ──────────────────────────────────────────── */
+export const SIGHTING_GREEN_HERON = {
+	$id: "sighting-1234",
+	date: "",
+	description: "Fishing near a stream",
+	bird: null,
+};

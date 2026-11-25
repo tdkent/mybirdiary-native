@@ -68,20 +68,19 @@ describe("Details", () => {
 		});
 	});
 
-	// describe("sightings", () => {
-	// 	test("uses the correct cache keys", async () => {
-	// 		mockUseQuery.mockReturnValue({
-	// 			...defaultDetailsReturnValue,
-	// 			data: { $id: "1", bird: { commonName: "Blue Jay" } },
-	// 		} as ReturnType<typeof useQuery>);
+	describe("sightings", () => {
+		test("uses the correct cache keys", async () => {
+			mockUseQuery.mockReturnValue(
+				MOCK_USE_QUERY_WITH_BIRD_ROW as ReturnType<typeof useQuery>,
+			);
 
-	// 		await render(<Details table="sightings" userId="123" rowId="456" />);
+			await render(<Details table="sightings" userId="123" rowId="456" />);
 
-	// 		expect(mockUseQuery).toHaveBeenCalledWith(
-	// 			expect.objectContaining({
-	// 				queryKey: ["sightings", "123", "detail", "456"],
-	// 			}),
-	// 		);
-	// 	});
-	// });
+			expect(mockUseQuery).toHaveBeenCalledWith(
+				expect.objectContaining({
+					queryKey: ["sightings", "123", "detail", "456"],
+				}),
+			);
+		});
+	});
 });
