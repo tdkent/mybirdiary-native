@@ -1,4 +1,5 @@
 import type { Models } from "react-native-appwrite";
+import { ERROR_MESSAGES } from "@/constants/messages";
 import type { Auth } from "@/context/auth-context";
 import {
 	mockDetailsData,
@@ -11,7 +12,9 @@ import type {
 	ListQueryReturnValue,
 } from "@/test/types";
 
-// Appwrite
+/* ── Auth ──────────────────────────────────────────── */
+
+/** Appwrite user */
 export const MOCK_USER: Models.User<Models.Preferences> = {
 	$id: USER_ID,
 	$createdAt: "2026-10-01T00:00:00.000+00:00",
@@ -31,7 +34,7 @@ export const MOCK_USER: Models.User<Models.Preferences> = {
 	prefs: {},
 };
 
-/** Auth context */
+/** Auth context default value */
 export const MOCK_DEFAULT_AUTH_CONTEXT: Auth = {
 	authError: null,
 	logoutError: null,
@@ -42,6 +45,43 @@ export const MOCK_DEFAULT_AUTH_CONTEXT: Auth = {
 	register: () => {},
 	setAuthError: () => {},
 	user: null,
+};
+
+/* ── Appwrite ──────────────────────────────────────────── */
+
+/** Appwrite list with no rows */
+export const MOCK_EMPTY_APPWRITE_LIST = {
+	rows: [],
+	total: 0,
+};
+
+/* ── Tanstack ──────────────────────────────────────────── */
+
+/** useQuery default return value */
+export const MOCK_DEFAULT_USE_QUERY = {
+	data: undefined,
+	error: null,
+	isError: false,
+	isPending: false,
+};
+
+/** useQuery while pending */
+export const MOCK_USE_QUERY_LOADING = {
+	...MOCK_DEFAULT_USE_QUERY,
+	isPending: true,
+};
+
+/** useQuery with unexpected Appwrite server error */
+export const MOCK_USE_QUERY_ERROR = {
+	...MOCK_DEFAULT_USE_QUERY,
+	isError: true,
+	error: { message: ERROR_MESSAGES.APPWRITE_UNEXPECTED },
+};
+
+/** useQuery with empty Appwrite list */
+export const MOCK_USE_QUERY_EMPTY_APPWRITE_LIST = {
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_EMPTY_APPWRITE_LIST,
 };
 
 /** List component */
