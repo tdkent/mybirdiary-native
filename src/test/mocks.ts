@@ -4,7 +4,7 @@ import type { Auth } from "@/context/auth-context";
 import {
 	BIRD_BLUE_JAY,
 	BIRD_GREEN_HERON,
-	SIGHTING_GREEN_HERON,
+	SIGHTING_WITH_NULL_BIRD,
 	USER_EMAIL,
 	USER_ID,
 } from "@/test/fixtures";
@@ -79,21 +79,20 @@ export const MOCK_BIRD_ROW: Bird = {
 /** Appwrite row with Sighting data */
 export const MOCK_SIGHTING_ROW: Sighting = {
 	...MOCK_DEFAULT_APPWRITE_ROW,
-	...SIGHTING_GREEN_HERON,
+	...SIGHTING_WITH_NULL_BIRD,
 	bird: MOCK_BIRD_ROW,
 };
 
 /** Appwrite row with Sighting data */
 export const MOCK_SIGHTING_ROW_WITH_NULL_BIRD: Sighting = {
 	...MOCK_DEFAULT_APPWRITE_ROW,
-	...SIGHTING_GREEN_HERON,
-	bird: null,
+	...SIGHTING_WITH_NULL_BIRD,
 };
 
 /** Appwrite row with Sighting data with empty description */
 export const MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION: Sighting = {
 	...MOCK_DEFAULT_APPWRITE_ROW,
-	...SIGHTING_GREEN_HERON,
+	...SIGHTING_WITH_NULL_BIRD,
 	bird: MOCK_BIRD_ROW,
 	description: "",
 };
@@ -106,6 +105,14 @@ export const MOCK_DEFAULT_USE_QUERY = {
 	error: null,
 	isError: false,
 	isPending: false,
+};
+
+/** useMutation default return value */
+export const MOCK_DEFAULT_USE_MUTATION = {
+	error: null,
+	isError: false,
+	isPending: false,
+	mutate: () => {},
 };
 
 /** useQuery while pending */

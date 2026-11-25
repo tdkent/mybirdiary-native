@@ -57,7 +57,7 @@ export const BIRD_DETAILS: DescriptionListItem[] = [
 ];
 
 /* ── Sightings ──────────────────────────────────────────── */
-export const SIGHTING_GREEN_HERON = {
+export const SIGHTING_WITH_NULL_BIRD = {
 	$id: "sighting-1234",
 	date: "",
 	description: "Fishing near a stream",
