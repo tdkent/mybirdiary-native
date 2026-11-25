@@ -69,7 +69,7 @@ describe("List", () => {
 			await render(<List table="birds" />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({ queryKey: ["birds"] }),
+				expect.objectContaining({ queryKey: ["birds", "list"] }),
 			);
 		});
 	});
@@ -87,7 +87,7 @@ describe("List", () => {
 			await render(<List table="sightings" userId="123" />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({ queryKey: ["sightings", "123"] }),
+				expect.objectContaining({ queryKey: ["sightings", "123", "list"] }),
 			);
 		});
 	});

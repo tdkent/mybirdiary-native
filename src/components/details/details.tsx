@@ -3,6 +3,7 @@ import React from "react";
 import DescriptionList from "@/components/details/description-list";
 import ThemedText from "@/components/ui/themed-text";
 import { TABLES } from "@/constants/tables";
+import { queryKeys } from "@/lib/query-keys";
 import { getDetailsData } from "@/services/api/details";
 import type { TableName } from "@/types/db";
 
@@ -17,7 +18,7 @@ export default function Details<T extends TableName>({
 	rowId: string;
 }) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: userId ? [table, userId, rowId] : [table, rowId],
+		queryKey: queryKeys.detail({ table, userId, rowId }),
 		queryFn: () =>
 			getDetailsData({
 				table,
