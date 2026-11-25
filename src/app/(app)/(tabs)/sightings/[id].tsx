@@ -15,12 +15,7 @@ export default function SightingDetailsScreen() {
 
 	return (
 		<ThemedSafeView>
-			<Details
-				table="sightings"
-				userId={user.$id}
-				rowId={id}
-				queries={["*", "bird.*"]}
-			/>
+			<Details table="sightings" userId={user.$id} rowId={id} />
 		</ThemedSafeView>
 	);
 }

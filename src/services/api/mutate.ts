@@ -1,5 +1,6 @@
 import { ID, Permission, Role } from "react-native-appwrite";
-import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
+import { CONFIG } from "@/constants/config";
+import { TABLES } from "@/constants/tables";
 import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { SightingMutationInputs } from "@/types/forms";
@@ -14,7 +15,7 @@ export async function createSighting({
 	try {
 		await tablesDB.createRow({
 			databaseId: CONFIG.DATABASE_ID,
-			tableId: APPWRITE_TABLE_IDS.sightings,
+			tableId: TABLES.sightings.tableId,
 			rowId: ID.unique(),
 			data: {
 				bird: birdId,

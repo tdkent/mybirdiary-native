@@ -1,22 +1,18 @@
 import { Query } from "react-native-appwrite";
-import { APPWRITE_TABLE_IDS, CONFIG } from "@/constants/config";
+import { CONFIG } from "@/constants/config";
+import { TABLES } from "@/constants/tables";
 import { tablesDB } from "@/lib/appwrite";
 import { getErrorMessage } from "@/services/errors/get-error-message";
 import type { RowFor, TableName } from "@/types/db";
 
-/** Get list items with pagination and sorting. */
-export async function getListData<T extends TableName>({
-	table,
-	queries,
-}: {
-	table: T;
-	queries: string[];
-}) {
+/** Get list items. */
+export async function getListData<T extends TableName>(table: T) {
+	const { tableId, select } = TABLES[table];
 	try {
 		const result = await tablesDB.listRows<RowFor[T]>({
 			databaseId: CONFIG.DATABASE_ID,
-			tableId: APPWRITE_TABLE_IDS[table],
-			queries: [Query.select(queries)],
+			tableId,
+			queries: [Query.select(select)],
 		});
 
 		return result;

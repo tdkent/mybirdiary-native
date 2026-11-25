@@ -6,6 +6,7 @@ import { type GestureResponderEvent, View } from "react-native";
 import ThemedButton from "@/components/ui/themed-button";
 import ThemedText from "@/components/ui/themed-text";
 import ThemedTextInput from "@/components/ui/themed-text-input";
+import { queryKeys } from "@/lib/query-keys";
 import { createSighting } from "@/services/api/mutate";
 import { SightingSchema } from "@/services/validation/sighting";
 import type { SightingMutationInputs } from "@/types/forms";
@@ -23,7 +24,9 @@ export default function SightingForm({ userId }: Props) {
 		mutationFn: ({ userId, formValues }: SightingMutationInputs) =>
 			createSighting({ userId, formValues }),
 		onSuccess: async () => {
-			await queryClient.invalidateQueries({ queryKey: ["sightings", userId] });
+			await queryClient.invalidateQueries({
+				queryKey: queryKeys.list({ table: "sightings", userId }),
+			});
 			router.push("/sightings");
 		},
 	});

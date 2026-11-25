@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import DescriptionList from "@/components/details/description-list";
-import { itemText } from "@/components/details/get-details-screen-text";
 import ThemedText from "@/components/ui/themed-text";
+import { TABLES } from "@/constants/tables";
+import { queryKeys } from "@/lib/query-keys";
 import { getDetailsData } from "@/services/api/details";
 import type { TableName } from "@/types/db";
 
 /** Renders details screen heading, image and description list. */
 export default function Details<T extends TableName>({
-	queries,
 	table,
 	rowId,
 	userId,
@@ -16,13 +16,14 @@ export default function Details<T extends TableName>({
 	table: T;
 	userId?: string;
 	rowId: string;
-	queries: string[];
 }) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: userId
-			? [table, userId, rowId, queries]
-			: [table, rowId, queries],
-		queryFn: () => getDetailsData({ queries, rowId, table }),
+		queryKey: queryKeys.detail({ table, userId, rowId }),
+		queryFn: () =>
+			getDetailsData({
+				table,
+				rowId,
+			}),
 	});
 
 	if (isPending) {
@@ -37,7 +38,7 @@ export default function Details<T extends TableName>({
 		return <ThemedText>No data to show.</ThemedText>;
 	}
 
-	const { headingText, descriptionList } = itemText[table](data);
+	const { headingText, descriptionList } = TABLES[table].details(data);
 
 	return (
 		<React.Fragment>

@@ -2,22 +2,21 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { FlatList } from "react-native";
 import ListItem from "@/components/list/list-item";
 import ThemedText from "@/components/ui/themed-text";
+import { queryKeys } from "@/lib/query-keys";
 import { getListData } from "@/services/api/list";
 import type { TableName } from "@/types/db";
 
 /** Renders list screen FlatList component. */
 export default function List<T extends TableName>({
 	table,
-	queries,
 	userId,
 }: {
 	table: T;
-	queries: string[];
 	userId?: string;
 }) {
 	const { data, error, isError, isPending } = useQuery({
-		queryKey: userId ? [table, userId] : [table],
-		queryFn: () => getListData({ table, queries }),
+		queryKey: queryKeys.list({ table, userId }),
+		queryFn: () => getListData(table),
 		placeholderData: keepPreviousData,
 	});
 

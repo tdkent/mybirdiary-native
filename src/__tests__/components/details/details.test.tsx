@@ -14,9 +14,7 @@ describe("Details", () => {
 				isPending: true,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<Details table="birds" rowId="" queries={[""]} />,
-			);
+			const { getByText } = await render(<Details table="birds" rowId="" />);
 
 			expect(getByText(/loading.../i));
 		});
@@ -30,9 +28,7 @@ describe("Details", () => {
 				isError: true,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<Details table="birds" rowId="" queries={[""]} />,
-			);
+			const { getByText } = await render(<Details table="birds" rowId="" />);
 
 			expect(getByText(errorMsg));
 		});
@@ -43,9 +39,7 @@ describe("Details", () => {
 				data: undefined,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByText } = await render(
-				<Details table="birds" rowId="" queries={[""]} />,
-			);
+			const { getByText } = await render(<Details table="birds" rowId="" />);
 
 			expect(getByText(/no data to show/i));
 		});
@@ -57,9 +51,7 @@ describe("Details", () => {
 				...defaultDetailsReturnValue,
 			} as ReturnType<typeof useQuery>);
 
-			const { getByTestId } = await render(
-				<Details table="birds" rowId="" queries={[""]} />,
-			);
+			const { getByTestId } = await render(<Details table="birds" rowId="" />);
 
 			expect(getByTestId(/description-list/i));
 		});
@@ -69,10 +61,10 @@ describe("Details", () => {
 				...defaultDetailsReturnValue,
 			} as ReturnType<typeof useQuery>);
 
-			await render(<Details table="birds" rowId="456" queries={["*"]} />);
+			await render(<Details table="birds" rowId="456" />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({ queryKey: ["birds", "456", ["*"]] }),
+				expect.objectContaining({ queryKey: ["birds", "detail", "456"] }),
 			);
 		});
 	});
@@ -84,13 +76,11 @@ describe("Details", () => {
 				data: { $id: "1", bird: { commonName: "Blue Jay" } },
 			} as ReturnType<typeof useQuery>);
 
-			await render(
-				<Details table="sightings" userId="123" rowId="456" queries={["*"]} />,
-			);
+			await render(<Details table="sightings" userId="123" rowId="456" />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
 				expect.objectContaining({
-					queryKey: ["sightings", "123", "456", ["*"]],
+					queryKey: ["sightings", "123", "detail", "456"],
 				}),
 			);
 		});
