@@ -1,4 +1,4 @@
-import type { DetailsQueryData, ListQueryData } from "@/test/types";
+import type { DetailsQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
 /* ── Auth ──────────────────────────────────────────── */
@@ -27,14 +27,20 @@ export const AUTH_STATUS = {
 	authUnchecked: "Unchecked",
 };
 
-/** List component */
-export const mockListData: ListQueryData = {
-	rows: [
-		{ $id: "1", commonName: "Blue Jay" },
-		{ $id: "2", commonName: "Northern Cardinal" },
-	],
-	total: 2,
-};
+/* ── Birds ──────────────────────────────────────────── */
+export const BIRD_GREEN_HERON = Object.freeze({
+	$id: "bird-1234",
+	commonName: "Green Heron",
+	scientificName: "Butorides virescens",
+	description: "A small heron with green plumage",
+});
+
+export const BIRD_BLUE_JAY = Object.freeze({
+	$id: "bird-5678",
+	commonName: "Blue Jay",
+	scientificName: "Cyanocitta cristata",
+	description: "A noisy jaybird with blue plumage",
+});
 
 /** Details component */
 export const mockDetailsData: DetailsQueryData = {

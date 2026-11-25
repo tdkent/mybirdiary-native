@@ -2,15 +2,13 @@ import type { Models } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import type { Auth } from "@/context/auth-context";
 import {
+	BIRD_BLUE_JAY,
+	BIRD_GREEN_HERON,
 	mockDetailsData,
-	mockListData,
 	USER_EMAIL,
 	USER_ID,
 } from "@/test/fixtures";
-import type {
-	DetailsQueryReturnValue,
-	ListQueryReturnValue,
-} from "@/test/types";
+import type { DetailsQueryReturnValue } from "@/test/types";
 
 /* ── Auth ──────────────────────────────────────────── */
 
@@ -55,6 +53,12 @@ export const MOCK_EMPTY_APPWRITE_LIST = {
 	total: 0,
 };
 
+/** Appwrite list with 2 bird results */
+export const MOCK_APPWRITE_LIST_BIRDS = {
+	rows: [BIRD_GREEN_HERON, BIRD_BLUE_JAY],
+	total: 2,
+};
+
 /* ── Tanstack ──────────────────────────────────────────── */
 
 /** useQuery default return value */
@@ -79,17 +83,15 @@ export const MOCK_USE_QUERY_ERROR = {
 };
 
 /** useQuery with empty Appwrite list */
-export const MOCK_USE_QUERY_EMPTY_APPWRITE_LIST = {
+export const MOCK_USE_QUERY_WITH_EMPTY_LIST = {
 	...MOCK_DEFAULT_USE_QUERY,
 	data: MOCK_EMPTY_APPWRITE_LIST,
 };
 
-/** List component */
-export const defaultListReturnValue: ListQueryReturnValue = {
-	data: mockListData,
-	error: null,
-	isError: false,
-	isPending: false,
+/** useQuery with birds list */
+export const MOCK_USE_QUERY_WITH_BIRDS_LIST = {
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_APPWRITE_LIST_BIRDS,
 };
 
 /** Details component */

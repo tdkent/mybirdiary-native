@@ -6,13 +6,6 @@ export interface ListQueryData {
 	total: number;
 }
 
-export interface ListQueryReturnValue {
-	data: ListQueryData | undefined;
-	error: Error | null;
-	isError: boolean;
-	isPending: boolean;
-}
-
 // Appwrite row data types
 export type DetailsQueryData = Pick<
 	Bird,
