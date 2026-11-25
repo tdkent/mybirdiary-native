@@ -1,29 +1,29 @@
 import { queryKeys } from "@/lib/query-keys";
-import { testUserId } from "@/test/fixtures";
+import { USER_ID } from "@/test/fixtures";
 
 const rowId = "456";
 
 describe("queryKeys factory", () => {
 	describe("sightings", () => {
 		test("returns correct sightings list query key", () => {
-			const key = queryKeys.list({ table: "sightings", userId: testUserId });
+			const key = queryKeys.list({ table: "sightings", userId: USER_ID });
 
-			expect(key).toStrictEqual(["sightings", testUserId, "list"]);
+			expect(key).toStrictEqual(["sightings", USER_ID, "list"]);
 		});
 		test("returns correct sighting details query key", () => {
 			const key = queryKeys.detail({
 				table: "sightings",
-				userId: testUserId,
+				userId: USER_ID,
 				rowId,
 			});
 
-			expect(key).toStrictEqual(["sightings", testUserId, "detail", rowId]);
+			expect(key).toStrictEqual(["sightings", USER_ID, "detail", rowId]);
 		});
 	});
 
 	describe("birds", () => {
 		test("returns correct birds list query key", () => {
-			const key = queryKeys.list({ table: "birds", userId: testUserId });
+			const key = queryKeys.list({ table: "birds", userId: USER_ID });
 
 			expect(key).toStrictEqual(["birds", "list"]);
 		});
@@ -31,7 +31,7 @@ describe("queryKeys factory", () => {
 		test("returns correct bird details query key", () => {
 			const key = queryKeys.detail({
 				table: "birds",
-				userId: testUserId,
+				userId: USER_ID,
 				rowId,
 			});
 
@@ -53,7 +53,7 @@ describe("queryKeys factory", () => {
 
 	describe("all", () => {
 		test.each([
-			{ table: "sightings" as const, userId: testUserId },
+			{ table: "sightings" as const, userId: USER_ID },
 			{ table: "birds" as const, userId: undefined },
 		])("is a prefix of $table list and detail keys", ({ table, userId }) => {
 			const all = queryKeys.all({ table, userId });

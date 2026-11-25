@@ -8,12 +8,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import AuthForm from "@/components/forms/auth-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/auth-context";
-import {
-	testEmail,
-	testInvalidEmail,
-	testInvalidPassword,
-	testPassword,
-} from "@/test/fixtures";
+import { INVALID_LOGIN, VALID_LOGIN } from "@/test/fixtures";
 
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
@@ -56,7 +51,7 @@ describe("AuthForm", () => {
 		);
 
 		const emailInput = getByLabelText("email");
-		await fireEvent.changeText(emailInput, testInvalidEmail);
+		await fireEvent.changeText(emailInput, INVALID_LOGIN.email);
 
 		const button = getByRole("button", { name: /submit/i });
 		await fireEvent.press(button);
@@ -72,7 +67,7 @@ describe("AuthForm", () => {
 		);
 
 		const passwordInput = getByLabelText("password");
-		await fireEvent.changeText(passwordInput, testInvalidPassword);
+		await fireEvent.changeText(passwordInput, INVALID_LOGIN.password);
 
 		const button = getByRole("button", { name: /submit/i });
 		await fireEvent.press(button);
@@ -93,8 +88,8 @@ describe("AuthForm", () => {
 		const passwordInput = getByLabelText("password");
 		const button = getByRole("button", { name: /submit/i });
 
-		await fireEvent.changeText(emailInput, testEmail);
-		await fireEvent.changeText(passwordInput, testPassword);
+		await fireEvent.changeText(emailInput, VALID_LOGIN.email);
+		await fireEvent.changeText(passwordInput, VALID_LOGIN.password);
 		await fireEvent.press(button);
 
 		expect(mockLogin).toHaveBeenCalledTimes(1);
@@ -111,8 +106,8 @@ describe("AuthForm", () => {
 		const passwordInput = getByLabelText("password");
 		const button = getByRole("button", { name: /submit/i });
 
-		await fireEvent.changeText(emailInput, testEmail);
-		await fireEvent.changeText(passwordInput, testPassword);
+		await fireEvent.changeText(emailInput, VALID_LOGIN.email);
+		await fireEvent.changeText(passwordInput, VALID_LOGIN.password);
 		await fireEvent.press(button);
 
 		expect(mockRegister).toHaveBeenCalledTimes(1);

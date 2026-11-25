@@ -1,33 +1,30 @@
-/**
- * Fixtures: simulated state values.
- * Remain frozen so that tests produce the same output.
- */
-
 import type { DetailsQueryData, ListQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
 /** Authentication */
-export const testUserId = "123";
+export const USER_ID = "user-123";
+export const USER_EMAIL = "test@fake.me";
 
-export const testEmail = "test@fake.me";
-export const testInvalidEmail = "invalid-email";
-
-export const testPassword = "password123";
-export const testInvalidPassword = "123";
-
-export const mockUserInputs = {
-	email: testEmail,
-	password: testPassword,
+export const VALID_LOGIN = {
+	email: USER_EMAIL,
+	password: "password123",
+};
+export const INVALID_LOGIN = {
+	email: "invalid-email",
+	password: "abcd",
 };
 
-export const mockUser = {
-	...mockUserInputs,
-	userId: "xxx",
+export const VALID_REGISTER = {
+	...VALID_LOGIN,
+	userId: USER_ID,
 };
 
-export const userAuthenticated = "Authenticated";
-export const userUnauthenticated = "Unauthenticated";
-export const authChecked = "Checked";
+export const AUTH_STATUS = {
+	authenticated: "Authenticated",
+	unauthenticated: "Unauthenticated",
+	authChecked: "Checked",
+	authUnchecked: "Unchecked",
+};
 
 /** List component */
 export const mockListData: ListQueryData = {

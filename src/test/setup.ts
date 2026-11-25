@@ -18,7 +18,8 @@ jest.mock("react-native-appwrite", () => ({
 	})),
 
 	ID: {
-		unique: jest.fn().mockReturnValue("xxx"),
+		// Matches value of fixtures.ts > USER_ID
+		unique: jest.fn().mockReturnValue("user-123"),
 	},
 
 	AppwriteException: class AppwriteException extends Error {

@@ -3,8 +3,8 @@ import type { Auth } from "@/context/auth-context";
 import {
 	mockDetailsData,
 	mockListData,
-	testEmail,
-	testUserId,
+	USER_EMAIL,
+	USER_ID,
 } from "@/test/fixtures";
 import type {
 	DetailsQueryReturnValue,
@@ -13,7 +13,7 @@ import type {
 
 // Appwrite
 export const mockAppwriteUser: Models.User<Models.Preferences> = {
-	$id: testUserId,
+	$id: USER_ID,
 	$createdAt: "2026-10-01T00:00:00.000+00:00",
 	$updatedAt: "2026-11-01T00:00:00.000+00:00",
 	registration: "2026-10-01T00:00:00.000+00:00",
@@ -22,7 +22,7 @@ export const mockAppwriteUser: Models.User<Models.Preferences> = {
 	status: true,
 	labels: [],
 	passwordUpdate: "",
-	email: testEmail,
+	email: USER_EMAIL,
 	phone: "",
 	emailVerification: false,
 	phoneVerification: false,

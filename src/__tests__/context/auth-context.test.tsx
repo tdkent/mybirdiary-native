@@ -12,13 +12,7 @@ import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
-import {
-	authChecked,
-	mockUser,
-	mockUserInputs,
-	userAuthenticated,
-	userUnauthenticated,
-} from "@/test/fixtures";
+import { AUTH_STATUS, VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
 import { mockAppwriteUser } from "@/test/mocks";
 
 // Mock appwrite methods
@@ -61,9 +55,7 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
-			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(
-				mockUserInputs,
-			);
+			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(VALID_LOGIN);
 			// Get user (also called by auth check effect when component mounts)
 			expect(mockGetUser).toHaveBeenCalledTimes(2);
 		});
@@ -84,7 +76,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check if signed out by default
-			expect(getByText(userUnauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -93,7 +85,7 @@ describe("AuthContext", () => {
 			expect(
 				await findByText(ERROR_MESSAGES.INCORRECT_CREDENTIALS),
 			).toBeOnTheScreen();
-			expect(await findByText(userUnauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 		});
 
 		test("updates authentication state after successful login", async () => {
@@ -106,12 +98,12 @@ describe("AuthContext", () => {
 			mockGetUser.mockReturnValue(mockAppwriteUser as never);
 
 			// Check if signed out by default
-			expect(getByText(userUnauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 		});
 
 		test("clears the query cache on successful login", async () => {
@@ -127,7 +119,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
@@ -185,13 +177,11 @@ describe("AuthContext", () => {
 
 			// Create user
 			expect(mockCreateUser).toHaveBeenCalledTimes(1);
-			expect(mockCreateUser).toHaveBeenCalledWith(mockUser);
+			expect(mockCreateUser).toHaveBeenCalledWith(VALID_REGISTER);
 
 			// Create session
 			expect(mockCreateEmailPasswordSession).toHaveBeenCalledTimes(1);
-			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(
-				mockUserInputs,
-			);
+			expect(mockCreateEmailPasswordSession).toHaveBeenCalledWith(VALID_LOGIN);
 
 			// Get user (also called by auth check effect when component mounts)
 			expect(mockGetUser).toHaveBeenCalledTimes(2);
@@ -213,7 +203,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check if signed out by default
-			expect(getByText(userUnauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -222,7 +212,7 @@ describe("AuthContext", () => {
 			expect(
 				await findByText(ERROR_MESSAGES.REGISTERED_EMAIL),
 			).toBeOnTheScreen();
-			expect(await findByText(userUnauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 		});
 
 		test("updates authentication state after successful registration", async () => {
@@ -235,12 +225,12 @@ describe("AuthContext", () => {
 			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
 
 			// User is signed out by default
-			expect(getByText(userUnauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 		});
 
 		test("clears the query cache on successful register", async () => {
@@ -256,7 +246,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
@@ -324,12 +314,12 @@ describe("AuthContext", () => {
 			// Sign in user and check auth status
 			const submitBtn = getByRole("button", { name: /submit/i });
 			await fireEvent.press(submitBtn);
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 
 			// Log user out and check auth status
 			const logoutBtn = getByRole("button", { name: /logout/i });
 			await fireEvent.press(logoutBtn);
-			expect(await findByText(userUnauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 		});
 
 		test("clears the query cache on successful logout", async () => {
@@ -397,7 +387,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check user remains authenticated
-			expect(await findByText(userAuthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
 			expect(mockGetUser).toHaveBeenCalledTimes(1);
 		});
 
@@ -410,10 +400,10 @@ describe("AuthContext", () => {
 			);
 
 			// Wait for auth check
-			expect(await findByText(authChecked)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authChecked)).toBeTruthy();
 
 			// Check user remains unauthenticated
-			expect(await findByText(userUnauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
 			expect(mockGetUser).toHaveBeenCalledTimes(1);
 		});
 	});
@@ -432,9 +422,9 @@ function AuthTestComponent({ isLogin }: { isLogin?: boolean }) {
 
 	async function handleSubmit() {
 		if (isLogin) {
-			login(mockUserInputs);
+			login(VALID_LOGIN);
 		} else {
-			register(mockUserInputs);
+			register(VALID_LOGIN);
 		}
 	}
 
@@ -442,8 +432,12 @@ function AuthTestComponent({ isLogin }: { isLogin?: boolean }) {
 		<View>
 			{authError && <Text testID="auth-error">{authError}</Text>}
 			{logoutError && <Text testID="logout-error">{logoutError}</Text>}
-			<Text>{isAuthChecked ? authChecked : "Unchecked"}</Text>
-			<Text>{user ? userAuthenticated : userUnauthenticated}</Text>
+			<Text>
+				{isAuthChecked ? AUTH_STATUS.authChecked : AUTH_STATUS.authUnchecked}
+			</Text>
+			<Text>
+				{user ? AUTH_STATUS.authenticated : AUTH_STATUS.unauthenticated}
+			</Text>
 			<Button onPress={handleSubmit} title="submit" />
 			<Button onPress={logout} title="logout" />
 		</View>
