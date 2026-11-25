@@ -1,7 +1,5 @@
 import { queryKeys } from "@/lib/query-keys";
-import { USER_ID } from "@/test/fixtures";
-
-const rowId = "456";
+import { SIGHTING_WITH_NULL_BIRD, USER_ID } from "@/test/fixtures";
 
 describe("queryKeys factory", () => {
 	describe("sightings", () => {
@@ -14,10 +12,15 @@ describe("queryKeys factory", () => {
 			const key = queryKeys.detail({
 				table: "sightings",
 				userId: USER_ID,
-				rowId,
+				rowId: SIGHTING_WITH_NULL_BIRD.$id,
 			});
 
-			expect(key).toStrictEqual(["sightings", USER_ID, "detail", rowId]);
+			expect(key).toStrictEqual([
+				"sightings",
+				USER_ID,
+				"detail",
+				SIGHTING_WITH_NULL_BIRD.$id,
+			]);
 		});
 	});
 
@@ -32,10 +35,14 @@ describe("queryKeys factory", () => {
 			const key = queryKeys.detail({
 				table: "birds",
 				userId: USER_ID,
-				rowId,
+				rowId: SIGHTING_WITH_NULL_BIRD.$id,
 			});
 
-			expect(key).toStrictEqual(["birds", "detail", rowId]);
+			expect(key).toStrictEqual([
+				"birds",
+				"detail",
+				SIGHTING_WITH_NULL_BIRD.$id,
+			]);
 		});
 
 		test("returns correct birds list query key without a user", () => {
@@ -45,9 +52,16 @@ describe("queryKeys factory", () => {
 		});
 
 		test("returns correct bird details query key without a user", () => {
-			const key = queryKeys.detail({ table: "birds", rowId });
+			const key = queryKeys.detail({
+				table: "birds",
+				rowId: SIGHTING_WITH_NULL_BIRD.$id,
+			});
 
-			expect(key).toStrictEqual(["birds", "detail", rowId]);
+			expect(key).toStrictEqual([
+				"birds",
+				"detail",
+				SIGHTING_WITH_NULL_BIRD.$id,
+			]);
 		});
 	});
 
@@ -62,7 +76,9 @@ describe("queryKeys factory", () => {
 				all,
 			);
 			expect(
-				queryKeys.detail({ table, userId, rowId }).slice(0, all.length),
+				queryKeys
+					.detail({ table, userId, rowId: SIGHTING_WITH_NULL_BIRD.$id })
+					.slice(0, all.length),
 			).toEqual(all);
 		});
 	});
