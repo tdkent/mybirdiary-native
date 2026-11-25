@@ -4,14 +4,14 @@ import type { TableName } from "@/types/db";
 export const queryKeys = {
 	all: ({ table, userId }: { table: TableName; userId?: string }) => {
 		if (TABLES[table].userScoped) {
-			return [table, userId];
+			return [table, userId] as const;
 		}
 
-		return [table];
+		return [table] as const;
 	},
 	list: ({ table, userId }: { table: TableName; userId?: string }) => {
 		const key = queryKeys.all({ table, userId });
-		return [...key, "list"];
+		return [...key, "list"] as const;
 	},
 	detail: ({
 		table,
@@ -23,6 +23,6 @@ export const queryKeys = {
 		rowId: string;
 	}) => {
 		const key = queryKeys.all({ table, userId });
-		return [...key, "detail", rowId];
+		return [...key, "detail", rowId] as const;
 	},
 };
