@@ -5,7 +5,7 @@ import { MOCK_USE_QUERY_WITH_EMPTY_LIST } from "@/test/mocks";
 
 // Mock useAuth, return user object
 jest.mock("@/hooks/use-auth", () => ({
-	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
+	useAuth: jest.fn().mockReturnValue({ user: { $id: "user-123" } }),
 }));
 
 const mockUseQuery = jest.mocked(useQuery);

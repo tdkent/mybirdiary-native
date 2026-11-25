@@ -145,3 +145,9 @@ export const MOCK_USE_QUERY_WITH_BIRD_ROW = {
 	...MOCK_DEFAULT_USE_QUERY,
 	data: MOCK_BIRD_ROW,
 };
+
+/** useQuery with sighting row */
+export const MOCK_USE_QUERY_WITH_SIGHTING_ROW = {
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_SIGHTING_ROW,
+};

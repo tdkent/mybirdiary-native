@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import SightingDetailsScreen from "@/app/(app)/(tabs)/sightings/[id]";
-import { defaultDetailsReturnValue } from "@/test/mocks";
+import { MOCK_USE_QUERY_WITH_SIGHTING_ROW } from "@/test/mocks";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
@@ -20,17 +20,14 @@ const mockUseQuery = jest.mocked(useQuery);
 
 describe("SightingDetailsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue({
-			...defaultDetailsReturnValue,
-			data: {
-				bird: {
-					commonName: "Blue Jay",
-				},
-			},
-		} as ReturnType<typeof useQuery>);
+		mockUseQuery.mockReturnValue(
+			MOCK_USE_QUERY_WITH_SIGHTING_ROW as ReturnType<typeof useQuery>,
+		);
 
 		const { getByText } = await render(<SightingDetailsScreen />);
 
-		getByText(/sighting details: blue jay/i);
+		getByText(
+			`Sighting Details: ${MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.bird?.commonName}`,
+		);
 	});
 });
