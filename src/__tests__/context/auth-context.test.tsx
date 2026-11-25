@@ -13,7 +13,7 @@ import { AuthProvider } from "@/context/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
 import { AUTH_STATUS, VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
-import { mockAppwriteUser } from "@/test/mocks";
+import { MOCK_USER } from "@/test/mocks";
 
 // Mock appwrite methods
 const mockCreateUser = jest.mocked(account.create);
@@ -49,7 +49,7 @@ describe("AuthContext", () => {
 			);
 
 			mockCreateEmailPasswordSession.mockReturnValue({} as never);
-			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -95,7 +95,7 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			// Check if signed out by default
 			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
@@ -114,7 +114,7 @@ describe("AuthContext", () => {
 			);
 
 			const { clear } = mockUseQueryClient();
-			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -168,9 +168,9 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			mockCreateUser.mockReturnValueOnce(mockAppwriteUser as never);
+			mockCreateUser.mockReturnValueOnce(MOCK_USER as never);
 			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
-			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
+			mockGetUser.mockReturnValueOnce(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -222,7 +222,7 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
+			mockGetUser.mockReturnValueOnce(MOCK_USER as never);
 
 			// User is signed out by default
 			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
@@ -241,7 +241,7 @@ describe("AuthContext", () => {
 			);
 
 			const { clear } = mockUseQueryClient();
-			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -308,7 +308,7 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
-			mockGetUser.mockReturnValue(mockAppwriteUser as never);
+			mockGetUser.mockReturnValue(MOCK_USER as never);
 			mockDeleteSession.mockReturnValueOnce({} as never);
 
 			// Sign in user and check auth status
@@ -377,7 +377,7 @@ describe("AuthContext", () => {
 
 	describe("session restoration", () => {
 		test("restores an existing session", async () => {
-			mockGetUser.mockReturnValueOnce(mockAppwriteUser as never);
+			mockGetUser.mockReturnValueOnce(MOCK_USER as never);
 
 			// Remount AuthProvider to refresh state
 			const { findByText } = await render(

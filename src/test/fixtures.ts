@@ -1,7 +1,8 @@
 import type { DetailsQueryData, ListQueryData } from "@/test/types";
 import type { DescriptionListItem } from "@/types/ui";
 
-/** Authentication */
+/* ── Auth ──────────────────────────────────────────── */
+
 export const USER_ID = "user-123";
 export const USER_EMAIL = "test@fake.me";
 

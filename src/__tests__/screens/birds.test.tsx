@@ -5,11 +5,11 @@ import BirdsScreen from "@/app/(app)/(tabs)/birds";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
 import { defaultListReturnValue } from "@/test/mocks";
 
-const mockUserQuery = jest.mocked(useQuery);
+const mockUseQuery = jest.mocked(useQuery);
 
 describe("BirdsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUserQuery.mockReturnValue({
+		mockUseQuery.mockReturnValue({
 			data: {
 				rows: [],
 				total: 0,
@@ -25,7 +25,7 @@ describe("BirdsScreen", () => {
 	});
 
 	test("pressing an item navigates to correct bird details screen", async () => {
-		mockUserQuery.mockReturnValue(
+		mockUseQuery.mockReturnValue(
 			defaultListReturnValue as ReturnType<typeof useQuery>,
 		);
 

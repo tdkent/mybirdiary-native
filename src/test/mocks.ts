@@ -12,7 +12,7 @@ import type {
 } from "@/test/types";
 
 // Appwrite
-export const mockAppwriteUser: Models.User<Models.Preferences> = {
+export const MOCK_USER: Models.User<Models.Preferences> = {
 	$id: USER_ID,
 	$createdAt: "2026-10-01T00:00:00.000+00:00",
 	$updatedAt: "2026-11-01T00:00:00.000+00:00",
@@ -32,7 +32,7 @@ export const mockAppwriteUser: Models.User<Models.Preferences> = {
 };
 
 /** Auth context */
-export const mockDefaultAuthContext: Auth = {
+export const MOCK_DEFAULT_AUTH_CONTEXT: Auth = {
 	authError: null,
 	logoutError: null,
 	isAuthChecked: false,
