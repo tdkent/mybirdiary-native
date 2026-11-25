@@ -39,7 +39,7 @@ Biome formatting: tabs, double quotes, import organizing enabled (`check:fix` so
 
 ## Environment
 
-`.env` must define `EXPO_PUBLIC_APPWRITE_ENDPOINT`, `EXPO_PUBLIC_APPWRITE_PLATFORM`, `EXPO_PUBLIC_APPWRITE_PROJECT_ID`, `EXPO_PUBLIC_DATABASE_ID`, `EXPO_PUBLIC_BIRDS_TABLE_ID`, `EXPO_PUBLIC_SIGHTINGS_TABLE_ID`. They are read once in `src/constants/config.ts` (`CONFIG`, `APPWRITE_TABLE_IDS`). Don't read `process.env` anywhere else.
+`.env` must define `EXPO_PUBLIC_APPWRITE_ENDPOINT`, `EXPO_PUBLIC_APPWRITE_PLATFORM`, `EXPO_PUBLIC_APPWRITE_PROJECT_ID`, `EXPO_PUBLIC_DATABASE_ID`, `EXPO_PUBLIC_BIRDS_TABLE_ID`, `EXPO_PUBLIC_SIGHTINGS_TABLE_ID`. They are read once in `src/constants/config.ts` (`CONFIG`). Don't read `process.env` anywhere else.
 
 ## Architecture
 
@@ -54,13 +54,14 @@ The import alias is `@/*` → `src/*`. All file names outside `src/app/` are keb
 
 **Data flow**
 - `lib/appwrite.ts` exports the singleton `client`, `account` and `tablesDB`.
-- `services/api/` has thin Appwrite wrappers: `list.ts` (`getListData`), `details.ts` (`getDetailsData`) and `mutate.ts` (`createSighting`, which sets per-user row permissions). Each one catches and rethrows `new Error(getErrorMessage(e))`, so the UI only ever shows a user-friendly `error.message`.
-- `services/errors/get-error-message.ts` (`getErrorMessage`) maps an `AppwriteException.type` to a message through `appwriteErrorMessage` in `constants/messages.ts`. All user-facing strings, including validation messages, live in `ERROR_MESSAGES`.
-- Generic data components are keyed by the `DbTables` type (`"birds" | "sightings"`):
-  - `components/list/list.tsx` runs `useQuery` with `[table]`, or `[table, userId]` when a `userId` prop is passed (user-scoped data like sightings), and renders a FlatList of `ListItem`.
-  - `components/details/details.tsx` takes `rowId` (and an optional `userId`) as props and runs `useQuery` with `[table, rowId, queries]`, or `[table, userId, rowId, queries]`. The `[id].tsx` screens read `id` from `useLocalSearchParams` and throw `ERROR_MESSAGES.INVALID_ROUTE_PARAM` if it isn't a string. User-scoped screens throw `ERROR_MESSAGES.AUTH_ERROR` when there's no user. `components/details/get-details-screen-text.ts` turns a row into a heading and a `DescriptionList` for each table.
-  - To add a table, extend `DbTables`, `APPWRITE_TABLE_IDS`, the models in `types/db.ts`, and the switch in `getDetailsScreenText`.
-  - Screens pass Appwrite `Query.select` fields (e.g. `["*", "bird.*"]` to expand the sighting→bird relation).
+- `constants/tables.ts` exports `TABLES`, one config per table typed `{ [K in TableName]: TableConfig<K> }`: `tableId` (from `CONFIG`), `userScoped`, `select` (Appwrite `Query.select` fields, e.g. `["*", "bird.*"]` to expand the sighting→bird relation), and two row mappers, `listItem` (`href` + `label`) and `details` (`headingText` + `descriptionList`). Each mapper's `row` is typed by `RowFor[K]`.
+- `services/api/` has thin Appwrite wrappers: `list.ts` (`getListData(table)`), `details.ts` (`getDetailsData({ table, rowId })`) and `mutate.ts` (`createSighting`, which sets per-user row permissions). The read functions are generic over the table (`<T extends TableName>`), take the table id and select fields from `TABLES[table]`, and return typed `RowFor[T]` rows. Each one catches and rethrows `new Error(getErrorMessage(e))`, so the UI only ever shows a user-friendly `error.message`.
+- `services/errors/get-error-message.ts` (`getErrorMessage`) maps an `AppwriteException.type` to a message through `appwriteErrorMessage` in `constants/messages.ts`. All user-facing strings live in `constants/messages.ts`: `ERROR_MESSAGES` (errors and validation) and `DISPLAY_MESSAGES` (fallback display text such as `UNKNOWN_BIRD`, `NO_DESCRIPTION`).
+- `types/db.ts` defines the row models (`Bird`, `Sighting`), the `RowFor` table→row map and `TableName` (`keyof RowFor`). Generic data components take a `table: T extends TableName` prop and read everything table-specific from `TABLES`:
+  - `components/list/list.tsx` takes an optional `userId` prop (required for user-scoped tables like sightings), runs `useQuery` with `queryKeys.list`, and renders a FlatList of `ListItem`, which renders `TABLES[table].listItem(row)`.
+  - `components/details/details.tsx` takes `rowId` (and an optional `userId`) as props, runs `useQuery` with `queryKeys.detail`, and renders `TABLES[table].details(row)`. The `[id].tsx` screens read `id` from `useLocalSearchParams` and throw `ERROR_MESSAGES.INVALID_ROUTE_PARAM` if it isn't a string. User-scoped screens throw `ERROR_MESSAGES.AUTH_ERROR` when there's no user.
+  - To add a table, add its env var to `CONFIG`, its row model and `RowFor` entry in `types/db.ts`, and its entry in `TABLES` (TypeScript errors until every `TableName` has one).
+- Build query keys with the factory in `lib/query-keys.ts`; don't write them inline. `queryKeys.all({ table, userId })` is `[table, userId]` when `TABLES[table].userScoped`, otherwise `[table]` (any `userId` is ignored). `list` appends `"list"`, and `detail` appends `"detail", rowId`. `sighting-form.tsx` invalidates only `queryKeys.list` after a create; invalidating `queryKeys.all` clears a table's list and details together.
 - The QueryClient (`lib/query-client.ts`) default `staleTime` is 1 day.
 
 **Forms:** `components/forms/` (`auth-form.tsx`, `sighting-form.tsx`) use Formik with Yup schemas in `services/validation/` (`auth.ts`, `sighting.ts`). Form value and mutation types are in `types/forms.ts`. Reusable themed UI primitives are in `components/ui/` (`ThemedText`, `ThemedButton`, `ThemedTextInput`, `ThemedSafeView`). Theme color tokens (`background`, `foreground`, `border`) are defined for light and dark in `src/global.css`.
@@ -69,7 +70,7 @@ The import alias is `@/*` → `src/*`. All file names outside `src/app/` are keb
 
 ## Testing
 
-Tests live in `src/__tests__/{components,screens,context,services}`, mirroring `src/` with kebab-case names. Support files live in `src/test/`, outside `__tests__/`, because Jest treats every file under `__tests__/` as a suite. `src/test/setup.ts` globally mocks:
+Tests live in `src/__tests__/{components,constants,context,lib,screens,services}`, mirroring `src/` with kebab-case names. Support files live in `src/test/`, outside `__tests__/`, because Jest treats every file under `__tests__/` as a suite. `src/test/setup.ts` globally mocks:
 - `react-native-appwrite` (Client, Account, TablesDB, ID, AppwriteException)
 - `uniwind`
 - `@tanstack/react-query`: only `useQuery` and `useMutation` are mocked, so there's no real QueryClient in tests
