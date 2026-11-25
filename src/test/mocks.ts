@@ -4,11 +4,10 @@ import type { Auth } from "@/context/auth-context";
 import {
 	BIRD_BLUE_JAY,
 	BIRD_GREEN_HERON,
-	mockDetailsData,
 	USER_EMAIL,
 	USER_ID,
 } from "@/test/fixtures";
-import type { DetailsQueryReturnValue } from "@/test/types";
+import type { Bird } from "@/types/db";
 
 /* ── Auth ──────────────────────────────────────────── */
 
@@ -59,6 +58,23 @@ export const MOCK_APPWRITE_LIST_BIRDS = {
 	total: 2,
 };
 
+/** Appwrite default row */
+export const MOCK_DEFAULT_APPWRITE_ROW: Models.Row = {
+	$id: "",
+	$sequence: "",
+	$tableId: "",
+	$databaseId: "",
+	$createdAt: "",
+	$updatedAt: "",
+	$permissions: [],
+};
+
+/** Appwrite row with Bird data */
+export const MOCK_BIRD_ROW: Bird = {
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...BIRD_GREEN_HERON,
+};
+
 /* ── Tanstack ──────────────────────────────────────────── */
 
 /** useQuery default return value */
@@ -94,10 +110,8 @@ export const MOCK_USE_QUERY_WITH_BIRDS_LIST = {
 	data: MOCK_APPWRITE_LIST_BIRDS,
 };
 
-/** Details component */
-export const defaultDetailsReturnValue: DetailsQueryReturnValue = {
-	data: mockDetailsData,
-	error: null,
-	isError: false,
-	isPending: false,
+/** useQuery with bird row */
+export const MOCK_USE_QUERY_WITH_BIRD_ROW = {
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_BIRD_ROW,
 };

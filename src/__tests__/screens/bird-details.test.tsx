@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
-import { defaultDetailsReturnValue } from "@/test/mocks";
+import { MOCK_USE_QUERY_WITH_BIRD_ROW } from "@/test/mocks";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
@@ -15,9 +15,9 @@ const mockUseQuery = jest.mocked(useQuery);
 
 describe("BirdDetailsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue({ ...defaultDetailsReturnValue } as ReturnType<
-			typeof useQuery
-		>);
+		mockUseQuery.mockReturnValue(
+			MOCK_USE_QUERY_WITH_BIRD_ROW as ReturnType<typeof useQuery>,
+		);
 
 		const { getByText } = await render(<BirdDetailsScreen />);
 
