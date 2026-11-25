@@ -3,11 +3,7 @@ import { fireEvent, render } from "@testing-library/react-native";
 import SightingForm from "@/components/forms/sighting-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
-import {
-	BIRD_GREEN_HERON,
-	SIGHTING_WITH_NULL_BIRD,
-	USER_ID,
-} from "@/test/fixtures";
+import { BIRD_GREEN_HERON, SIGHTING_BASE, USER_ID } from "@/test/fixtures";
 import { MOCK_DEFAULT_USE_MUTATION } from "@/test/mocks";
 
 const mockMutate = jest.fn();
@@ -103,10 +99,7 @@ describe("SightingForm", () => {
 		const descriptionInput = getByLabelText(/description/i);
 
 		await fireEvent.changeText(nameInput, BIRD_GREEN_HERON.commonName);
-		await fireEvent.changeText(
-			descriptionInput,
-			SIGHTING_WITH_NULL_BIRD.description,
-		);
+		await fireEvent.changeText(descriptionInput, SIGHTING_BASE.description);
 		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(mockMutate).toHaveBeenCalledTimes(1);
@@ -114,7 +107,7 @@ describe("SightingForm", () => {
 			userId: USER_ID,
 			formValues: expect.objectContaining({
 				commonName: BIRD_GREEN_HERON.commonName,
-				description: SIGHTING_WITH_NULL_BIRD.description,
+				description: SIGHTING_BASE.description,
 			}),
 		});
 	});

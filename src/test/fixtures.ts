@@ -19,13 +19,6 @@ export const VALID_REGISTER = {
 	userId: USER_ID,
 };
 
-export const AUTH_STATUS = {
-	authenticated: "Authenticated",
-	unauthenticated: "Unauthenticated",
-	authChecked: "Checked",
-	authUnchecked: "Unchecked",
-};
-
 /* ── Birds ──────────────────────────────────────────── */
 export const BIRD_GREEN_HERON = {
 	$id: "bird-1234",
@@ -57,9 +50,9 @@ export const BIRD_DETAILS: DescriptionListItem[] = [
 ];
 
 /* ── Sightings ──────────────────────────────────────────── */
-export const SIGHTING_WITH_NULL_BIRD = {
+export const SIGHTING_BASE = {
 	$id: "sighting-1234",
-	date: "",
+	date: "2026-11-01T00:00:00.000+00:00",
 	description: "Fishing near a stream",
 	bird: null,
 };

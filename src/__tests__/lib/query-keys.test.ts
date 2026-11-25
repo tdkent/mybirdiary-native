@@ -1,5 +1,6 @@
 import { queryKeys } from "@/lib/query-keys";
-import { SIGHTING_WITH_NULL_BIRD, USER_ID } from "@/test/fixtures";
+import { SIGHTING_BASE, USER_ID } from "@/test/fixtures";
+import { MOCK_BIRD_ROW } from "@/test/mocks";
 
 describe("queryKeys factory", () => {
 	describe("sightings", () => {
@@ -12,14 +13,14 @@ describe("queryKeys factory", () => {
 			const key = queryKeys.detail({
 				table: "sightings",
 				userId: USER_ID,
-				rowId: SIGHTING_WITH_NULL_BIRD.$id,
+				rowId: SIGHTING_BASE.$id,
 			});
 
 			expect(key).toStrictEqual([
 				"sightings",
 				USER_ID,
 				"detail",
-				SIGHTING_WITH_NULL_BIRD.$id,
+				SIGHTING_BASE.$id,
 			]);
 		});
 	});
@@ -35,14 +36,10 @@ describe("queryKeys factory", () => {
 			const key = queryKeys.detail({
 				table: "birds",
 				userId: USER_ID,
-				rowId: SIGHTING_WITH_NULL_BIRD.$id,
+				rowId: MOCK_BIRD_ROW.$id,
 			});
 
-			expect(key).toStrictEqual([
-				"birds",
-				"detail",
-				SIGHTING_WITH_NULL_BIRD.$id,
-			]);
+			expect(key).toStrictEqual(["birds", "detail", MOCK_BIRD_ROW.$id]);
 		});
 
 		test("returns correct birds list query key without a user", () => {
@@ -54,14 +51,10 @@ describe("queryKeys factory", () => {
 		test("returns correct bird details query key without a user", () => {
 			const key = queryKeys.detail({
 				table: "birds",
-				rowId: SIGHTING_WITH_NULL_BIRD.$id,
+				rowId: MOCK_BIRD_ROW.$id,
 			});
 
-			expect(key).toStrictEqual([
-				"birds",
-				"detail",
-				SIGHTING_WITH_NULL_BIRD.$id,
-			]);
+			expect(key).toStrictEqual(["birds", "detail", MOCK_BIRD_ROW.$id]);
 		});
 	});
 
@@ -77,7 +70,7 @@ describe("queryKeys factory", () => {
 			);
 			expect(
 				queryKeys
-					.detail({ table, userId, rowId: SIGHTING_WITH_NULL_BIRD.$id })
+					.detail({ table, userId, rowId: SIGHTING_BASE.$id })
 					.slice(0, all.length),
 			).toEqual(all);
 		});

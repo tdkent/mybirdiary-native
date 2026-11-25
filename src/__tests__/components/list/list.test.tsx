@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { render } from "@testing-library/react-native";
 import List from "@/components/list/list";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { BIRD_BLUE_JAY, BIRD_GREEN_HERON } from "@/test/fixtures";
+import { BIRD_BLUE_JAY, BIRD_GREEN_HERON, USER_ID } from "@/test/fixtures";
 import {
 	MOCK_USE_QUERY_ERROR,
 	MOCK_USE_QUERY_LOADING,
@@ -77,10 +77,12 @@ describe("List", () => {
 				MOCK_USE_QUERY_WITH_EMPTY_LIST as ReturnType<typeof useQuery>,
 			);
 
-			await render(<List table="sightings" userId="123" />);
+			await render(<List table="sightings" userId={USER_ID} />);
 
 			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({ queryKey: ["sightings", "123", "list"] }),
+				expect.objectContaining({
+					queryKey: ["sightings", USER_ID, "list"],
+				}),
 			);
 		});
 	});

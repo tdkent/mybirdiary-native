@@ -12,7 +12,7 @@ import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
-import { AUTH_STATUS, VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
+import { VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
 import { MOCK_USER } from "@/test/mocks";
 
 // Mock appwrite methods
@@ -38,6 +38,13 @@ beforeEach(() => {
 	mockCreateEmailPasswordSession.mockReset();
 	mockDeleteSession.mockReset();
 });
+
+const AUTH_STATUS = {
+	authenticated: "Authenticated",
+	unauthenticated: "Unauthenticated",
+	authChecked: "Checked",
+	authUnchecked: "Unchecked",
+};
 
 describe("AuthContext", () => {
 	describe("login", () => {
