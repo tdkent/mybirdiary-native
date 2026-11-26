@@ -7,12 +7,12 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
-import { AppwriteException } from "react-native-appwrite";
+import { AppwriteException, ID } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/auth-context";
 import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
-import { VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
+import { USER_ID, VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
 import { MOCK_USER } from "@/test/mocks";
 
 // Mock appwrite methods
@@ -175,6 +175,7 @@ describe("AuthContext", () => {
 				</AuthProvider>,
 			);
 
+			jest.mocked(ID.unique).mockReturnValueOnce(USER_ID);
 			mockCreateUser.mockReturnValueOnce(MOCK_USER as never);
 			mockCreateEmailPasswordSession.mockReturnValueOnce({} as never);
 			mockGetUser.mockReturnValueOnce(MOCK_USER as never);

@@ -4,9 +4,14 @@ import SightingsScreen from "@/app/(app)/(tabs)/sightings";
 import { MOCK_USE_QUERY_WITH_EMPTY_LIST } from "@/test/mocks";
 
 // Mock useAuth, return user object
-jest.mock("@/hooks/use-auth", () => ({
-	useAuth: jest.fn().mockReturnValue({ user: { $id: "user-123" } }),
-}));
+jest.mock("@/hooks/use-auth", () => {
+	const { USER_ID } =
+		jest.requireActual<typeof import("@/test/fixtures")>("@/test/fixtures");
+
+	return {
+		useAuth: jest.fn().mockReturnValue({ user: { $id: USER_ID } }),
+	};
+});
 
 const mockUseQuery = jest.mocked(useQuery);
 
