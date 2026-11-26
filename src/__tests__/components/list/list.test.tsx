@@ -72,6 +72,17 @@ describe("List", () => {
 	});
 
 	describe("sightings", () => {
+		test("displays list items", async () => {
+			mockGetListData.mockResolvedValue(MOCK_APPWRITE_LIST_SIGHTINGS as never);
+
+			const { findByText } = await renderWithClient(
+				<List table="sightings" userId={USER_ID} />,
+			);
+
+			expect(await findByText(BIRD_GREEN_HERON.commonName)).toBeOnTheScreen();
+			expect(mockGetListData).toHaveBeenCalledWith("sightings");
+		});
+
 		test("uses the correct cache keys", async () => {
 			mockGetListData.mockResolvedValue(MOCK_APPWRITE_LIST_SIGHTINGS as never);
 
