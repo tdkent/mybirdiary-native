@@ -3,6 +3,7 @@ import AuthForm from "@/components/forms/auth-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { AuthProvider } from "@/context/auth-context";
 import { INVALID_LOGIN, VALID_LOGIN } from "@/test/fixtures";
+import { renderWithClient } from "@/test/query-client";
 
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
@@ -72,7 +73,7 @@ describe("AuthForm", () => {
 	});
 
 	test("calls login with valid credentials", async () => {
-		const { getByLabelText, getByRole } = await render(
+		const { getByLabelText, getByRole } = await renderWithClient(
 			<AuthProvider>
 				<AuthForm isLogin />
 			</AuthProvider>,
@@ -90,7 +91,7 @@ describe("AuthForm", () => {
 	});
 
 	test("calls register with valid credentials", async () => {
-		const { getByLabelText, getByRole } = await render(
+		const { getByLabelText, getByRole } = await renderWithClient(
 			<AuthProvider>
 				<AuthForm />
 			</AuthProvider>,

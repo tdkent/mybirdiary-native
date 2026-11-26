@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
-import { MOCK_USE_QUERY_WITH_BIRD_ROW } from "@/test/mocks";
+import { getDetailsData } from "@/services/api/details";
+import { MOCK_BIRD_ROW } from "@/test/mocks";
+import { renderWithClient } from "@/test/query-client";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
@@ -10,17 +10,14 @@ jest.mock("expo-router", () => ({
 	},
 	useLocalSearchParams: jest.fn().mockReturnValue({ id: "1" }),
 }));
-
-const mockUseQuery = jest.mocked(useQuery);
+jest.mock("@/services/api/details");
 
 describe("BirdDetailsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue(
-			MOCK_USE_QUERY_WITH_BIRD_ROW as ReturnType<typeof useQuery>,
-		);
+		jest.mocked(getDetailsData).mockResolvedValue(MOCK_BIRD_ROW);
 
-		const { getByText } = await render(<BirdDetailsScreen />);
+		const { findByText } = await renderWithClient(<BirdDetailsScreen />);
 
-		expect(getByText(/bird details: green heron/i)).toBeOnTheScreen();
+		expect(await findByText(/bird details: green heron/i)).toBeOnTheScreen();
 	});
 });
