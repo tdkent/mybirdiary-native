@@ -22,7 +22,7 @@ describe("List", () => {
 
 			const { getByText } = await render(<List table="birds" />);
 
-			expect(getByText(/loading.../i));
+			expect(getByText(/loading.../i)).toBeOnTheScreen();
 		});
 
 		test("displays error message if an error occurs", async () => {
@@ -32,7 +32,7 @@ describe("List", () => {
 
 			const { getByText } = await render(<List table="birds" />);
 
-			expect(getByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED));
+			expect(getByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED)).toBeOnTheScreen();
 		});
 
 		test("displays alternate text if list contains no items", async () => {
@@ -42,7 +42,7 @@ describe("List", () => {
 
 			const { getByText } = await render(<List table="birds" />);
 
-			expect(getByText(/no data to show/i));
+			expect(getByText(/no data to show/i)).toBeOnTheScreen();
 		});
 	});
 
@@ -54,8 +54,8 @@ describe("List", () => {
 
 			const { getByText } = await render(<List table="birds" />);
 
-			expect(getByText(BIRD_BLUE_JAY.commonName));
-			expect(getByText(BIRD_GREEN_HERON.commonName));
+			expect(getByText(BIRD_BLUE_JAY.commonName)).toBeOnTheScreen();
+			expect(getByText(BIRD_GREEN_HERON.commonName)).toBeOnTheScreen();
 		});
 
 		test("uses the correct cache keys", async () => {

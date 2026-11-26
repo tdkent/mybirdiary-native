@@ -26,8 +26,10 @@ describe("SightingDetailsScreen", () => {
 
 		const { getByText } = await render(<SightingDetailsScreen />);
 
-		getByText(
-			`Sighting Details: ${MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.bird?.commonName}`,
-		);
+		expect(
+			getByText(
+				`Sighting Details: ${MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.bird?.commonName}`,
+			),
+		).toBeOnTheScreen();
 	});
 });

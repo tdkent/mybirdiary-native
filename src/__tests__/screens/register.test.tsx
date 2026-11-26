@@ -24,7 +24,7 @@ describe("RegisterScreen", () => {
 	});
 
 	test("displays the expected screen heading", async () => {
-		const { getByText: registerScreenText } = await render(<RegisterScreen />);
-		registerScreenText(/create a new account/i);
+		const { getByText } = await render(<RegisterScreen />);
+		expect(getByText(/create a new account/i)).toBeOnTheScreen();
 	});
 });

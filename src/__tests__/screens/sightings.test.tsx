@@ -21,6 +21,6 @@ describe("SightingsScreen", () => {
 			MOCK_USE_QUERY_WITH_EMPTY_LIST as ReturnType<typeof useQuery>,
 		);
 		const { getByText } = await render(<SightingsScreen />);
-		getByText(/my sightings/i);
+		expect(getByText(/my sightings/i)).toBeOnTheScreen();
 	});
 });

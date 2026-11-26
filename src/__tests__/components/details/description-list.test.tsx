@@ -9,8 +9,8 @@ describe("DescriptionList", () => {
 		);
 
 		for (const item of BIRD_DETAILS) {
-			expect(getByText(item.label));
-			expect(getByText(item.details));
+			expect(getByText(item.label)).toBeOnTheScreen();
+			expect(getByText(item.details)).toBeOnTheScreen();
 		}
 	});
 });

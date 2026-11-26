@@ -24,7 +24,7 @@ describe("LoginScreen", () => {
 	});
 
 	test("displays the expected screen heading", async () => {
-		const { getByText: loginScreenText } = await render(<LoginScreen />);
-		loginScreenText(/sign in/i);
+		const { getByText } = await render(<LoginScreen />);
+		expect(getByText(/sign in/i)).toBeOnTheScreen();
 	});
 });

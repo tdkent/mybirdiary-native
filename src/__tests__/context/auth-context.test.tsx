@@ -83,7 +83,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check if signed out by default
-			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -92,7 +92,7 @@ describe("AuthContext", () => {
 			expect(
 				await findByText(ERROR_MESSAGES.INCORRECT_CREDENTIALS),
 			).toBeOnTheScreen();
-			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 		});
 
 		test("updates authentication state after successful login", async () => {
@@ -105,12 +105,12 @@ describe("AuthContext", () => {
 			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			// Check if signed out by default
-			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 		});
 
 		test("clears the query cache on successful login", async () => {
@@ -126,7 +126,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
@@ -163,7 +163,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeTruthy();
+			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeOnTheScreen();
 		});
 	});
 
@@ -211,7 +211,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check if signed out by default
-			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -220,7 +220,7 @@ describe("AuthContext", () => {
 			expect(
 				await findByText(ERROR_MESSAGES.REGISTERED_EMAIL),
 			).toBeOnTheScreen();
-			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 		});
 
 		test("updates authentication state after successful registration", async () => {
@@ -233,12 +233,12 @@ describe("AuthContext", () => {
 			mockGetUser.mockReturnValueOnce(MOCK_USER as never);
 
 			// User is signed out by default
-			expect(getByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(getByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 		});
 
 		test("clears the query cache on successful register", async () => {
@@ -254,7 +254,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 			expect(clear).toHaveBeenCalledTimes(1);
 		});
 
@@ -289,7 +289,7 @@ describe("AuthContext", () => {
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
 
-			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeTruthy();
+			expect(await findByText(ERROR_MESSAGES.FETCH_FAILED)).toBeOnTheScreen();
 		});
 	});
 
@@ -322,12 +322,12 @@ describe("AuthContext", () => {
 			// Sign in user and check auth status
 			const submitBtn = getByRole("button", { name: /submit/i });
 			await fireEvent.press(submitBtn);
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 
 			// Log user out and check auth status
 			const logoutBtn = getByRole("button", { name: /logout/i });
 			await fireEvent.press(logoutBtn);
-			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 		});
 
 		test("clears the query cache on successful logout", async () => {
@@ -360,7 +360,9 @@ describe("AuthContext", () => {
 			await fireEvent.press(button);
 
 			expect(await findByTestId("logout-error")).toBeOnTheScreen();
-			expect(await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED)).toBeTruthy();
+			expect(
+				await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
+			).toBeOnTheScreen();
 		});
 
 		test("does not clear the query cache if logout fails", async () => {
@@ -395,7 +397,7 @@ describe("AuthContext", () => {
 			);
 
 			// Check user remains authenticated
-			expect(await findByText(AUTH_STATUS.authenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authenticated)).toBeOnTheScreen();
 			expect(mockGetUser).toHaveBeenCalledTimes(1);
 		});
 
@@ -408,10 +410,10 @@ describe("AuthContext", () => {
 			);
 
 			// Wait for auth check
-			expect(await findByText(AUTH_STATUS.authChecked)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.authChecked)).toBeOnTheScreen();
 
 			// Check user remains unauthenticated
-			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeTruthy();
+			expect(await findByText(AUTH_STATUS.unauthenticated)).toBeOnTheScreen();
 			expect(mockGetUser).toHaveBeenCalledTimes(1);
 		});
 	});
