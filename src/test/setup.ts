@@ -40,15 +40,6 @@ jest.mock("uniwind", () => ({
 	withUniwind: (component: React.ComponentType<unknown>) => component,
 }));
 
-// Tanstack Query
-jest.mock("@tanstack/react-query", () => ({
-	useMutation: jest.fn(),
-	useQuery: jest.fn(),
-	useQueryClient: jest.fn().mockReturnValue({
-		clear: jest.fn(),
-	}),
-}));
-
 // Console
 global.console = {
 	...console,
