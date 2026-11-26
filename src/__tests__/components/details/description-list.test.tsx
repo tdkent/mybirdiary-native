@@ -2,7 +2,7 @@ import { render } from "@testing-library/react-native";
 import DescriptionList from "@/components/details/description-list";
 import { BIRD_DETAILS } from "@/test/fixtures";
 
-describe("List", () => {
+describe("DescriptionList", () => {
 	test("displays description list items", async () => {
 		const { getByText } = await render(
 			<DescriptionList descriptionList={BIRD_DETAILS} />,
