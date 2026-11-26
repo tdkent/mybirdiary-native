@@ -17,6 +17,6 @@ beforeEach(() => {
 describe("NewSightingScreen", () => {
 	test("displays the expected screen heading", async () => {
 		const { getByText } = await render(<NewSightingScreen />);
-		getByText(/create a new sighting/i);
+		expect(getByText(/create a new sighting/i)).toBeOnTheScreen();
 	});
 });

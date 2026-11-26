@@ -10,6 +10,6 @@ jest.mock("@/hooks/use-auth", () => ({
 describe("AccountScreen", () => {
 	test("displays the expected screen heading", async () => {
 		const { getByText } = await render(<AccountScreen />);
-		getByText(/my account/i);
+		expect(getByText(/my account/i)).toBeOnTheScreen();
 	});
 });

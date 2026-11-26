@@ -19,7 +19,7 @@ describe("BirdsScreen", () => {
 
 		const { getByText } = await render(<BirdsScreen />);
 
-		getByText(/birdpedia/i);
+		expect(getByText(/birdpedia/i)).toBeOnTheScreen();
 	});
 
 	test("pressing an item navigates to correct bird details screen", async () => {

@@ -21,6 +21,6 @@ describe("BirdDetailsScreen", () => {
 
 		const { getByText } = await render(<BirdDetailsScreen />);
 
-		getByText(/bird details: green heron/i);
+		expect(getByText(/bird details: green heron/i)).toBeOnTheScreen();
 	});
 });

@@ -24,7 +24,7 @@ describe("Details", () => {
 				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
 			);
 
-			expect(getByText(/loading.../i));
+			expect(getByText(/loading.../i)).toBeOnTheScreen();
 		});
 
 		test("displays error message if an error occurs", async () => {
@@ -36,7 +36,7 @@ describe("Details", () => {
 				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
 			);
 
-			expect(getByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED));
+			expect(getByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED)).toBeOnTheScreen();
 		});
 
 		test("displays alternate text if return data is undefined", async () => {
@@ -48,7 +48,7 @@ describe("Details", () => {
 				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
 			);
 
-			expect(getByText(/no data to show/i));
+			expect(getByText(/no data to show/i)).toBeOnTheScreen();
 		});
 	});
 
@@ -62,7 +62,7 @@ describe("Details", () => {
 				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
 			);
 
-			expect(getByTestId(/description-list/i));
+			expect(getByTestId(/description-list/i)).toBeOnTheScreen();
 		});
 
 		test("uses the correct cache keys", async () => {
