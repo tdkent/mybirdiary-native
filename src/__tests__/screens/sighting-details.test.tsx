@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import SightingDetailsScreen from "@/app/(app)/(tabs)/sightings/[id]";
-import { MOCK_USE_QUERY_WITH_SIGHTING_ROW } from "@/test/mocks";
+import { getDetailsData } from "@/services/api/details";
+import { MOCK_SIGHTING_ROW } from "@/test/mocks";
+import { renderWithClient } from "@/test/query-client";
 
 // Mock expo router
 jest.mock("expo-router", () => ({
@@ -15,20 +15,17 @@ jest.mock("expo-router", () => ({
 jest.mock("@/hooks/use-auth", () => ({
 	useAuth: jest.fn().mockReturnValue({ user: { $id: "1" } }),
 }));
-
-const mockUseQuery = jest.mocked(useQuery);
+jest.mock("@/services/api/details");
 
 describe("SightingDetailsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue(
-			MOCK_USE_QUERY_WITH_SIGHTING_ROW as ReturnType<typeof useQuery>,
-		);
+		jest.mocked(getDetailsData).mockResolvedValue(MOCK_SIGHTING_ROW);
 
-		const { getByText } = await render(<SightingDetailsScreen />);
+		const { findByText } = await renderWithClient(<SightingDetailsScreen />);
 
 		expect(
-			getByText(
-				`Sighting Details: ${MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.bird?.commonName}`,
+			await findByText(
+				`Sighting Details: ${MOCK_SIGHTING_ROW.bird?.commonName}`,
 			),
 		).toBeOnTheScreen();
 	});

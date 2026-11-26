@@ -1,127 +1,105 @@
-import { useQuery } from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import Details from "@/components/details/details";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import { getDetailsData } from "@/services/api/details";
 import { USER_ID } from "@/test/fixtures";
-import {
-	MOCK_DEFAULT_USE_QUERY,
-	MOCK_USE_QUERY_ERROR,
-	MOCK_USE_QUERY_LOADING,
-	MOCK_USE_QUERY_WITH_BIRD_ROW,
-	MOCK_USE_QUERY_WITH_SIGHTING_ROW,
-} from "@/test/mocks";
+import { MOCK_BIRD_ROW, MOCK_SIGHTING_ROW } from "@/test/mocks";
+import { renderWithClient } from "@/test/query-client";
 
-const mockUseQuery = jest.mocked(useQuery);
+jest.mock("@/services/api/details");
+
+const mockGetDetailsData = jest.mocked(getDetailsData);
 
 describe("Details", () => {
 	describe("query states", () => {
 		test("renders a loading component", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_LOADING as ReturnType<typeof useQuery>,
-			);
+			mockGetDetailsData.mockReturnValue(new Promise(() => {}));
 
-			const { getByText } = await render(
-				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
+			const { getByText } = await renderWithClient(
+				<Details table="birds" rowId={MOCK_BIRD_ROW.$id} />,
 			);
 
 			expect(getByText(/loading.../i)).toBeOnTheScreen();
 		});
 
 		test("displays error message if an error occurs", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_ERROR as ReturnType<typeof useQuery>,
+			mockGetDetailsData.mockRejectedValue(
+				new Error(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
 			);
 
-			const { getByText } = await render(
-				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
+			const { findByText } = await renderWithClient(
+				<Details table="birds" rowId={MOCK_BIRD_ROW.$id} />,
 			);
 
-			expect(getByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED)).toBeOnTheScreen();
-		});
-
-		test("displays alternate text if return data is undefined", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_DEFAULT_USE_QUERY as ReturnType<typeof useQuery>,
-			);
-
-			const { getByText } = await render(
-				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
-			);
-
-			expect(getByText(/no data to show/i)).toBeOnTheScreen();
+			expect(
+				await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
+			).toBeOnTheScreen();
 		});
 	});
 
 	describe("birds", () => {
 		test("displays description list component if valid data is returned", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_WITH_BIRD_ROW as ReturnType<typeof useQuery>,
+			mockGetDetailsData.mockResolvedValue(MOCK_BIRD_ROW);
+
+			const { findByTestId } = await renderWithClient(
+				<Details table="birds" rowId={MOCK_BIRD_ROW.$id} />,
 			);
 
-			const { getByTestId } = await render(
-				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
-			);
-
-			expect(getByTestId(/description-list/i)).toBeOnTheScreen();
+			expect(await findByTestId(/description-list/i)).toBeOnTheScreen();
+			expect(mockGetDetailsData).toHaveBeenCalledWith({
+				table: "birds",
+				rowId: MOCK_BIRD_ROW.$id,
+			});
 		});
 
 		test("uses the correct cache keys", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_WITH_BIRD_ROW as ReturnType<typeof useQuery>,
-			);
+			mockGetDetailsData.mockResolvedValue(MOCK_BIRD_ROW);
 
-			await render(
-				<Details table="birds" rowId={MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id} />,
+			const { findByTestId, queryClient } = await renderWithClient(
+				<Details table="birds" rowId={MOCK_BIRD_ROW.$id} />,
 			);
+			await findByTestId(/description-list/i);
 
-			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({
-					queryKey: ["birds", "detail", MOCK_USE_QUERY_WITH_BIRD_ROW.data.$id],
-				}),
-			);
+			expect(
+				queryClient.getQueryData(["birds", "detail", MOCK_BIRD_ROW.$id]),
+			).toEqual(MOCK_BIRD_ROW);
 		});
 	});
 
 	describe("sightings", () => {
 		test("displays description list component if valid data is returned", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_WITH_SIGHTING_ROW as ReturnType<typeof useQuery>,
-			);
+			mockGetDetailsData.mockResolvedValue(MOCK_SIGHTING_ROW);
 
-			const { getByTestId } = await render(
+			const { findByTestId } = await renderWithClient(
 				<Details
 					table="sightings"
 					userId={USER_ID}
-					rowId={MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.$id}
+					rowId={MOCK_SIGHTING_ROW.$id}
 				/>,
 			);
 
-			expect(getByTestId(/description-list/i));
+			expect(await findByTestId(/description-list/i)).toBeOnTheScreen();
 		});
 
 		test("uses the correct cache keys", async () => {
-			mockUseQuery.mockReturnValue(
-				MOCK_USE_QUERY_WITH_SIGHTING_ROW as ReturnType<typeof useQuery>,
-			);
+			mockGetDetailsData.mockResolvedValue(MOCK_SIGHTING_ROW);
 
-			await render(
+			const { findByTestId, queryClient } = await renderWithClient(
 				<Details
 					table="sightings"
 					userId={USER_ID}
-					rowId={MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.$id}
+					rowId={MOCK_SIGHTING_ROW.$id}
 				/>,
 			);
+			await findByTestId(/description-list/i);
 
-			expect(mockUseQuery).toHaveBeenCalledWith(
-				expect.objectContaining({
-					queryKey: [
-						"sightings",
-						USER_ID,
-						"detail",
-						MOCK_USE_QUERY_WITH_SIGHTING_ROW.data.$id,
-					],
-				}),
-			);
+			expect(
+				queryClient.getQueryData([
+					"sightings",
+					USER_ID,
+					"detail",
+					MOCK_SIGHTING_ROW.$id,
+				]),
+			).toEqual(MOCK_SIGHTING_ROW);
 		});
 	});
 });

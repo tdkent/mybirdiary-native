@@ -1,11 +1,4 @@
-/**
- * Test authentication operations and state
- * Test that context communicates with Appwrite
- * Appwrite methods are mocked
- */
-
-import { useQueryClient } from "@tanstack/react-query";
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent } from "@testing-library/react-native";
 import { Button, Text, View } from "react-native";
 import { AppwriteException, ID } from "react-native-appwrite";
 import { ERROR_MESSAGES } from "@/constants/messages";
@@ -14,6 +7,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { account } from "@/lib/appwrite";
 import { USER_ID, VALID_LOGIN, VALID_REGISTER } from "@/test/fixtures";
 import { MOCK_USER } from "@/test/mocks";
+import { renderWithClient } from "@/test/query-client";
 
 // Mock appwrite methods
 const mockCreateUser = jest.mocked(account.create);
@@ -22,9 +16,6 @@ const mockCreateEmailPasswordSession = jest.mocked(
 );
 const mockDeleteSession = jest.mocked(account.deleteSession);
 const mockGetUser = jest.mocked(account.get);
-
-// useQueryClient
-const mockUseQueryClient = jest.mocked(useQueryClient);
 
 // Reset mocks to prevent mock state leaking between tests
 beforeEach(() => {
@@ -49,7 +40,7 @@ const AUTH_STATUS = {
 describe("AuthContext", () => {
 	describe("login", () => {
 		test("calls appwrite with supplied credentials", async () => {
-			const { getByRole } = await render(
+			const { getByRole } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
@@ -68,7 +59,7 @@ describe("AuthContext", () => {
 		});
 
 		test("handles incorrect credentials", async () => {
-			const { findByText, getByRole, getByText } = await render(
+			const { findByText, getByRole, getByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
@@ -96,7 +87,7 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after successful login", async () => {
-			const { getByRole, getByText, findByText } = await render(
+			const { getByRole, getByText, findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
@@ -114,13 +105,13 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful login", async () => {
-			const { getByRole, findByText } = await render(
+			const { findByText, getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
@@ -131,13 +122,13 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache when login fails", async () => {
-			const { getByRole, findByTestId } = await render(
+			const { findByTestId, getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 			mockCreateEmailPasswordSession.mockRejectedValueOnce(
 				new AppwriteException("An error occurred"),
 			);
@@ -150,7 +141,7 @@ describe("AuthContext", () => {
 		});
 
 		test("handles appwrite server outage", async () => {
-			const { getByRole, findByText } = await render(
+			const { getByRole, findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent isLogin />
 				</AuthProvider>,
@@ -169,7 +160,7 @@ describe("AuthContext", () => {
 
 	describe("register", () => {
 		test("calls appwrite with the supplied registration details", async () => {
-			const { getByRole } = await render(
+			const { getByRole } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -196,7 +187,7 @@ describe("AuthContext", () => {
 		});
 
 		test("handles registration errors", async () => {
-			const { findByText, getByRole, getByText } = await render(
+			const { findByText, getByRole, getByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -224,7 +215,7 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after successful registration", async () => {
-			const { getByRole, getByText, findByText } = await render(
+			const { getByRole, getByText, findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -242,13 +233,13 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful register", async () => {
-			const { getByRole, findByText } = await render(
+			const { findByText, getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 			mockGetUser.mockReturnValue(MOCK_USER as never);
 
 			const button = getByRole("button", { name: /submit/i });
@@ -259,7 +250,7 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache if registration fails", async () => {
-			const { findByTestId, getByRole } = await render(
+			const { findByTestId, getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -268,7 +259,7 @@ describe("AuthContext", () => {
 			mockCreateUser.mockRejectedValueOnce(
 				new AppwriteException("Invalid credentials"),
 			);
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 
 			const button = getByRole("button", { name: /submit/i });
 			await fireEvent.press(button);
@@ -278,7 +269,7 @@ describe("AuthContext", () => {
 		});
 
 		test("handles appwrite server outage", async () => {
-			const { getByRole, findByText } = await render(
+			const { getByRole, findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -295,7 +286,7 @@ describe("AuthContext", () => {
 
 	describe("logout", () => {
 		test("calls appwrite in logout function", async () => {
-			const { getByRole } = await render(
+			const { getByRole } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -310,7 +301,7 @@ describe("AuthContext", () => {
 		});
 
 		test("updates authentication state after logout", async () => {
-			const { findByText, getByRole } = await render(
+			const { findByText, getByRole } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -331,13 +322,13 @@ describe("AuthContext", () => {
 		});
 
 		test("clears the query cache on successful logout", async () => {
-			const { getByRole } = await render(
+			const { getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 
 			const button = getByRole("button", { name: /logout/i });
 			await fireEvent.press(button);
@@ -346,7 +337,7 @@ describe("AuthContext", () => {
 		});
 
 		test("displays an error if logout fails", async () => {
-			const { getByRole, findByTestId, findByText } = await render(
+			const { getByRole, findByTestId, findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -366,13 +357,13 @@ describe("AuthContext", () => {
 		});
 
 		test("does not clear the query cache if logout fails", async () => {
-			const { getByRole, findByTestId } = await render(
+			const { findByTestId, getByRole, queryClient } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
 			);
 
-			const { clear } = mockUseQueryClient();
+			const clear = jest.spyOn(queryClient, "clear");
 			mockDeleteSession.mockRejectedValueOnce(
 				new AppwriteException("An error occurred"),
 			);
@@ -390,7 +381,7 @@ describe("AuthContext", () => {
 			mockGetUser.mockReturnValueOnce(MOCK_USER as never);
 
 			// Remount AuthProvider to refresh state
-			const { findByText } = await render(
+			const { findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,
@@ -403,7 +394,7 @@ describe("AuthContext", () => {
 
 		test("handles an unauthenticated user", async () => {
 			// Remount AuthProvider to refresh state
-			const { findByText } = await render(
+			const { findByText } = await renderWithClient(
 				<AuthProvider>
 					<AuthTestComponent />
 				</AuthProvider>,

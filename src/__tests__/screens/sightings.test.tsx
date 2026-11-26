@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { render } from "@testing-library/react-native";
 import SightingsScreen from "@/app/(app)/(tabs)/sightings";
-import { MOCK_USE_QUERY_WITH_EMPTY_LIST } from "@/test/mocks";
+import { getListData } from "@/services/api/list";
+import { MOCK_EMPTY_APPWRITE_LIST } from "@/test/mocks";
+import { renderWithClient } from "@/test/query-client";
 
 // Mock useAuth, return user object
 jest.mock("@/hooks/use-auth", () => {
@@ -12,15 +12,16 @@ jest.mock("@/hooks/use-auth", () => {
 		useAuth: jest.fn().mockReturnValue({ user: { $id: USER_ID } }),
 	};
 });
-
-const mockUseQuery = jest.mocked(useQuery);
+jest.mock("@/services/api/list");
 
 describe("SightingsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUseQuery.mockReturnValue(
-			MOCK_USE_QUERY_WITH_EMPTY_LIST as ReturnType<typeof useQuery>,
-		);
-		const { getByText } = await render(<SightingsScreen />);
-		expect(getByText(/my sightings/i)).toBeOnTheScreen();
+		jest
+			.mocked(getListData)
+			.mockResolvedValue(MOCK_EMPTY_APPWRITE_LIST as never);
+
+		const { findByText } = await renderWithClient(<SightingsScreen />);
+
+		expect(await findByText(/my sightings/i)).toBeOnTheScreen();
 	});
 });
