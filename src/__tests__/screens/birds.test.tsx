@@ -3,21 +3,19 @@ import { render, screen, userEvent } from "@testing-library/react-native";
 import { renderRouter } from "expo-router/build/testing-library/index.js";
 import BirdsScreen from "@/app/(app)/(tabs)/birds";
 import BirdDetailsScreen from "@/app/(app)/(tabs)/birds/[id]";
-import { defaultListReturnValue } from "@/test/mocks";
+import { BIRD_BLUE_JAY } from "@/test/fixtures";
+import {
+	MOCK_USE_QUERY_WITH_BIRDS_LIST,
+	MOCK_USE_QUERY_WITH_EMPTY_LIST,
+} from "@/test/mocks";
 
-const mockUserQuery = jest.mocked(useQuery);
+const mockUseQuery = jest.mocked(useQuery);
 
 describe("BirdsScreen", () => {
 	test("displays the expected screen heading", async () => {
-		mockUserQuery.mockReturnValue({
-			data: {
-				rows: [],
-				total: 0,
-			},
-			error: null,
-			isError: false,
-			isPending: false,
-		} as ReturnType<typeof useQuery>);
+		mockUseQuery.mockReturnValue(
+			MOCK_USE_QUERY_WITH_EMPTY_LIST as ReturnType<typeof useQuery>,
+		);
 
 		const { getByText } = await render(<BirdsScreen />);
 
@@ -25,8 +23,8 @@ describe("BirdsScreen", () => {
 	});
 
 	test("pressing an item navigates to correct bird details screen", async () => {
-		mockUserQuery.mockReturnValue(
-			defaultListReturnValue as ReturnType<typeof useQuery>,
+		mockUseQuery.mockReturnValue(
+			MOCK_USE_QUERY_WITH_BIRDS_LIST as ReturnType<typeof useQuery>,
 		);
 
 		await renderRouter({
@@ -34,10 +32,10 @@ describe("BirdsScreen", () => {
 			"birds/[id]": BirdDetailsScreen,
 		});
 
-		const listItem = screen.getByText(/blue jay/i);
+		const listItem = screen.getByText(BIRD_BLUE_JAY.commonName);
 		const user = userEvent.setup();
 		await user.press(listItem);
 
-		expect(screen).toHavePathname("/birds/1");
+		expect(screen).toHavePathname(`/birds/${BIRD_BLUE_JAY.$id}`);
 	});
 });

@@ -1,19 +1,20 @@
 import type { Models } from "react-native-appwrite";
+import { ERROR_MESSAGES } from "@/constants/messages";
 import type { Auth } from "@/context/auth-context";
 import {
-	mockDetailsData,
-	mockListData,
-	testEmail,
-	testUserId,
+	BIRD_BLUE_JAY,
+	BIRD_GREEN_HERON,
+	SIGHTING_BASE,
+	USER_EMAIL,
+	USER_ID,
 } from "@/test/fixtures";
-import type {
-	DetailsQueryReturnValue,
-	ListQueryReturnValue,
-} from "@/test/types";
+import type { Bird, Sighting } from "@/types/db";
 
-// Appwrite
-export const mockAppwriteUser: Models.User<Models.Preferences> = {
-	$id: testUserId,
+/* ── Auth ──────────────────────────────────────────── */
+
+/** Appwrite user */
+export const MOCK_USER: Models.User<Models.Preferences> = Object.freeze({
+	$id: USER_ID,
 	$createdAt: "2026-10-01T00:00:00.000+00:00",
 	$updatedAt: "2026-11-01T00:00:00.000+00:00",
 	registration: "2026-10-01T00:00:00.000+00:00",
@@ -22,17 +23,17 @@ export const mockAppwriteUser: Models.User<Models.Preferences> = {
 	status: true,
 	labels: [],
 	passwordUpdate: "",
-	email: testEmail,
+	email: USER_EMAIL,
 	phone: "",
 	emailVerification: false,
 	phoneVerification: false,
 	mfa: false,
 	targets: [],
 	prefs: {},
-};
+});
 
-/** Auth context */
-export const mockDefaultAuthContext: Auth = {
+/** Auth context default value */
+export const MOCK_DEFAULT_AUTH_CONTEXT: Auth = Object.freeze({
 	authError: null,
 	logoutError: null,
 	isAuthChecked: false,
@@ -42,20 +43,113 @@ export const mockDefaultAuthContext: Auth = {
 	register: () => {},
 	setAuthError: () => {},
 	user: null,
-};
+});
 
-/** List component */
-export const defaultListReturnValue: ListQueryReturnValue = {
-	data: mockListData,
+/* ── Appwrite ──────────────────────────────────────────── */
+
+/** Appwrite list with no rows */
+export const MOCK_EMPTY_APPWRITE_LIST = Object.freeze({
+	rows: [],
+	total: 0,
+});
+
+/** Appwrite list with 2 bird results */
+export const MOCK_APPWRITE_LIST_BIRDS = Object.freeze({
+	rows: [BIRD_GREEN_HERON, BIRD_BLUE_JAY],
+	total: 2,
+});
+
+/** Appwrite default row */
+export const MOCK_DEFAULT_APPWRITE_ROW: Models.Row = Object.freeze({
+	$id: "",
+	$sequence: "",
+	$tableId: "",
+	$databaseId: "",
+	$createdAt: "",
+	$updatedAt: "",
+	$permissions: [],
+});
+
+/** Appwrite row with Bird data */
+export const MOCK_BIRD_ROW: Bird = Object.freeze({
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...BIRD_GREEN_HERON,
+});
+
+/** Appwrite row with Sighting data */
+export const MOCK_SIGHTING_ROW: Sighting = Object.freeze({
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...SIGHTING_BASE,
+	bird: MOCK_BIRD_ROW,
+});
+
+/** Appwrite row with Sighting data */
+export const MOCK_SIGHTING_ROW_WITH_NULL_BIRD: Sighting = Object.freeze({
+	...MOCK_DEFAULT_APPWRITE_ROW,
+	...SIGHTING_BASE,
+});
+
+/** Appwrite row with Sighting data with empty description */
+export const MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION: Sighting = Object.freeze(
+	{
+		...MOCK_DEFAULT_APPWRITE_ROW,
+		...SIGHTING_BASE,
+		bird: MOCK_BIRD_ROW,
+		description: "",
+	},
+);
+
+/* ── Tanstack ──────────────────────────────────────────── */
+
+/** useQuery default return value */
+export const MOCK_DEFAULT_USE_QUERY = Object.freeze({
+	data: undefined,
 	error: null,
 	isError: false,
 	isPending: false,
-};
+});
 
-/** Details component */
-export const defaultDetailsReturnValue: DetailsQueryReturnValue = {
-	data: mockDetailsData,
+/** useMutation default return value */
+export const MOCK_DEFAULT_USE_MUTATION = Object.freeze({
 	error: null,
 	isError: false,
 	isPending: false,
-};
+	mutate: () => {},
+});
+
+/** useQuery while pending */
+export const MOCK_USE_QUERY_LOADING = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	isPending: true,
+});
+
+/** useQuery with unexpected Appwrite server error */
+export const MOCK_USE_QUERY_ERROR = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	isError: true,
+	error: { message: ERROR_MESSAGES.APPWRITE_UNEXPECTED },
+});
+
+/** useQuery with empty Appwrite list */
+export const MOCK_USE_QUERY_WITH_EMPTY_LIST = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_EMPTY_APPWRITE_LIST,
+});
+
+/** useQuery with birds list */
+export const MOCK_USE_QUERY_WITH_BIRDS_LIST = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_APPWRITE_LIST_BIRDS,
+});
+
+/** useQuery with bird row */
+export const MOCK_USE_QUERY_WITH_BIRD_ROW = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_BIRD_ROW,
+});
+
+/** useQuery with sighting row */
+export const MOCK_USE_QUERY_WITH_SIGHTING_ROW = Object.freeze({
+	...MOCK_DEFAULT_USE_QUERY,
+	data: MOCK_SIGHTING_ROW,
+});

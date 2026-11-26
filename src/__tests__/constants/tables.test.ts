@@ -1,90 +1,95 @@
 import { DISPLAY_MESSAGES } from "@/constants/messages";
 import { TABLES } from "@/constants/tables";
-import { mockDetailsData } from "@/test/fixtures";
-import type { Bird, Sighting } from "@/types/db";
-
-const { commonName, scientificName, description } = mockDetailsData;
-
-const birdRow = mockDetailsData as unknown as Bird;
-
-const sightingDescription = "Seen wading at the pond";
-const sightingRow = {
-	$id: "1",
-	bird: mockDetailsData,
-	description: sightingDescription,
-} as unknown as Sighting;
+import {
+	MOCK_BIRD_ROW,
+	MOCK_SIGHTING_ROW,
+	MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION,
+	MOCK_SIGHTING_ROW_WITH_NULL_BIRD,
+} from "@/test/mocks";
 
 describe("Tables constant", () => {
 	describe("birds record", () => {
 		test("returns bird list item href and label", () => {
-			const { href, label } = TABLES.birds.listItem(birdRow);
+			const { href, label } = TABLES.birds.listItem(MOCK_BIRD_ROW);
 
-			expect(label).toEqual("Green Heron");
+			expect(label).toEqual(MOCK_BIRD_ROW.commonName);
 			expect(href).toStrictEqual({
 				pathname: "/(app)/(tabs)/birds/[id]",
-				params: { id: "1" },
+				params: { id: MOCK_BIRD_ROW.$id },
 			});
 		});
 		test("returns bird details heading text and description list", () => {
-			const { headingText, descriptionList } = TABLES.birds.details(birdRow);
+			const { headingText, descriptionList } =
+				TABLES.birds.details(MOCK_BIRD_ROW);
 
-			expect(headingText).toEqual("Bird Details: Green Heron");
+			expect(headingText).toEqual(`Bird Details: ${MOCK_BIRD_ROW.commonName}`);
 			expect(descriptionList).toStrictEqual([
-				{ label: "Common Name", details: commonName },
-				{ label: "Scientific Name", details: scientificName },
-				{ label: "Description", details: description },
+				{ label: "Common Name", details: MOCK_BIRD_ROW.commonName },
+				{ label: "Scientific Name", details: MOCK_BIRD_ROW.scientificName },
+				{ label: "Description", details: MOCK_BIRD_ROW.description },
 			]);
 		});
 	});
 
 	describe("sightings record", () => {
 		test("returns sighting list item href and label", () => {
-			const { href, label } = TABLES.sightings.listItem(sightingRow);
+			const { href, label } = TABLES.sightings.listItem(MOCK_SIGHTING_ROW);
 
-			expect(label).toEqual("Green Heron");
+			expect(label).toEqual(MOCK_SIGHTING_ROW.bird?.commonName);
 			expect(href).toStrictEqual({
 				pathname: "/(app)/(tabs)/sightings/[id]",
-				params: { id: "1" },
+				params: { id: MOCK_SIGHTING_ROW.$id },
 			});
 		});
 
 		test("returns sighting heading text and description list", () => {
 			const { headingText, descriptionList } =
-				TABLES.sightings.details(sightingRow);
+				TABLES.sightings.details(MOCK_SIGHTING_ROW);
 
-			expect(headingText).toEqual("Sighting Details: Green Heron");
+			expect(headingText).toEqual(
+				`Sighting Details: ${MOCK_SIGHTING_ROW.bird?.commonName}`,
+			);
 			expect(descriptionList).toStrictEqual([
-				{ label: "Species", details: commonName },
-				{ label: "Description", details: sightingDescription },
+				{ label: "Species", details: MOCK_SIGHTING_ROW.bird?.commonName },
+				{ label: "Description", details: MOCK_SIGHTING_ROW.description },
 			]);
 		});
 
 		test("list item with null bird relation shows alternate text", () => {
-			const row = { ...sightingRow, bird: null };
-			const { label } = TABLES.sightings.listItem(row);
+			const { label } = TABLES.sightings.listItem(
+				MOCK_SIGHTING_ROW_WITH_NULL_BIRD,
+			);
 
 			expect(label).toEqual(DISPLAY_MESSAGES.UNKNOWN_BIRD);
 		});
 
 		test("sighting details with null bird relation shows alternate text", () => {
-			const row = { ...sightingRow, bird: null };
-			const { headingText, descriptionList } = TABLES.sightings.details(row);
+			const { headingText, descriptionList } = TABLES.sightings.details(
+				MOCK_SIGHTING_ROW_WITH_NULL_BIRD,
+			);
 
 			expect(headingText).toEqual(
 				`Sighting Details: ${DISPLAY_MESSAGES.UNKNOWN_BIRD}`,
 			);
 			expect(descriptionList).toStrictEqual([
 				{ label: "Species", details: DISPLAY_MESSAGES.UNKNOWN_BIRD },
-				{ label: "Description", details: sightingDescription },
+				{
+					label: "Description",
+					details: MOCK_SIGHTING_ROW_WITH_NULL_BIRD.description,
+				},
 			]);
 		});
 
 		test("sighting details with no description shows alternate text", () => {
-			const row = { ...sightingRow, description: "" };
-			const { descriptionList } = TABLES.sightings.details(row);
+			const { descriptionList } = TABLES.sightings.details(
+				MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION,
+			);
 
 			expect(descriptionList).toStrictEqual([
-				{ label: "Species", details: commonName },
+				{
+					label: "Species",
+					details: MOCK_SIGHTING_ROW_WITH_EMPTY_DESCRIPTION.bird?.commonName,
+				},
 				{ label: "Description", details: DISPLAY_MESSAGES.NO_DESCRIPTION },
 			]);
 		});

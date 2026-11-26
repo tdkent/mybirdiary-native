@@ -1,21 +1,16 @@
-/**
- * Test form behavior and validation
- * Verify the form behaves correctly during user interaction
- */
-
 import { useMutation } from "@tanstack/react-query";
 import { fireEvent, render } from "@testing-library/react-native";
 import SightingForm from "@/components/forms/sighting-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
 import { VALIDATION } from "@/constants/validation";
+import { BIRD_GREEN_HERON, SIGHTING_BASE, USER_ID } from "@/test/fixtures";
+import { MOCK_DEFAULT_USE_MUTATION } from "@/test/mocks";
 
 const mockMutate = jest.fn();
 
 beforeEach(() => {
 	jest.mocked(useMutation).mockReturnValue({
-		error: null,
-		isError: false,
-		isPending: false,
+		...MOCK_DEFAULT_USE_MUTATION,
 		mutate: mockMutate,
 	} as unknown as ReturnType<typeof useMutation>);
 });
@@ -23,7 +18,7 @@ beforeEach(() => {
 describe("SightingForm", () => {
 	test("renders form inputs and submit button", async () => {
 		const { getByLabelText, getByRole, getByTestId } = await render(
-			<SightingForm userId="1" />,
+			<SightingForm userId={USER_ID} />,
 		);
 
 		expect(getByLabelText(/common name/i)).toBeOnTheScreen();
@@ -34,7 +29,7 @@ describe("SightingForm", () => {
 
 	test("rejects empty common name input and displays error", async () => {
 		const { findByTestId, getByRole } = await render(
-			<SightingForm userId="1" />,
+			<SightingForm userId={USER_ID} />,
 		);
 
 		await fireEvent.press(getByRole("button", { name: /submit/i }));
@@ -47,19 +42,19 @@ describe("SightingForm", () => {
 
 	test("rejects description over character limit", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await render(
-			<SightingForm userId="1" />,
+			<SightingForm userId={USER_ID} />,
 		);
 
 		// Create 151-character string
-		const mockDescription = new Array(
+		const invalidDescription = new Array(
 			VALIDATION.DESCRIPTION_CHAR_LIMIT + 2,
 		).join("x");
 
 		const nameInput = getByLabelText(/common name/i);
 		const descriptionInput = getByLabelText(/description/i);
 
-		await fireEvent.changeText(nameInput, "Blue Jay");
-		await fireEvent.changeText(descriptionInput, mockDescription);
+		await fireEvent.changeText(nameInput, BIRD_GREEN_HERON.commonName);
+		await fireEvent.changeText(descriptionInput, invalidDescription);
 		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(
@@ -70,13 +65,13 @@ describe("SightingForm", () => {
 
 	test("pending state displays loader and disables button", async () => {
 		jest.mocked(useMutation).mockReturnValue({
-			error: null,
-			isError: false,
+			...MOCK_DEFAULT_USE_MUTATION,
 			isPending: true,
-			mutate: mockMutate,
 		} as unknown as ReturnType<typeof useMutation>);
 
-		const { findByText, getByRole } = await render(<SightingForm userId="1" />);
+		const { findByText, getByRole } = await render(
+			<SightingForm userId={USER_ID} />,
+		);
 
 		expect(await findByText(/submitting/i)).toBeOnTheScreen();
 		expect(getByRole("button", { name: /submit/i })).toBeDisabled();
@@ -84,13 +79,13 @@ describe("SightingForm", () => {
 
 	test("displays error message if a server error occurs", async () => {
 		jest.mocked(useMutation).mockReturnValue({
+			...MOCK_DEFAULT_USE_MUTATION,
 			error: { message: ERROR_MESSAGES.APPWRITE_UNEXPECTED },
 			isError: true,
-			isPending: false,
-			mutate: mockMutate,
 		} as unknown as ReturnType<typeof useMutation>);
 
-		const { findByText } = await render(<SightingForm userId="1" />);
+		const { findByText } = await render(<SightingForm userId={USER_ID} />);
+
 		expect(
 			await findByText(ERROR_MESSAGES.APPWRITE_UNEXPECTED),
 		).toBeOnTheScreen();
@@ -98,20 +93,21 @@ describe("SightingForm", () => {
 
 	test("calls mutate with valid inputs", async () => {
 		const { getByLabelText, getByRole } = await render(
-			<SightingForm userId="1" />,
+			<SightingForm userId={USER_ID} />,
 		);
-
-		const commonName = "Blue Jay";
 		const nameInput = getByLabelText(/common name/i);
+		const descriptionInput = getByLabelText(/description/i);
 
-		await fireEvent.changeText(nameInput, "Blue Jay");
+		await fireEvent.changeText(nameInput, BIRD_GREEN_HERON.commonName);
+		await fireEvent.changeText(descriptionInput, SIGHTING_BASE.description);
 		await fireEvent.press(getByRole("button", { name: /submit/i }));
 
 		expect(mockMutate).toHaveBeenCalledTimes(1);
 		expect(mockMutate).toHaveBeenCalledWith({
-			userId: "1",
+			userId: USER_ID,
 			formValues: expect.objectContaining({
-				commonName,
+				commonName: BIRD_GREEN_HERON.commonName,
+				description: SIGHTING_BASE.description,
 			}),
 		});
 	});

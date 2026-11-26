@@ -1,29 +1,33 @@
 import { queryKeys } from "@/lib/query-keys";
-import { testUserId } from "@/test/fixtures";
-
-const rowId = "456";
+import { SIGHTING_BASE, USER_ID } from "@/test/fixtures";
+import { MOCK_BIRD_ROW } from "@/test/mocks";
 
 describe("queryKeys factory", () => {
 	describe("sightings", () => {
 		test("returns correct sightings list query key", () => {
-			const key = queryKeys.list({ table: "sightings", userId: testUserId });
+			const key = queryKeys.list({ table: "sightings", userId: USER_ID });
 
-			expect(key).toStrictEqual(["sightings", testUserId, "list"]);
+			expect(key).toStrictEqual(["sightings", USER_ID, "list"]);
 		});
 		test("returns correct sighting details query key", () => {
 			const key = queryKeys.detail({
 				table: "sightings",
-				userId: testUserId,
-				rowId,
+				userId: USER_ID,
+				rowId: SIGHTING_BASE.$id,
 			});
 
-			expect(key).toStrictEqual(["sightings", testUserId, "detail", rowId]);
+			expect(key).toStrictEqual([
+				"sightings",
+				USER_ID,
+				"detail",
+				SIGHTING_BASE.$id,
+			]);
 		});
 	});
 
 	describe("birds", () => {
 		test("returns correct birds list query key", () => {
-			const key = queryKeys.list({ table: "birds", userId: testUserId });
+			const key = queryKeys.list({ table: "birds", userId: USER_ID });
 
 			expect(key).toStrictEqual(["birds", "list"]);
 		});
@@ -31,11 +35,11 @@ describe("queryKeys factory", () => {
 		test("returns correct bird details query key", () => {
 			const key = queryKeys.detail({
 				table: "birds",
-				userId: testUserId,
-				rowId,
+				userId: USER_ID,
+				rowId: MOCK_BIRD_ROW.$id,
 			});
 
-			expect(key).toStrictEqual(["birds", "detail", rowId]);
+			expect(key).toStrictEqual(["birds", "detail", MOCK_BIRD_ROW.$id]);
 		});
 
 		test("returns correct birds list query key without a user", () => {
@@ -45,15 +49,18 @@ describe("queryKeys factory", () => {
 		});
 
 		test("returns correct bird details query key without a user", () => {
-			const key = queryKeys.detail({ table: "birds", rowId });
+			const key = queryKeys.detail({
+				table: "birds",
+				rowId: MOCK_BIRD_ROW.$id,
+			});
 
-			expect(key).toStrictEqual(["birds", "detail", rowId]);
+			expect(key).toStrictEqual(["birds", "detail", MOCK_BIRD_ROW.$id]);
 		});
 	});
 
 	describe("all", () => {
 		test.each([
-			{ table: "sightings" as const, userId: testUserId },
+			{ table: "sightings" as const, userId: USER_ID },
 			{ table: "birds" as const, userId: undefined },
 		])("is a prefix of $table list and detail keys", ({ table, userId }) => {
 			const all = queryKeys.all({ table, userId });
@@ -62,7 +69,9 @@ describe("queryKeys factory", () => {
 				all,
 			);
 			expect(
-				queryKeys.detail({ table, userId, rowId }).slice(0, all.length),
+				queryKeys
+					.detail({ table, userId, rowId: SIGHTING_BASE.$id })
+					.slice(0, all.length),
 			).toEqual(all);
 		});
 	});
