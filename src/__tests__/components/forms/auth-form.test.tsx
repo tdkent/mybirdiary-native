@@ -1,20 +1,26 @@
 import { fireEvent, render } from "@testing-library/react-native";
 import AuthForm from "@/components/forms/auth-form";
 import { ERROR_MESSAGES } from "@/constants/messages";
-import { AuthProvider } from "@/context/auth-context";
 import { INVALID_LOGIN, VALID_LOGIN } from "@/test/fixtures";
-import { renderWithClient } from "@/test/query-client";
+import { MOCK_DEFAULT_AUTH_CONTEXT } from "@/test/mocks";
 
 const mockLogin = jest.fn();
 const mockRegister = jest.fn();
+const mockSetAuthError = jest.fn();
+const mockUseAuth = jest.fn();
 
 jest.mock("@/hooks/use-auth", () => ({
-	useAuth: () => ({
+	useAuth: () => mockUseAuth(),
+}));
+
+beforeEach(() => {
+	mockUseAuth.mockReturnValue({
+		...MOCK_DEFAULT_AUTH_CONTEXT,
 		login: mockLogin,
 		register: mockRegister,
-		setAuthError: jest.fn(),
-	}),
-}));
+		setAuthError: mockSetAuthError,
+	});
+});
 
 describe("AuthForm", () => {
 	test("renders email and password inputs and submit button", async () => {
@@ -25,7 +31,7 @@ describe("AuthForm", () => {
 		getByRole("button", { name: /submit/i });
 	});
 
-	test("displays validation error for empty inputs", async () => {
+	test("rejects empty inputs and displays correct error message", async () => {
 		const { findByTestId, getByRole } = await render(<AuthForm isLogin />);
 
 		const button = getByRole("button", { name: /submit/i });
@@ -40,7 +46,7 @@ describe("AuthForm", () => {
 		);
 	});
 
-	test("rejects invalid email input", async () => {
+	test("rejects invalid email input and displays correct error message", async () => {
 		const { findByTestId, getByRole, getByLabelText } = await render(
 			<AuthForm isLogin />,
 		);
@@ -56,7 +62,7 @@ describe("AuthForm", () => {
 		);
 	});
 
-	test("rejects invalid password input", async () => {
+	test("rejects invalid password input and displays correct error message", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await render(
 			<AuthForm isLogin />,
 		);
@@ -72,12 +78,21 @@ describe("AuthForm", () => {
 		);
 	});
 
+	test("pending state displays loader and disables button", async () => {
+		mockUseAuth.mockReturnValue({
+			...MOCK_DEFAULT_AUTH_CONTEXT,
+			isLoading: true,
+			setAuthError: mockSetAuthError,
+		});
+
+		const { getByRole, getByText } = await render(<AuthForm isLogin />);
+
+		expect(getByText(/submitting/i)).toBeOnTheScreen();
+		expect(getByRole("button", { name: /submitting/i })).toBeDisabled();
+	});
+
 	test("calls login with valid credentials", async () => {
-		const { getByLabelText, getByRole } = await renderWithClient(
-			<AuthProvider>
-				<AuthForm isLogin />
-			</AuthProvider>,
-		);
+		const { getByLabelText, getByRole } = await render(<AuthForm isLogin />);
 
 		const emailInput = getByLabelText("email");
 		const passwordInput = getByLabelText("password");
@@ -91,11 +106,7 @@ describe("AuthForm", () => {
 	});
 
 	test("calls register with valid credentials", async () => {
-		const { getByLabelText, getByRole } = await renderWithClient(
-			<AuthProvider>
-				<AuthForm />
-			</AuthProvider>,
-		);
+		const { getByLabelText, getByRole } = await render(<AuthForm />);
 
 		const emailInput = getByLabelText("email");
 		const passwordInput = getByLabelText("password");
