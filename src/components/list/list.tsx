@@ -6,6 +6,8 @@ import { queryKeys } from "@/lib/query-keys";
 import { getListData } from "@/services/api/list";
 import type { TableName } from "@/types/db";
 
+// TODO: force userid with 'sightings' table
+
 /** Renders list screen FlatList component. */
 export default function List<T extends TableName>({
 	table,

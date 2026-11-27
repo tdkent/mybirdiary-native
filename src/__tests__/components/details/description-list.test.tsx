@@ -3,14 +3,15 @@ import DescriptionList from "@/components/details/description-list";
 import { BIRD_DETAILS } from "@/test/fixtures";
 
 describe("DescriptionList", () => {
-	test("displays description list items", async () => {
-		const { getByText } = await render(
-			<DescriptionList descriptionList={BIRD_DETAILS} />,
-		);
+	test.each(BIRD_DETAILS)(
+		"displays $label and $details on screen",
+		async ({ label, details }) => {
+			const { getByText } = await render(
+				<DescriptionList descriptionList={BIRD_DETAILS} />,
+			);
 
-		for (const item of BIRD_DETAILS) {
-			expect(getByText(item.label)).toBeOnTheScreen();
-			expect(getByText(item.details)).toBeOnTheScreen();
-		}
-	});
+			expect(getByText(label)).toBeOnTheScreen();
+			expect(getByText(details)).toBeOnTheScreen();
+		},
+	);
 });

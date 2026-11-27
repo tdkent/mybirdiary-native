@@ -1,4 +1,5 @@
 import { fireEvent, screen } from "@testing-library/react-native";
+import { DateTime } from "luxon";
 import { View } from "react-native";
 import SightingForm from "@/components/forms/sighting-form";
 import List from "@/components/list/list";
@@ -42,6 +43,13 @@ async function submitValidForm() {
 	await fireEvent.press(screen.getByRole("button", { name: /submit/i }));
 }
 
+/** Use native date picker. */
+async function pickDate(date: Date) {
+	await fireEvent(screen.getByTestId("sighting-date"), "dateChange", {
+		nativeEvent: { date: date.toISOString() },
+	});
+}
+
 describe("SightingForm", () => {
 	test("renders form inputs and submit button", async () => {
 		const { getByLabelText, getByRole, getByTestId } = await renderWithClient(
@@ -54,7 +62,7 @@ describe("SightingForm", () => {
 		expect(getByRole("button", { name: /submit/i })).toBeOnTheScreen();
 	});
 
-	test("rejects empty common name input and displays error", async () => {
+	test("rejects empty common name input and displays correct error message", async () => {
 		const { findByTestId, getByRole } = await renderWithClient(
 			<SightingForm userId={USER_ID} />,
 		);
@@ -67,7 +75,22 @@ describe("SightingForm", () => {
 		expect(mockCreateSighting).not.toHaveBeenCalled();
 	});
 
-	test("rejects description over character limit", async () => {
+	test("rejects out of range date and displays correct error message", async () => {
+		const { findByTestId } = await renderWithClient(
+			<SightingForm userId={USER_ID} />,
+		);
+		const twoYearsAgo = DateTime.now().minus({ years: 2 }).toJSDate();
+
+		await pickDate(twoYearsAgo);
+		await submitValidForm();
+
+		expect(await findByTestId(/date-validation-alert/i)).toHaveTextContent(
+			ERROR_MESSAGES.INVALID_DATE,
+		);
+		expect(mockCreateSighting).not.toHaveBeenCalled();
+	});
+
+	test("rejects description over character limit and displays correct error message", async () => {
 		const { findByTestId, getByLabelText, getByRole } = await renderWithClient(
 			<SightingForm userId={USER_ID} />,
 		);
@@ -126,6 +149,12 @@ describe("SightingForm", () => {
 	test("calls createSighting with valid inputs", async () => {
 		await renderWithClient(<SightingForm userId={USER_ID} />);
 
+		const sightingDate = DateTime.now()
+			.minus({ days: 3 })
+			.startOf("day")
+			.toJSDate();
+
+		await pickDate(sightingDate);
 		await submitValidForm();
 
 		expect(mockCreateSighting).toHaveBeenCalledTimes(1);
@@ -133,6 +162,7 @@ describe("SightingForm", () => {
 			userId: USER_ID,
 			formValues: expect.objectContaining({
 				commonName: BIRD_GREEN_HERON.commonName,
+				date: sightingDate,
 				description: SIGHTING_BASE.description,
 			}),
 		});
