@@ -34,10 +34,6 @@ export default function Details<T extends TableName>({
 		return <ThemedText>{error.message}</ThemedText>;
 	}
 
-	if (!data) {
-		return <ThemedText>No data to show.</ThemedText>;
-	}
-
 	const { headingText, descriptionList } = TABLES[table].details(data);
 
 	return (
