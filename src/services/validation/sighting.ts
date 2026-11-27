@@ -5,7 +5,7 @@ import { getEndOfToday, getOneYearAgoStartOfDay } from "@/utils/dates";
 
 const CommonName = Yup.string().required(ERROR_MESSAGES.SIGHTING_NAME_REQUIRED);
 
-const SightingDate = Yup.date()
+export const SightingDate = Yup.date()
 	.required(ERROR_MESSAGES.REQUIRED_DATE)
 	.test(
 		"date-in-range",
