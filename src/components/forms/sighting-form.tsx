@@ -84,7 +84,9 @@ export default function SightingForm({ userId }: Props) {
 								value={values.date}
 							/>
 							{touched.date && typeof errors.date === "string" && (
-								<ThemedText>{errors.date}</ThemedText>
+								<ThemedText testId="date-validation-alert">
+									{errors.date}
+								</ThemedText>
 							)}
 						</View>
 
